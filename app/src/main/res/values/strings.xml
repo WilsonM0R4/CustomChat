@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CustomChat</string>
+    <string name="placeholder_email">email</string>
+    <string name="placeholder_password">password</string>
+    <string name="sign_up_message">¿no estas registrado?</string>
+    <string name="sign_up">registrate</string>
+    <string name="sign_in">iniciar sesión</string>
+    <string name="loadingMessage">Vericando tus datos</string>
+    <string name="loadingTitle">Cargando</string>
+</resources>
