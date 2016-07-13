@@ -35,6 +35,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(getString(R.string.loadingTitle));
         progressDialog.setMessage(getString(R.string.loadingMessage));
+
+        loginPresenter.startAuthStateListener();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        loginPresenter.stopAuthStateListener();
     }
 
     @Override
