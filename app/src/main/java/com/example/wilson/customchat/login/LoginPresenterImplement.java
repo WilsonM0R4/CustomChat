@@ -27,15 +27,21 @@ public class LoginPresenterImplement implements LoginPresenter {
     }
 
     @Override
-    public void startAuthStateListener() {
+    public void onCreate() {
         eventBus.register(this);
+        instantiateAuthStateListener();
         loginInteractor.startAuthStateListener();
     }
 
     @Override
-    public void stopAuthStateListener() {
+    public void onDestroy() {
         eventBus.unregister(this);
         loginInteractor.stopAuthStateListener();
+    }
+
+    @Override
+    public void instantiateAuthStateListener() {
+        loginInteractor.instantiateAuthStateListener();
     }
 
     @Override
@@ -45,6 +51,7 @@ public class LoginPresenterImplement implements LoginPresenter {
             loginView.showProgresDialog();
         }
         loginInteractor.signIn(email,password);
+        Log.e("presenter login","sign in requested");
     }
 
     @Override
@@ -67,15 +74,12 @@ public class LoginPresenterImplement implements LoginPresenter {
     @Override
     public void onEventMainThread(LoginEvent event) {
 
-        boolean loginEvent = event.getEventType();
+        boolean loginEvent = loginInteractor.getSignInResult();
 
         if (loginEvent){
-
-            //pending to implement onSignInSuccess method
             onSignInSuccess();
             Log.e("login event","session event is "+loginEvent);
         }else{
-            //pending to implement onSignInError method
             onSignInError();
             Log.e("login event","session event is "+loginEvent);
         }

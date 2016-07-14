@@ -5,8 +5,9 @@ package com.example.wilson.customchat.login.events;
  */
 public class LoginEvent {
 
-    public static final boolean onSignInError = false;
-    public static final boolean onSignInSuccess = true;
+    public static final int onWaitingForResult = 0;
+    public static final int onSignInError = 1;
+    public static final int onSignInSuccess = 2;
 
     private boolean eventType;
     private String errorMessage;

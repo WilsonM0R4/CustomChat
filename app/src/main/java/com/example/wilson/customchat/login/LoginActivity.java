@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -36,14 +37,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         progressDialog.setTitle(getString(R.string.loadingTitle));
         progressDialog.setMessage(getString(R.string.loadingMessage));
 
-        loginPresenter.startAuthStateListener();
+        loginPresenter.onCreate();
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-
-        loginPresenter.stopAuthStateListener();
+        loginPresenter.onDestroy();
     }
 
     @Override
@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         if(loginPresenter!=null) {
             loginPresenter.getLoginActivityReference(this);
             loginPresenter.signIn(etEmail.getText().toString(), etPass.getText().toString());
+            Log.e("login activity","login requested");
             //loginPresenter.startAuthStateListener();
         }
     }

@@ -7,6 +7,7 @@ public interface LoginRepository {
 
     void startAuthStateListener();
     void stopAuthStateListener();
+    void instantiateAuthStateListener();
     void signIn(String email, String password);
     boolean getSignInResult();
 

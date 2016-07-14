@@ -3,6 +3,7 @@ package com.example.wilson.customchat.login;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.example.wilson.customchat.lib.EventBus;
 import com.example.wilson.customchat.lib.GreenRobotEventBus;
@@ -11,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by gparrrado on 7/13/16.
@@ -21,19 +23,21 @@ public class LoginRepositoryImplement implements LoginRepository{
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseHelper firebaseHelper;
     boolean signInResult;
+    final int[] result = new int[]{LoginEvent.onWaitingForResult};;
 
     public LoginRepositoryImplement(){
         firebaseHelper = FirebaseHelper.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-
+        //firebaseAuth = FirebaseAuth.getInstance();
+        //startAuthStateListener();
     }
 
     @Override
     public void startAuthStateListener() {
-        if(firebaseAuth!=null){
-            firebaseAuth.addAuthStateListener(authStateListener);
+        if(firebaseAuth==null){
+            firebaseAuth = FirebaseAuth.getInstance();
+            Log.e("FirebaseAuth","auth is not null ");
         }
-
+        firebaseAuth.addAuthStateListener(authStateListener);
     }
 
     @Override
@@ -43,30 +47,60 @@ public class LoginRepositoryImplement implements LoginRepository{
         }
     }
 
+    @Override
+    public void instantiateAuthStateListener() {
+        if(firebaseAuth==null) {
+
+            firebaseAuth = FirebaseAuth.getInstance();
+
+            authStateListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                    if(user!=null){
+                        signInResult = User.USER_ONLINE;
+                    }else{
+                        signInResult = User.USER_ONLINE;
+                    }
+
+                }
+            };
+
+
+        }
+    }
+
 
     @Override
     public void signIn(final String email, final String password) {
 
-        if(authStateListener==null) {
-            authStateListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            signInResult = task.isSuccessful();
-                            Log.e("sign in result","sign in is "+signInResult);
-                            postEvent(signInResult);
-                        }
-                    });
+        //startAuthStateListener();
+        Log.e("repository login","sign in requested");
+
+        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(task.isSuccessful()){
+                    result[0] = LoginEvent.onSignInSuccess;
+                }else{
+                    result[0] = LoginEvent.onSignInError;
                 }
-            };
-        }
+                //signInResult = task.isSuccessful();
+                Log.e("sign in result","sign in is "+signInResult);
+                postEvent(signInResult);
+            }
+        });
+
+
 
     }
 
     @Override
     public boolean getSignInResult() {
+        //firebaseAuth.removeAuthStateListener(authStateListener);
+        Log.e("sign in result","sign in is "+signInResult);
         return signInResult;
     }
 
@@ -82,7 +116,7 @@ public class LoginRepositoryImplement implements LoginRepository{
         }
         EventBus eventBus = GreenRobotEventBus.getInstance();
         eventBus.post(loginEvent);
-
+        Log.e("presenter event","event posted, type "+type);
     }
 
 }

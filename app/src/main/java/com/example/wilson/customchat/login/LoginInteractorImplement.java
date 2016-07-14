@@ -1,5 +1,7 @@
 package com.example.wilson.customchat.login;
 
+import android.util.Log;
+
 /**
  * Created by gparrrado on 7/13/16.
  */
@@ -19,6 +21,11 @@ public class LoginInteractorImplement implements LoginInteractor{
     }
 
     @Override
+    public void instantiateAuthStateListener() {
+        loginRepository.instantiateAuthStateListener();
+    }
+
+    @Override
     public void startAuthStateListener() {
         loginRepository.startAuthStateListener();
     }
@@ -31,6 +38,7 @@ public class LoginInteractorImplement implements LoginInteractor{
     @Override
     public void signIn(String email, String password) {
         loginRepository.signIn(email,password);
+        Log.e("interactor login","sign in requested");
     }
 
 }

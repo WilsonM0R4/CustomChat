@@ -7,9 +7,10 @@ import com.example.wilson.customchat.login.events.LoginEvent;
  */
 public interface LoginPresenter {
 
+    void onCreate();
+    void onDestroy();
+    void instantiateAuthStateListener();
     void getLoginActivityReference(LoginActivity loginActivity);
-    void startAuthStateListener();
-    void stopAuthStateListener();
     void signIn(String email, String password);
     void onSignInSuccess();
     void onSignInError();
