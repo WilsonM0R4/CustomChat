@@ -15,28 +15,35 @@ public class LoginPresenterImplement implements LoginPresenter {
     LoginActivity loginView;
     EventBus eventBus ;
 
-    public LoginPresenterImplement(){
+    public LoginPresenterImplement(LoginActivity loginView){
+        this.loginView = loginView;
         loginInteractor = new LoginInteractorImplement();
         this.eventBus = GreenRobotEventBus.getInstance();
 
     }
 
-    @Override
-    public void getLoginActivityReference(LoginActivity loginActivity) {
-        loginView = loginActivity;
-    }
 
     @Override
     public void onCreate() {
         eventBus.register(this);
         instantiateAuthStateListener();
         loginInteractor.startAuthStateListener();
+        checkForActualSessionState();
     }
 
     @Override
     public void onDestroy() {
         eventBus.unregister(this);
         loginInteractor.stopAuthStateListener();
+    }
+
+    @Override
+    public void checkForActualSessionState() {
+        boolean session = loginInteractor.checkForActualSessionStatus();
+        if(session){
+            loginView.navigateToHomeScreen();
+        }
+
     }
 
     @Override
@@ -68,6 +75,7 @@ public class LoginPresenterImplement implements LoginPresenter {
         if(loginView!=null){
             loginView.enableInputs();
             loginView.hideProgresDialog();
+            loginView.etPass.setError("Check your credentials");
         }
     }
 

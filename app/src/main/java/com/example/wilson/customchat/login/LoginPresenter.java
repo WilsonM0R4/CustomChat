@@ -9,8 +9,8 @@ public interface LoginPresenter {
 
     void onCreate();
     void onDestroy();
+    void checkForActualSessionState();
     void instantiateAuthStateListener();
-    void getLoginActivityReference(LoginActivity loginActivity);
     void signIn(String email, String password);
     void onSignInSuccess();
     void onSignInError();

@@ -7,6 +7,7 @@ public interface LoginInteractor {
     void instantiateAuthStateListener();
     void startAuthStateListener();
     void stopAuthStateListener();
+    boolean checkForActualSessionStatus();
     void signIn(String email, String password);
     boolean getSignInResult();
 }

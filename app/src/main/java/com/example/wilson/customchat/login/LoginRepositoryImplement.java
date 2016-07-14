@@ -22,13 +22,12 @@ public class LoginRepositoryImplement implements LoginRepository{
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseHelper firebaseHelper;
+    FirebaseUser user;
     boolean signInResult;
-    final int[] result = new int[]{LoginEvent.onWaitingForResult};;
+    final int[] result = new int[]{LoginEvent.onWaitingForResult};
 
     public LoginRepositoryImplement(){
         firebaseHelper = FirebaseHelper.getInstance();
-        //firebaseAuth = FirebaseAuth.getInstance();
-        //startAuthStateListener();
     }
 
     @Override
@@ -50,32 +49,39 @@ public class LoginRepositoryImplement implements LoginRepository{
     @Override
     public void instantiateAuthStateListener() {
         if(firebaseAuth==null) {
-
             firebaseAuth = FirebaseAuth.getInstance();
-
-            authStateListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                    if(user!=null){
-                        signInResult = User.USER_ONLINE;
-                    }else{
-                        signInResult = User.USER_ONLINE;
-                    }
-
-                }
-            };
-
-
         }
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+
+                if(user!=null){
+                    signInResult = User.USER_LOGED_IN;
+                    Log.e("User signed in","user is "+user.getEmail());
+                }else{
+                    signInResult = User.USER_LOGED_OUT;
+                }
+            }
+        };
+    }
+
+    @Override
+    public boolean checkForActualSessionStatus() {
+        user = firebaseAuth.getCurrentUser();
+
+        if (user!=null){
+            return User.USER_LOGED_IN;
+        }else{
+            return User.USER_LOGED_OUT;
+        }
+
     }
 
 
     @Override
     public void signIn(final String email, final String password) {
 
-        //startAuthStateListener();
         Log.e("repository login","sign in requested");
 
         firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -93,14 +99,11 @@ public class LoginRepositoryImplement implements LoginRepository{
             }
         });
 
-
-
     }
 
     @Override
     public boolean getSignInResult() {
-        //firebaseAuth.removeAuthStateListener(authStateListener);
-        Log.e("sign in result","sign in is "+signInResult);
+        Log.e("repo sign in result","sign in is "+signInResult);
         return signInResult;
     }
 

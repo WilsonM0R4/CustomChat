@@ -36,8 +36,20 @@ public class LoginInteractorImplement implements LoginInteractor{
     }
 
     @Override
+    public boolean checkForActualSessionStatus() {
+        return loginRepository.checkForActualSessionStatus();
+    }
+
+    @Override
     public void signIn(String email, String password) {
-        loginRepository.signIn(email,password);
+
+        if((email !=null && !email.isEmpty()) && (password !=null && !password.isEmpty()) ){
+            loginRepository.signIn(email,password);
+        }else{
+            Log.e("credentials","user or password null");
+        }
+
+
         Log.e("interactor login","sign in requested");
     }
 

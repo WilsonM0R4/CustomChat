@@ -32,12 +32,19 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        loginPresenter = new LoginPresenterImplement();
+        loginPresenter = new LoginPresenterImplement(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(getString(R.string.loadingTitle));
         progressDialog.setMessage(getString(R.string.loadingMessage));
 
         loginPresenter.onCreate();
+        //loginPresenter.checkForActualSessionState();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        //loginPresenter.checkForActualSessionState();
     }
 
     @Override
@@ -81,10 +88,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         //call presenter function
 
         if(loginPresenter!=null) {
-            loginPresenter.getLoginActivityReference(this);
             loginPresenter.signIn(etEmail.getText().toString(), etPass.getText().toString());
             Log.e("login activity","login requested");
-            //loginPresenter.startAuthStateListener();
         }
     }
 
@@ -97,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
 
     @Override
     public void navigateToHomeScreen() {
-        //hideProgresDialog();
+
         Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
         startActivity(intent);
     }
