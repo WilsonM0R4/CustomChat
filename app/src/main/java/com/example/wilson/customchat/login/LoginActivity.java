@@ -42,12 +42,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     }
 
     @Override
-    public void onStart(){
-        super.onStart();
-        //loginPresenter.checkForActualSessionState();
-    }
-
-    @Override
     protected void onDestroy(){
         super.onDestroy();
         loginPresenter.onDestroy();

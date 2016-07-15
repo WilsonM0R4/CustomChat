@@ -9,5 +9,7 @@ public interface LoginInteractor {
     void stopAuthStateListener();
     boolean checkForActualSessionStatus();
     void signIn(String email, String password);
+    void signUp(String email, String password);
+    LoginRepository getRepositoryInstance();
     boolean getSignInResult();
 }

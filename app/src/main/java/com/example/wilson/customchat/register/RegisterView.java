@@ -11,5 +11,6 @@ public interface RegisterView {
     void hideProgressDialog();
     void handleSignUp();
     void onCancelPressed();
+    void showSnackBar();
 
 }

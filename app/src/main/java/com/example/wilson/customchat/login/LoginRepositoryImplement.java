@@ -8,6 +8,7 @@ import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.example.wilson.customchat.lib.EventBus;
 import com.example.wilson.customchat.lib.GreenRobotEventBus;
 import com.example.wilson.customchat.login.events.LoginEvent;
+import com.example.wilson.customchat.register.events.RegisterEvents;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,7 +25,9 @@ public class LoginRepositoryImplement implements LoginRepository{
     private FirebaseHelper firebaseHelper;
     FirebaseUser user;
     boolean signInResult;
-    final int[] result = new int[]{LoginEvent.onWaitingForResult};
+    boolean signUpResult;
+    final int[] loginResult = new int[]{LoginEvent.onWaitingForResult};
+    final int[] regResult = new int[]{RegisterEvents.onWaitingForResult};
 
     public LoginRepositoryImplement(){
         firebaseHelper = FirebaseHelper.getInstance();
@@ -89,9 +92,9 @@ public class LoginRepositoryImplement implements LoginRepository{
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if(task.isSuccessful()){
-                    result[0] = LoginEvent.onSignInSuccess;
+                    loginResult[0] = LoginEvent.onSignInSuccess;
                 }else{
-                    result[0] = LoginEvent.onSignInError;
+                    loginResult[0] = LoginEvent.onSignInError;
                 }
                 //signInResult = task.isSuccessful();
                 Log.e("sign in result","sign in is "+signInResult);
@@ -99,6 +102,30 @@ public class LoginRepositoryImplement implements LoginRepository{
             }
         });
 
+    }
+
+    @Override
+    public void signUp(String email, String password) {
+
+        Log.e("repository register","register requested");
+        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    regResult[0] = RegisterEvents.onRegisterSuccess;
+                    signInResult = true;
+                }else{
+                    regResult[0] = RegisterEvents.onRegisterError;
+                    signInResult = false;
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public boolean getSignUpResult() {
+        return signUpResult;
     }
 
     @Override
