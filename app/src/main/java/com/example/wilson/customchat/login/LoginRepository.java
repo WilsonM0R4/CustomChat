@@ -10,8 +10,6 @@ public interface LoginRepository {
     void instantiateAuthStateListener();
     boolean checkForActualSessionStatus();
     void signIn(String email, String password);
-    void signUp(String email, String password);
-    boolean getSignUpResult();
     boolean getSignInResult();
 
 }

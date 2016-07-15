@@ -61,4 +61,9 @@ public class LoginInteractorImplement implements LoginInteractor{
             Log.e("interactor sign up","user or password null");
     }
 
+    @Override
+    public LoginRepository getRepositoryInstance() {
+        return loginRepository;
+    }
+
 }

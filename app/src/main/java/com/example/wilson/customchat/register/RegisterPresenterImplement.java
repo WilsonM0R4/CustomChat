@@ -13,10 +13,10 @@ import com.example.wilson.customchat.register.events.RegisterEvents;
 public class RegisterPresenterImplement implements RegisterPresenter {
 
     RegisterActivity registerActivity;
-    LoginInteractor loginInteractor;
 
     public RegisterPresenterImplement(RegisterActivity registerActivity){
         this.registerActivity = registerActivity;
+
 
     }
 

@@ -25,9 +25,7 @@ public class LoginRepositoryImplement implements LoginRepository{
     private FirebaseHelper firebaseHelper;
     FirebaseUser user;
     boolean signInResult;
-    boolean signUpResult;
     final int[] loginResult = new int[]{LoginEvent.onWaitingForResult};
-    final int[] regResult = new int[]{RegisterEvents.onWaitingForResult};
 
     public LoginRepositoryImplement(){
         firebaseHelper = FirebaseHelper.getInstance();
@@ -102,30 +100,6 @@ public class LoginRepositoryImplement implements LoginRepository{
             }
         });
 
-    }
-
-    @Override
-    public void signUp(String email, String password) {
-
-        Log.e("repository register","register requested");
-        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    regResult[0] = RegisterEvents.onRegisterSuccess;
-                    signInResult = true;
-                }else{
-                    regResult[0] = RegisterEvents.onRegisterError;
-                    signInResult = false;
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public boolean getSignUpResult() {
-        return signUpResult;
     }
 
     @Override
