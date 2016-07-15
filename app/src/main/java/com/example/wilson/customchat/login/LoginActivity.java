@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     public void onSignUpPressed() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     @Override

@@ -53,17 +53,5 @@ public class LoginInteractorImplement implements LoginInteractor{
         Log.e("interactor login","sign in requested");
     }
 
-    @Override
-    public void signUp(String email, String password) {
-        if((email !=null && !email.isEmpty()) && (password !=null && !password.isEmpty()) )
-            loginRepository.signUp(email,password);
-        else
-            Log.e("interactor sign up","user or password null");
-    }
-
-    @Override
-    public LoginRepository getRepositoryInstance() {
-        return loginRepository;
-    }
 
 }

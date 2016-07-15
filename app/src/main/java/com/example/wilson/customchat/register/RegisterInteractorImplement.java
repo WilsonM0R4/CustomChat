@@ -1,28 +1,27 @@
 package com.example.wilson.customchat.register;
 
-import com.example.wilson.customchat.login.LoginInteractor;
-
 /**
  * Created by wmora on 7/14/16.
  */
 public class RegisterInteractorImplement implements RegisterInteractor {
 
+    RegisterRepository registerRepository;
+
     public RegisterInteractorImplement(){
-
+        registerRepository = new RegisterRepositoryImplement();
     }
 
-    @Override
-    public void signIn(String email, String password) {
-
-    }
 
     @Override
     public void signUp(String email, String password) {
+        if(registerRepository==null)
+            registerRepository = new RegisterRepositoryImplement();
 
+        registerRepository.signUp(email,password);
     }
 
     @Override
-    public boolean getSignInResult() {
-        return false;
+    public boolean getSignUpResult() {
+        return registerRepository.getSignUpResult();
     }
 }
