@@ -15,4 +15,7 @@
     <string name="register_title">Registrando</string>
     <string name="empty_field_message">los campos no pueden ser vacíos</string>
     <string name="check_credentials_message">verifica tus datos</string>
+    <string name="title_chat_page">Chats</string>
+    <string name="title_contacts_page">Contactos</string>
+    <string name="title_profile_page">Perfil</string>
 </resources>
