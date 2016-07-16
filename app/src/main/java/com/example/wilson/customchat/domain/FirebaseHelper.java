@@ -1,5 +1,7 @@
 package com.example.wilson.customchat.domain;
 
+import android.util.Log;
+
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +48,14 @@ public class FirebaseHelper {
     public FirebaseUser getCurrentUserReference(){
         firebaseUser = firebaseAuth.getCurrentUser();
         return firebaseUser;
+    }
+
+    public void signOff(){
+        if(firebaseUser!=null){
+            firebaseAuth.signOut();
+        }else{
+            Log.e("Helper message","user is signed out yet");
+        }
     }
 
 }

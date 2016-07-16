@@ -4,44 +4,52 @@
     android:layout_height="match_parent">
 
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardUserInfo"
-        android:layout_height="300dp"
-        android:layout_width="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="correo aqui"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="porfile"
-            android:layout_centerInParent="true"/>
-
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardUserActions"
-        android:layout_height="300dp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_below="@+id/cardUserInfo">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="acciones aquí"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Button android:id="@+id/btnSignOff"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:text="@string/sign_off"/>
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardUserInfo"
+                android:layout_height="300dp"
+                android:layout_width="match_parent"
+                android:layout_margin="6dp" >
 
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="correo aqui"/>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardUserActions"
+                android:layout_height="300dp"
+                android:layout_width="match_parent"
+                android:layout_margin="6dp"
+                android:layout_below="@+id/cardUserInfo">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="acciones aquí"/>
+
+                <Button android:id="@+id/btnSignOff"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:text="@string/sign_off"/>
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
 
 </RelativeLayout>

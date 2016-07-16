@@ -1,8 +1,10 @@
 package com.example.wilson.customchat.home;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 
 /**
  * Created by wmora on 7/15/16.
