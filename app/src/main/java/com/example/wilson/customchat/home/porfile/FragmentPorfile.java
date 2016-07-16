@@ -39,10 +39,11 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     @OnClick(R.id.btnSignOff)
     @Override
     public void signOff() {
-        if(presenter!=null){
-            presenter.signOff();
-            activity.destroy();
+        if(presenter==null){
+            presenter = new ProfilePresenterImplement();
         }
+        presenter.signOff();
+        activity.destroy();
 
     }
 }

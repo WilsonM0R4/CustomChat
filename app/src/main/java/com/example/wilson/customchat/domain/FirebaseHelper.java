@@ -31,6 +31,7 @@ public class FirebaseHelper {
     public FirebaseHelper (){
         this.dataReference = new Firebase(FIREBASE_URL);
         firebaseAuth = FirebaseAuth.getInstance();
+
     }
 
     public Firebase getDataReference() {
@@ -43,6 +44,10 @@ public class FirebaseHelper {
 
     public void getUserReference(String email){
 
+    }
+
+    public FirebaseAuth getFirebaseAuth(){
+        return firebaseAuth;
     }
 
     public FirebaseUser getCurrentUserReference(){
