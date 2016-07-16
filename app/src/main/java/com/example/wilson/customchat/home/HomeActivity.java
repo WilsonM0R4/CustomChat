@@ -38,6 +38,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         ButterKnife.bind(this);
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary,getTheme()));
         toolbar.setTitle(getResources().getString(R.string.app_name));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorTitleSelected,getTheme()));
         setSupportActionBar(toolbar);
         setupAdapter();
     }

@@ -5,22 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".home.HomeActivity">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/homeVewPager"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:titleTextColor="@color/colorTitleSelected"
         android:elevation="@dimen/cardview_default_elevation"/>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="20dp"/>
+        android:layout_below="@id/toolbar"
+        android:elevation="@dimen/cardview_default_elevation"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/homeVewPager"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tabLayout"/>
 
 
 
