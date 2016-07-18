@@ -23,4 +23,5 @@
     <string name="loadingDataMessage">cargando tus datos</string>
     <string name="state_text">Tu estado: </string>
     <string name="no_contacts_message">no hay contactos para mostrar</string>
+    <string name="no_chats_message">no hay chats para mostrar</string>
 </resources>

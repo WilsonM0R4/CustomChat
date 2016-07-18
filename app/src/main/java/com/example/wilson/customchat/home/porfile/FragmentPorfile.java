@@ -31,8 +31,6 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     HomeActivity activity;
     StateDialog dialog;
     ProgressDialog progressDialog;
-    String state;
-    Map data;
 
     public FragmentPorfile newInstance(HomeActivity activity){
         this.activity = activity;
@@ -77,6 +75,11 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     @Override
     public String getActualState() {
        return presenter.getActualState();
+    }
+
+    @Override
+    public void updateStateInView(String state) {
+        userState.setText(state);
     }
 
     @OnClick(R.id.lblState)

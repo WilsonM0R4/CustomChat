@@ -64,7 +64,8 @@ public class ProfilePresenterImplement implements ProfilePresenter {
     @Override
     public void setUserStatusToView() {
         String message = profile.activity.getResources().getString(R.string.state_text);
-        profile.userState.setText(message.concat(" "+interactor.getActualStatus()));
+        profile.updateStateInView(message.concat(" "+interactor.getActualStatus()));
+        //profile.userState.setText(message.concat(" "+interactor.getActualStatus()));
     }
 
     @Override
