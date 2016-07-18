@@ -45,12 +45,12 @@ public class RegisterPresenterImplement implements RegisterPresenter {
     }
 
     @Override
-    public void signUp(String email, String password) {
-        if(!email.isEmpty() && !password.isEmpty()) {
+    public void signUp(String username,String email, String password) {
+        if(!username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
             if(password.length()>=6){
                 registerActivity.disableInputs();
                 registerActivity.showProgresDialog();
-                interactor.signUp(email, password);
+                interactor.signUp(username, email, password);
             }else
                 registerActivity.etRegPasss.setError("la contraseña debe tener mas de 6 caracteres");
 

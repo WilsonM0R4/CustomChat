@@ -5,7 +5,7 @@ package com.example.wilson.customchat.register;
  */
 public interface RegisterInteractor {
 
-    void signUp(String email, String password);
+    void signUp(String username, String email, String password);
     boolean getSignUpResult();
 
 }

@@ -13,11 +13,11 @@ public class RegisterInteractorImplement implements RegisterInteractor {
 
 
     @Override
-    public void signUp(String email, String password) {
+    public void signUp(String username,String email, String password) {
         if(registerRepository==null)
             registerRepository = new RegisterRepositoryImplement();
 
-        registerRepository.signUp(email,password);
+        registerRepository.signUp(username,email,password);
     }
 
     @Override

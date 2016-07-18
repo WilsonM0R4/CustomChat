@@ -18,6 +18,7 @@ import butterknife.OnClick;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
+    @Bind(R.id.etRegUsername) EditText etRegUsername;
     @Bind(R.id.etRegEmail) EditText etRegEmail;
     @Bind(R.id.etRegPassword) EditText etRegPasss;
     @Bind(R.id.etRegConfirmPass) EditText etRegConfirmPass;
@@ -45,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
     @Override
     public void enableInputs() {
+        etRegUsername.setEnabled(true);
         etRegEmail.setEnabled(true);
         etRegPasss.setEnabled(true);
         etRegConfirmPass.setEnabled(true);
@@ -54,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
     @Override
     public void disableInputs() {
+        etRegUsername.setEnabled(false);
         etRegEmail.setEnabled(false);
         etRegPasss.setEnabled(false);
         etRegConfirmPass.setEnabled(false);
@@ -81,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
     public void handleSignUp() {
         String pass = etRegPasss.getText().toString();
         if(pass.equals(etRegConfirmPass.getText().toString()))
-            registerPresenter.signUp(etRegEmail.getText().toString(),pass);
+            registerPresenter.signUp(etRegUsername.getText().toString(),etRegEmail.getText().toString(),pass);
         else {
             etRegPasss.setError("las contraseñas no coinciden");
             etRegConfirmPass.setError("las contraseñas no coinciden");

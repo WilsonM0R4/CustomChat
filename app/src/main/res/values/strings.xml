@@ -8,6 +8,7 @@
     <string name="loadingMessage">Vericando tus datos</string>
     <string name="loadingTitle">Cargando</string>
     <string name="sign_off">cerrar sesión</string>
+    <string name="register_username">Nombre de usuario</string>
     <string name="register_email">correo electrónico</string>
     <string name="register_password">contraseña</string>
     <string name="register_confirm_pass">confirmar contraseña</string>

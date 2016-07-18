@@ -11,10 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
-import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.home.HomeActivity;
-
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,7 +24,7 @@ public class FragmentPorfile extends Fragment implements ProfileView{
 
     @Bind(R.id.email) TextView userEmail;
     @Bind(R.id.textCurrentState) TextView userState;
-    ProfilePresenter presenter ;
+    ProfilePresenter presenter;
     HomeActivity activity;
     StateDialog dialog;
     ProgressDialog progressDialog;

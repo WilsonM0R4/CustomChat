@@ -11,7 +11,7 @@ public interface RegisterPresenter {
     void onDestroy();
     //void checkForActualSessionState();
     void instantiateAuthStateListener();
-    void signUp(String email, String password);
+    void signUp(String username,String email, String password);
     void onSignUpSuccess();
     void onSignUpError();
     void onEventMainThread(RegisterEvents event);

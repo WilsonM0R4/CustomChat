@@ -2,20 +2,24 @@ package com.example.wilson.customchat.home.porfile;
 
 import android.util.Log;
 
+import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.example.wilson.customchat.home.porfile.events.ProfileEvents;
 import com.example.wilson.customchat.lib.EventBus;
 import com.example.wilson.customchat.lib.GreenRobotEventBus;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -36,9 +40,9 @@ public class ProfileRepositoryImplement implements ProfileRepository {
     public ProfileRepositoryImplement(){
         helper = FirebaseHelper.getInstance();
         auth = helper.getFirebaseAuth();
-        userData = new HashMap<>();
+        //userData = new HashMap<>();
         databaseReference = helper.getDatabaseReference();
-        databaseReference.child("user_extra_data").child("status").addValueEventListener(valueEventListener());
+        databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).addValueEventListener(valueEventListener());
     }
 
     @Override
@@ -95,13 +99,16 @@ public class ProfileRepositoryImplement implements ProfileRepository {
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Object userData = dataSnapshot.getValue(Object.class);
 
-                actualStatus = dataSnapshot.getValue(String.class);
+                ObjectMapper mapper = new ObjectMapper();
+                userData = mapper.convertValue(userData,Map.class);
+
                 if(actualStatus!=null){
                     postEvent(true);
                 }
 
-                Log.e("dataSnapshot","status is "+actualStatus);
+                Log.e("dataSnapshot","status is "+userData);
             }
 
             @Override

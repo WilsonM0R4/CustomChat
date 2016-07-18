@@ -19,9 +19,21 @@
             android:paddingTop="@dimen/activity_vertical_margin">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/regEmailContainer"
+                android:id="@+id/regUsernameContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <EditText android:id="@+id/etRegUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/register_username"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/regEmailContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/regUsernameContainer">
                 <EditText android:id="@+id/etRegEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
