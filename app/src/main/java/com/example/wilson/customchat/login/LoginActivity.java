@@ -9,8 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.home.HomeActivity;
 import com.example.wilson.customchat.register.RegisterActivity;
+
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -97,7 +100,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
 
     @Override
     public void navigateToHomeScreen() {
-
         Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
         startActivity(intent);
     }

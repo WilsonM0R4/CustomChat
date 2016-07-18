@@ -18,4 +18,9 @@
     <string name="title_chat_page">Chats</string>
     <string name="title_contacts_page">Contactos</string>
     <string name="title_profile_page">Perfil</string>
+    <string name="feeling_text">Me siento...</string>
+    <string name="send">enviar</string>
+    <string name="loadingDataMessage">cargando tus datos</string>
+    <string name="state_text">Tu estado: </string>
+    <string name="no_contacts_message">no hay contactos para mostrar</string>
 </resources>

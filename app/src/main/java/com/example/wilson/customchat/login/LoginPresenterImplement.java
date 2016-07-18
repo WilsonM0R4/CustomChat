@@ -7,6 +7,8 @@ import com.example.wilson.customchat.lib.EventBus;
 import com.example.wilson.customchat.lib.GreenRobotEventBus;
 import com.example.wilson.customchat.login.events.LoginEvent;
 
+import java.util.Map;
+
 /**
  * Created by gparrrado on 7/13/16.
  */

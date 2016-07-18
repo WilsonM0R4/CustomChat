@@ -14,6 +14,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by gparrrado on 7/13/16.
@@ -23,6 +30,7 @@ public class LoginRepositoryImplement implements LoginRepository{
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseHelper firebaseHelper;
+    private DatabaseReference databaseReference;
     FirebaseUser user;
     boolean signInResult;
     final int[] loginResult = new int[]{LoginEvent.onWaitingForResult};

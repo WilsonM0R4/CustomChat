@@ -2,6 +2,8 @@ package com.example.wilson.customchat.login;
 
 import com.example.wilson.customchat.login.events.LoginEvent;
 
+import java.util.Map;
+
 /**
  * Created by gparrrado on 7/13/16.
  */

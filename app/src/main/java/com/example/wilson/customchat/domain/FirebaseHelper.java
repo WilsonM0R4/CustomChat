@@ -5,6 +5,8 @@ import android.util.Log;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by gparrrado on 7/13/16.
@@ -14,7 +16,10 @@ public class FirebaseHelper {
     private Firebase dataReference;
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
     private static final String FIREBASE_URL = "https://customchat-a7c4f.firebaseio.com/";
+    private static final String USER_EXTRA_INFO = "user_extra_data";
     private static final String USERS_PATH = "users";
     private static final String CHATS_PATH = "chats";
     private static final String CONTACTS_PATH = "contacts";
@@ -34,6 +39,10 @@ public class FirebaseHelper {
 
     }
 
+    public String getBaseUrl(){
+        return FIREBASE_URL;
+    }
+
     public Firebase getDataReference() {
         return dataReference;
     }
@@ -42,8 +51,12 @@ public class FirebaseHelper {
         this.dataReference = dataReference;
     }
 
-    public void getUserReference(String email){
+    public DatabaseReference getDatabaseReference(){
+        return FirebaseDatabase.getInstance().getReference();
+    }
 
+    public Firebase getUserExtraData(){
+        return dataReference.child(USER_EXTRA_INFO);
     }
 
     public FirebaseAuth getFirebaseAuth(){

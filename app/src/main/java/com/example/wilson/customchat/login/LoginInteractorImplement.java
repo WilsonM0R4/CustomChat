@@ -2,6 +2,8 @@ package com.example.wilson.customchat.login;
 
 import android.util.Log;
 
+import java.util.Map;
+
 /**
  * Created by gparrrado on 7/13/16.
  */
@@ -19,6 +21,7 @@ public class LoginInteractorImplement implements LoginInteractor{
     public boolean getSignInResult() {
         return loginRepository.getSignInResult();
     }
+
 
     @Override
     public void instantiateAuthStateListener() {
