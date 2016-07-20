@@ -32,13 +32,12 @@ public class ProfileRepositoryImplement implements ProfileRepository {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authStateListener;
     private Map<String,Object> userDataMap;
 
     public ProfileRepositoryImplement(){
         helper = FirebaseHelper.getInstance();
         auth = helper.getFirebaseAuth();
-        //userData = new HashMap<>();
+
         databaseReference = helper.getDatabaseReference();
         databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).child(User.USER_STATE).addValueEventListener(valueEventListener());
         databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).child(User.USERNAME).addValueEventListener(valueEventListener());
