@@ -7,7 +7,6 @@ import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.example.wilson.customchat.home.porfile.events.ProfileEvents;
 import com.example.wilson.customchat.lib.EventBus;
 import com.example.wilson.customchat.lib.GreenRobotEventBus;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
@@ -28,26 +26,32 @@ import java.util.Objects;
 public class ProfileRepositoryImplement implements ProfileRepository {
 
     private FirebaseHelper helper;
-    private String userEmail;
+    private String username;
     private String actualStatus;
     private FirebaseUser currentUser;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private Map<String,String> userData;
+    private Map<String,Object> userDataMap;
 
     public ProfileRepositoryImplement(){
         helper = FirebaseHelper.getInstance();
         auth = helper.getFirebaseAuth();
         //userData = new HashMap<>();
         databaseReference = helper.getDatabaseReference();
-        databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).addValueEventListener(valueEventListener());
+        databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).child(User.USER_STATE).addValueEventListener(valueEventListener());
+        databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).child(User.USERNAME).addValueEventListener(valueEventListener());
     }
 
     @Override
     public void startDatabaseListener() {
 
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     @Override
@@ -76,7 +80,7 @@ public class ProfileRepositoryImplement implements ProfileRepository {
         String data = helper.getUserExtraData().child(statusString).toString();
         Map<String,Object> newState = new HashMap<>();
         newState.put(statusString,state);
-        databaseReference.child("user_extra_data").child("status").setValue(state);
+        databaseReference.child("user_extra_data").child(User.formatEmail(currentUser.getEmail())).setValue(state);
         Log.e("user node",data);
 
     }
@@ -99,16 +103,17 @@ public class ProfileRepositoryImplement implements ProfileRepository {
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Object userData = dataSnapshot.getValue(Object.class);
 
-                ObjectMapper mapper = new ObjectMapper();
-                userData = mapper.convertValue(userData,Map.class);
+                GenericTypeIndicator<Map<String,Object>> genericMapType = new GenericTypeIndicator<Map<String, Object>>() {};
 
-                if(actualStatus!=null){
+                userDataMap = dataSnapshot.getValue(genericMapType);
+
+                actualStatus = userDataMap.get(User.USER_STATE).toString();
+                username = userDataMap.get(User.USERNAME).toString();
+
+                if(actualStatus!=null && username!=null){
                     postEvent(true);
                 }
-
-                Log.e("dataSnapshot","status is "+userData);
             }
 
             @Override

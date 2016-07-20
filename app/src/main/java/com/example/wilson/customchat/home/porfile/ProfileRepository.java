@@ -6,6 +6,7 @@ package com.example.wilson.customchat.home.porfile;
 public interface ProfileRepository {
 
     void startDatabaseListener();
+    String getUsername();
     String getUserEmail();
     void getUserData();
     void editProfile();

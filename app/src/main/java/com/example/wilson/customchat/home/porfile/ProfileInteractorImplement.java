@@ -13,6 +13,11 @@ public class ProfileInteractorImplement implements ProfileInteractor {
     }
 
     @Override
+    public String getUsername() {
+        return repository.getUsername();
+    }
+
+    @Override
     public String getUserEmail() {
         return repository.getUserEmail();
     }

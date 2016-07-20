@@ -10,6 +10,7 @@ public interface ProfilePresenter {
     void onCreate();
     void onDestroy();
     void setUserDataToView();
+    String getUsername();
     String getUserEmail();
     void changeState(String state);
     String getActualState();

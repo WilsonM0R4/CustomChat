@@ -9,10 +9,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".login.LoginActivity">
 
+
+    <TextView android:id="@+id/welcome_label"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:textAlignment="center"
+        android:text="@string/welcome_message"/>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/etEmailContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcome_label">
         <EditText android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

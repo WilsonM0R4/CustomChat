@@ -40,9 +40,13 @@ public class ProfilePresenterImplement implements ProfilePresenter {
 
     @Override
     public void setUserDataToView() {
-
         profile.userEmail.setText(getUserEmail());
         profile.userState.setText(profile.activity.getResources().getString(R.string.state_text)+getActualState());
+    }
+
+    @Override
+    public String getUsername() {
+        return interactor.getUsername();
     }
 
     @Override

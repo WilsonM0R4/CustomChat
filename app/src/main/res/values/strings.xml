@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CustomChat</string>
-    <string name="placeholder_email">email</string>
-    <string name="placeholder_password">password</string>
+    <string name="placeholder_email">correo</string>
+    <string name="placeholder_password">contraseña</string>
     <string name="sign_up_message">¿no estas registrado?</string>
     <string name="sign_up">registrate</string>
     <string name="sign_in">iniciar sesión</string>
@@ -25,4 +25,7 @@
     <string name="state_text">Tu estado: </string>
     <string name="no_contacts_message">no hay contactos para mostrar</string>
     <string name="no_chats_message">no hay chats para mostrar</string>
+    <string name="username">cargando nombre de ususario</string>
+    <string name="loadingState">Cargando su estado</string>
+    <string name="welcome_message">Bienvenido a CustomChat!</string>
 </resources>
