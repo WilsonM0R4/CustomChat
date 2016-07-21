@@ -39,7 +39,7 @@ public class ProfileRepositoryImplement implements ProfileRepository {
         auth = helper.getFirebaseAuth();
 
         databaseReference = helper.getDatabaseReference();
-        databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).child(User.USER_STATE).addValueEventListener(valueEventListener());
+        databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).addValueEventListener(valueEventListener());
         databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).child(User.USERNAME).addValueEventListener(valueEventListener());
     }
 
