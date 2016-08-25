@@ -40,6 +40,7 @@ public class ProfilePresenterImplement implements ProfilePresenter {
 
     @Override
     public void setUserDataToView() {
+        profile.textUsername.setText(getUsername());
         profile.userEmail.setText(getUserEmail());
         profile.userState.setText(profile.activity.getResources().getString(R.string.state_text)+getActualState());
     }

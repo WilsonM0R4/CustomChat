@@ -78,7 +78,7 @@ public class ProfileRepositoryImplement implements ProfileRepository {
         String data = helper.getUserExtraData().child(statusString).toString();
         Map<String,Object> newState = new HashMap<>();
         newState.put(statusString,state);
-        databaseReference.child("user_extra_data").child(User.formatEmail(currentUser.getEmail())).setValue(state);
+        databaseReference.child("user_extra_data").child(User.formatEmail(currentUser.getEmail())).child(User.USER_STATE).setValue(state);
         Log.e("user node",data);
 
     }
@@ -109,9 +109,11 @@ public class ProfileRepositoryImplement implements ProfileRepository {
                     userDataMap = dataSnapshot.getValue(genericMapType);
                 }
 
+                if(!userDataMap.isEmpty()){
+                    actualStatus = userDataMap.get(User.USER_STATE);
+                    username = userDataMap.get(User.USERNAME);
+                }
 
-                //actualStatus = userDataMap.get(User.USER_STATE);
-                //username = userDataMap.get(User.USERNAME);
                 Log.e("dataMap","received data from firebase is: "+userDataMap);
 
                 if(actualStatus!=null && username!=null){

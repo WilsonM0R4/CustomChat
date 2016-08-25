@@ -22,6 +22,7 @@ import butterknife.OnClick;
  */
 public class FragmentPorfile extends Fragment implements ProfileView{
 
+    @Bind(R.id.textUsername) TextView textUsername;
     @Bind(R.id.email) TextView userEmail;
     @Bind(R.id.textCurrentState) TextView userState;
     ProfilePresenter presenter;
