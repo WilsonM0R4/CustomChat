@@ -32,7 +32,7 @@ public class ProfileRepositoryImplement implements ProfileRepository {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
-    private Map<String,Object> userDataMap;
+    private Map<String,String> userDataMap;
 
     public ProfileRepositoryImplement(){
         helper = FirebaseHelper.getInstance();
@@ -40,7 +40,6 @@ public class ProfileRepositoryImplement implements ProfileRepository {
 
         databaseReference = helper.getDatabaseReference();
         databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).addValueEventListener(valueEventListener());
-        databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).child(User.USERNAME).addValueEventListener(valueEventListener());
     }
 
     @Override
@@ -103,12 +102,17 @@ public class ProfileRepositoryImplement implements ProfileRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                GenericTypeIndicator<Map<String,Object>> genericMapType = new GenericTypeIndicator<Map<String, Object>>() {};
+                GenericTypeIndicator<Map<String,String>> genericMapType = new GenericTypeIndicator<Map<String, String>>() {};
 
-                userDataMap = dataSnapshot.getValue(genericMapType);
+                if(dataSnapshot.exists()){
+                    Log.e("dataSnapshot","value is :"+dataSnapshot);
+                    userDataMap = dataSnapshot.getValue(genericMapType);
+                }
 
-                actualStatus = userDataMap.get(User.USER_STATE).toString();
-                username = userDataMap.get(User.USERNAME).toString();
+
+                //actualStatus = userDataMap.get(User.USER_STATE);
+                //username = userDataMap.get(User.USERNAME);
+                Log.e("dataMap","received data from firebase is: "+userDataMap);
 
                 if(actualStatus!=null && username!=null){
                     postEvent(true);
