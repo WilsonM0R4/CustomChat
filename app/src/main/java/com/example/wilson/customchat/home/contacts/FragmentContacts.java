@@ -42,6 +42,7 @@ public class FragmentContacts extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         contactsView = inflater.inflate(R.layout.fragment_contacts,container,false);
+
         ButterKnife.bind(this,contactsView);
 
         configContactList();

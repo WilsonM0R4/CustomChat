@@ -8,6 +8,7 @@ public interface ProfileView {
     void showProgressDialog();
     void hideProgressDialog();
     String getActualState();
+    void editProfile();
     void updateStateInView(String state);
     void changeState();
     void onStateDialogFinished(String newState);

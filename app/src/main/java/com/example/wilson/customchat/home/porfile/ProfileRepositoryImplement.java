@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
@@ -29,7 +28,6 @@ public class ProfileRepositoryImplement implements ProfileRepository {
     private String username;
     private String actualStatus;
     private FirebaseUser currentUser;
-    private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
     private Map<String,String> userDataMap;
@@ -37,7 +35,6 @@ public class ProfileRepositoryImplement implements ProfileRepository {
     public ProfileRepositoryImplement(){
         helper = FirebaseHelper.getInstance();
         auth = helper.getFirebaseAuth();
-
         databaseReference = helper.getDatabaseReference();
         databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(getUserEmail())).addValueEventListener(valueEventListener());
     }
@@ -84,8 +81,15 @@ public class ProfileRepositoryImplement implements ProfileRepository {
     }
 
     @Override
+    public void changeUsername(String newUsername) {
+        if(newUsername != null && !newUsername.isEmpty()){
+            databaseReference.child(User.EXTRA_DATA_KEY).child(User.USERNAME).setValue(newUsername);
+        }
+
+    }
+
+    @Override
     public String getActualStatus() {
-        //actualStatus = helper.getUserExtraData().child("status").child("state").toString();
         return actualStatus;
     }
 

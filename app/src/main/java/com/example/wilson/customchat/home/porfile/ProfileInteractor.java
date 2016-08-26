@@ -8,6 +8,7 @@ public interface ProfileInteractor {
     String getUserEmail();
     void signOff();
     void changeState(String state);
+    void changeUsername(String newUsername);
     String getActualStatus();
 
 }

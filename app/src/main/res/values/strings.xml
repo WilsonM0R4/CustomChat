@@ -20,6 +20,7 @@
     <string name="title_contacts_page">Contactos</string>
     <string name="title_profile_page">Perfil</string>
     <string name="feeling_text">Me siento...</string>
+    <string name="current_state_text">estado</string>
     <string name="send">enviar</string>
     <string name="loadingDataMessage">cargando tus datos</string>
     <string name="state_text">Tu estado: </string>

@@ -61,6 +61,11 @@ public class ProfilePresenterImplement implements ProfilePresenter {
     }
 
     @Override
+    public void changeUsername(String newUsername) {
+        interactor.changeUsername(newUsername);
+    }
+
+    @Override
     public String getActualState() {
         Log.e("status","actual status is "+interactor.getActualStatus());
         return interactor.getActualStatus();
@@ -71,6 +76,11 @@ public class ProfilePresenterImplement implements ProfilePresenter {
         String message = profile.activity.getResources().getString(R.string.state_text);
         profile.updateStateInView(message.concat(" "+interactor.getActualStatus()));
         //profile.userState.setText(message.concat(" "+interactor.getActualStatus()));
+    }
+
+    @Override
+    public void updateUsername() {
+
     }
 
     @Override

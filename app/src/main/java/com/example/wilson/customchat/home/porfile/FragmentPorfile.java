@@ -1,6 +1,7 @@
 package com.example.wilson.customchat.home.porfile;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -25,6 +26,7 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     @Bind(R.id.textUsername) TextView textUsername;
     @Bind(R.id.email) TextView userEmail;
     @Bind(R.id.textCurrentState) TextView userState;
+
     ProfilePresenter presenter;
     HomeActivity activity;
     StateDialog dialog;
@@ -44,7 +46,9 @@ public class FragmentPorfile extends Fragment implements ProfileView{
 
         ButterKnife.bind(this,view);
 
-        presenter.setUserDataToView();
+        if (presenter != null) {
+            presenter.setUserDataToView();
+        }
 
         return view;
     }
@@ -73,6 +77,12 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     @Override
     public String getActualState() {
        return presenter.getActualState();
+    }
+
+    @OnClick(R.id.lblEditProfile)
+    @Override
+    public void editProfile() {
+        startActivity(new Intent(getContext(),EditProfileActivity.class));
     }
 
     @Override

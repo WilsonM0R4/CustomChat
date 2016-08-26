@@ -11,6 +11,7 @@ public interface ProfileRepository {
     void getUserData();
     void editProfile();
     void changeState(String state);
+    void changeUsername(String newUsername);
     String getActualStatus();
     void signOff();
 

@@ -34,6 +34,11 @@ public class ProfileInteractorImplement implements ProfileInteractor {
     }
 
     @Override
+    public void changeUsername(String newUsername) {
+        repository.changeUsername(newUsername);
+    }
+
+    @Override
     public String getActualStatus() {
         return repository.getActualStatus();
     }

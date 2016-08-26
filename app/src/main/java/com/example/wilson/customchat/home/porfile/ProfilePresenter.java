@@ -13,8 +13,10 @@ public interface ProfilePresenter {
     String getUsername();
     String getUserEmail();
     void changeState(String state);
+    void changeUsername(String newUsername);
     String getActualState();
     void setUserStatusToView();
+    void updateUsername();
     void onEventMainThread(ProfileEvents event);
     void signOff();
 }

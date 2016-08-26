@@ -83,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
+                    <LinearLayout android:id="@+id/lblEditProfile"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                             android:layout_marginEnd="6dp"
                             android:src="@drawable/ic_edit_black_48dp"/>
 
-                        <TextView android:id="@+id/lblEditProfile"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -175,6 +175,5 @@
         </RelativeLayout>
 
     </ScrollView>
-
 
 </RelativeLayout>
