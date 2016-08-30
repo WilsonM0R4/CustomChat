@@ -29,4 +29,5 @@
     <string name="username">cargando nombre de ususario</string>
     <string name="loadingState">Cargando su estado</string>
     <string name="welcome_message">Bienvenido a CustomChat!</string>
+    <string name="editProfileImage">presiona la imagen para editar</string>
 </resources>
