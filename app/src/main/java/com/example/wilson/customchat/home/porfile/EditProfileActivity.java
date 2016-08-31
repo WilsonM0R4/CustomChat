@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.commons.ImageCropperActivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,10 +28,8 @@ import butterknife.OnClick;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolAppbar)
-    Toolbar appBar;
-    @Bind(R.id.editCancel)
-    ImageButton cancelButton;
+    @Bind(R.id.toolAppbar) Toolbar appBar;
+    @Bind(R.id.editCancel) ImageButton cancelButton;
     @Bind(R.id.editSave)
     ImageButton saveButton;
     @Bind(R.id.editProfileImage)
@@ -40,6 +38,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final int REQUEST_CAPTURE = 0;
     private String newProfileImagePath;
     File profileImageFile;
+    public String imageFolderName = "/CustomChatImages/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,9 @@ public class EditProfileActivity extends AppCompatActivity {
             imageBitmap = (Bitmap) data.getExtras().get("data");
 
             if (imageBitmap != null) {
-                editProfileImage.setImageBitmap(imageBitmap);
+                Intent intent = new Intent(EditProfileActivity.this, ImageCropperActivity.class);
+                intent.putExtra(ImageCropperActivity.IMAGE_FILE_KEY,newProfileImagePath);
+                startActivity(intent);
             } else {
                 Log.e("activity result", "bitmap is null");
             }
@@ -107,8 +108,8 @@ public class EditProfileActivity extends AppCompatActivity {
         String imageName = "CChat_profile_img_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageType = ".jpg";
 
-        File storagePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageName, imageType, storagePath);
+        String storagePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES)+imageFolderName;
+        File image = new File(storagePath+imageName+imageType);
 
         newProfileImagePath = image.getAbsolutePath();
 
@@ -119,6 +120,5 @@ public class EditProfileActivity extends AppCompatActivity {
 
         return BitmapFactory.decodeFile(imageFile.getAbsolutePath());
     }
-
 
 }
