@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.hardware.camera2" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".CustomChatApp"
@@ -14,27 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--
-        provider
-            android:authorities="com.example.wilson.customchat"
-            android:name="android.support.v4.content.FileProvider"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/"/>
-        </provider
-        -->
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".login.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".home.HomeActivity" />
-        <activity android:name=".register.RegisterActivity" />
-        <activity android:name=".home.porfile.EditProfileActivity" />
-        <activity android:name=".commons.ImageCropperActivity"></activity>
+        <activity android:name=".home.HomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".register.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".home.porfile.EditProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".commons.ImageCropperActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".commons.CropImageActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

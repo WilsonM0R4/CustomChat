@@ -3,6 +3,7 @@ package com.example.wilson.customchat.home.porfile;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 
 import android.util.Log;
@@ -56,7 +57,10 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     @Override
     public void onStop(){
         super.onStop();
-        presenter.onDestroy();
+        if(presenter!=null){
+            presenter.onDestroy();
+        }
+
     }
 
     @Override

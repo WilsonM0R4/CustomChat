@@ -21,6 +21,8 @@ public class ImageCropperActivity extends AppCompatActivity {
 
     public static final String IMAGE_FILE_KEY = "imageFileKey";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,13 +31,20 @@ public class ImageCropperActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         String file =  getIntent().getStringExtra(IMAGE_FILE_KEY);
         Log.e("Cropper","image path is "+file);
-        startImageLoad(file);
+
+        File imageFile = new File(file);
+        if(imageFile.exists()){
+            startImageLoad(imageFile);
+        }else{
+            Log.e("imageFile","image doesn't exists");
+        }
+
 
     }
 
-    public void startImageLoad(String imageFile){
+    public void startImageLoad(File imageFile){
 
-        cropImageView.startLoad(Uri.fromFile(new File(imageFile)), new LoadCallback() {
+        cropImageView.startLoad(Uri.fromFile(imageFile), new LoadCallback() {
             @Override
             public void onSuccess() {
                 Toast.makeText(ImageCropperActivity.this,"load successful",Toast.LENGTH_SHORT).show();

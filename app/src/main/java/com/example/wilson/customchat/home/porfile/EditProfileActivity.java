@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +29,10 @@ import butterknife.OnClick;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolAppbar) Toolbar appBar;
-    @Bind(R.id.editCancel) ImageButton cancelButton;
+    @Bind(R.id.toolAppbar)
+    Toolbar appBar;
+    @Bind(R.id.editCancel)
+    ImageButton cancelButton;
     @Bind(R.id.editSave)
     ImageButton saveButton;
     @Bind(R.id.editProfileImage)
@@ -39,6 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private String newProfileImagePath;
     File profileImageFile;
     public String imageFolderName = "/CustomChatImages/";
+    final String imagesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + imageFolderName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +61,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
         Bitmap imageBitmap;
 
-        if (requestCode == REQUEST_CAPTURE && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == REQUEST_CAPTURE) && (resultCode == Activity.RESULT_OK) && (profileImageFile!=null)) {
 
-            imageBitmap = (Bitmap) data.getExtras().get("data");
+            newProfileImagePath = profileImageFile.getAbsolutePath();
+            Log.e("activity result","newProfileImagePath is "+newProfileImagePath);
 
-            if (imageBitmap != null) {
-                Intent intent = new Intent(EditProfileActivity.this, ImageCropperActivity.class);
-                intent.putExtra(ImageCropperActivity.IMAGE_FILE_KEY,newProfileImagePath);
-                startActivity(intent);
-            } else {
-                Log.e("activity result", "bitmap is null");
-            }
+            Intent intent = new Intent(EditProfileActivity.this, ImageCropperActivity.class);
+            intent.putExtra(ImageCropperActivity.IMAGE_FILE_KEY, newProfileImagePath);
+            startActivity(intent);
         }
 
     }
@@ -86,20 +87,22 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void editImage() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+        try {
+            profileImageFile = createImageFile();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
-            try {
-                profileImageFile = createImageFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            if (profileImageFile != null) {
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, profileImageFile.getAbsolutePath());
-                startActivityForResult(cameraIntent, REQUEST_CAPTURE);
-            }
+        if (profileImageFile != null) {
+            Log.e("editImageActivity", "image path is " + profileImageFile.getAbsolutePath());
+            Uri uri = Uri.fromFile(profileImageFile);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            startActivityForResult(cameraIntent, REQUEST_CAPTURE);
+        } else {
+            Log.e("edit image void", "profileImageFile is null");
 
         }
+
 
     }
 
@@ -108,10 +111,25 @@ public class EditProfileActivity extends AppCompatActivity {
         String imageName = "CChat_profile_img_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageType = ".jpg";
 
-        String storagePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES)+imageFolderName;
-        File image = new File(storagePath+imageName+imageType);
+        File directory = new File(imagesDirectory);
+        File image = new File(imagesDirectory + imageName + imageType);
 
-        newProfileImagePath = image.getAbsolutePath();
+        Boolean isCreated = directory.mkdirs();
+
+        if (isCreated && directory.isDirectory()) {
+            Boolean imageCreated = image.createNewFile();
+
+            if(imageCreated){
+                newProfileImagePath = image.getAbsolutePath();
+                Log.e("imageFile","image created successfully");
+            }else{
+                Log.e("imageFile","image not created");
+            }
+        } else {
+            Log.e("imageDir", "directory not created");
+        }
+
+
 
         return image;
     }
