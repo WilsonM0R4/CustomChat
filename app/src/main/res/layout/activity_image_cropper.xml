@@ -4,26 +4,42 @@
     xmlns:crop="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.wilson.customchat.commons.ImageCropperActivity">
 
     <com.isseiaoki.simplecropview.CropImageView
         android:id="@+id/imageCropper"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        crop:scv_crop_mode="fit_image"
+        crop:scv_crop_mode="free"
         crop:scv_handle_color="@color/colorAccent"
         crop:scv_guide_color="@color/colorAccent"
         crop:scv_frame_color="@color/colorAccent"
         crop:scv_handle_size="14dp"
-        crop:scv_touch_padding="10dp"
-        crop:scv_handle_show_mode="show_always"
-        crop:scv_guide_show_mode="show_always"
-        crop:scv_min_frame_size="80dp"
+        crop:scv_touch_padding="8dp"
+        crop:scv_handle_show_mode="show_on_touch"
+        crop:scv_guide_show_mode="not_show"
+        crop:scv_min_frame_size="10dp"
+        crop:scv_initial_frame_scale="0.5"
         crop:scv_frame_stroke_weight="2dp"
         crop:scv_guide_stroke_weight="2dp"/>
 
+    <LinearLayout android:id="@+id/cropButtonsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/container_round_background"
+        android:orientation="horizontal">
+
+        <ImageButton android:id="@+id/cropSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:src="@drawable/ic_done_white_36dp"/>
+        <ImageButton android:id="@+id/cropCancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:src="@drawable/ic_clear_white_36dp"/>
+    </LinearLayout>
 </RelativeLayout>

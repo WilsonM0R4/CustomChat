@@ -12,5 +12,7 @@ public interface ProfileView {
     void updateStateInView(String state);
     void changeState();
     void onStateDialogFinished(String newState);
+    void changeAvailability();
+    void onAvailabilityDialogFinished(String availability);
     void signOff();
 }

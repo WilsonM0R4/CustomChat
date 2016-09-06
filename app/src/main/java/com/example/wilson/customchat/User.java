@@ -9,8 +9,8 @@ public class User {
 
     public static final String DEFAULT_STATE ="usando CustomChat!";
     public static final String NONE_IMAGE = "none";
-    public static final boolean USER_ONLINE = true;
-    public static final boolean USER_OFFLINE = false;
+    public static final String USER_ONLINE = "online";
+    public static final String USER_OFFLINE = "offline";
     public static final boolean USER_LOGED_IN = true;
     public static final boolean USER_LOGED_OUT = false;
     public static final String EMAIL_KEY = "email";

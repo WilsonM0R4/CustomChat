@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.wilson.customchat.R;
@@ -20,7 +19,7 @@ import butterknife.OnClick;
 /**
  * Created by wilson on 17/07/2016.
  */
-public class StateDialog extends DialogFragment {
+public class EditDialog extends DialogFragment {
 
     @Bind(R.id.etState) EditText etState;
     View dialogView;
@@ -28,8 +27,8 @@ public class StateDialog extends DialogFragment {
     FragmentPorfile fragmentProfile;
 
 
-    public StateDialog newInstance(HomeActivity activity,FragmentPorfile profile){
-        StateDialog dialog = new StateDialog();
+    public EditDialog newInstance(HomeActivity activity, FragmentPorfile profile){
+        EditDialog dialog = new EditDialog();
         homeActivity = activity;
         fragmentProfile = profile;
         return dialog;

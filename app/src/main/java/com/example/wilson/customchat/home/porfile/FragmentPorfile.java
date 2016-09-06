@@ -3,7 +3,6 @@ package com.example.wilson.customchat.home.porfile;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 
 import android.util.Log;
@@ -30,7 +29,8 @@ public class FragmentPorfile extends Fragment implements ProfileView{
 
     ProfilePresenter presenter;
     HomeActivity activity;
-    StateDialog dialog;
+    EditDialog dialog;
+    AvailabilityDialog availabilityDialog;
     ProgressDialog progressDialog;
 
     public FragmentPorfile newInstance(HomeActivity activity){
@@ -97,7 +97,7 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     @OnClick(R.id.lblState)
     @Override
     public void changeState() {
-        dialog = new StateDialog();
+        dialog = new EditDialog();
         dialog.newInstance(activity,this);
         dialog.show (getFragmentManager(),"tagState");
 
@@ -110,6 +110,21 @@ public class FragmentPorfile extends Fragment implements ProfileView{
         Log.e("new state","new state is "+newState);
     }
 
+    @OnClick(R.id.availabilityContainer)
+    @Override
+    public void changeAvailability() {
+        availabilityDialog = new AvailabilityDialog();
+        availabilityDialog.newInstance(activity,this);
+        availabilityDialog.setCancelable(false);
+        availabilityDialog.show(getFragmentManager(),"tagAvailability");
+    }
+
+    @Override
+    public void onAvailabilityDialogFinished(String availability) {
+        //presente.cha
+    }
+
+
     @OnClick(R.id.btnSignOff)
     @Override
     public void signOff(){
@@ -117,4 +132,6 @@ public class FragmentPorfile extends Fragment implements ProfileView{
         activity.destroy();
 
     }
+
+
 }

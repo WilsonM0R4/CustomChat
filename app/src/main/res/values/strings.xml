@@ -13,6 +13,7 @@
     <string name="register_password">contraseña</string>
     <string name="register_confirm_pass">confirmar contraseña</string>
     <string name="cancel">cancelar</string>
+    <string name="accept">aceptar</string>
     <string name="register_title">Registrando</string>
     <string name="empty_field_message">los campos no pueden ser vacíos</string>
     <string name="check_credentials_message">verifica tus datos</string>
@@ -30,4 +31,13 @@
     <string name="loadingState">Cargando su estado</string>
     <string name="welcome_message">Bienvenido a CustomChat!</string>
     <string name="editProfileImage">presiona la imagen para editar</string>
+    <string name="online">Conectado</string>
+    <string name="offline">Desconectado</string>
+    <string name="availability_string">Disponibilidad</string>
+
+    <!--string-array name="availability_array">
+        <item>"@string/online"</item>
+        <item>"@string/offline"</item>
+    </string-array-->
+
 </resources>

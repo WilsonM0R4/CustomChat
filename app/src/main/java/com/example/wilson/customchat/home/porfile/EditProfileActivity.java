@@ -11,17 +11,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.commons.ImageCropperActivity;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,14 +33,14 @@ import butterknife.OnClick;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolAppbar)
-    Toolbar appBar;
-    @Bind(R.id.editCancel)
-    ImageButton cancelButton;
-    @Bind(R.id.editSave)
-    ImageButton saveButton;
-    @Bind(R.id.editProfileImage)
-    ImageView editProfileImage;
+    @Bind(R.id.toolAppbar) Toolbar appBar;
+    @Bind(R.id.editCancel) ImageButton cancelButton;
+    @Bind(R.id.editSave) ImageButton saveButton;
+    @Bind(R.id.editProfileImage) ImageView editProfileImage;
+    @Bind(R.id.editUsername) EditText txtEditUsername;
+    @Bind(R.id.editState) EditText txtEditState;
+    @Bind(R.id.editPassword) EditText txtEditPassword;
+    @Bind(R.id.editPassConfirm) EditText txtEditConfPass;
 
     private static final int REQUEST_CAPTURE = 0;
     private String newProfileImagePath;
@@ -54,7 +58,6 @@ public class EditProfileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
     }
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -75,7 +78,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
     @OnClick(R.id.editSave)
     protected void sendUserDataToCloud() {
-        Toast.makeText(this, "run to the hiiiiiiiils!!!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "run to the hiiiiiiiils!!!", Toast.LENGTH_SHORT).show();
+
+        Map<String,Object> userInfo = new HashMap<>();
+
+        if(checkUserData()){
+            userInfo.put(User.USER_AVALIABILITY,String.valueOf(User.USER_ONLINE));
+            userInfo.put(User.USER_PROFILE_IMAGE,User.NONE_IMAGE);
+            userInfo.put(User.USER_STATE,txtEditState.getText().toString());
+            userInfo.put(User.USERNAME,txtEditUsername.getText().toString());
+        }
+
+        EditProfileRepoManager repository = new EditProfileRepoManager(this);
+        repository.updateUserData(userInfo);
+
     }
 
     @OnClick(R.id.editCancel)
@@ -103,7 +119,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         }
 
-
     }
 
     private File createImageFile() throws IOException {
@@ -129,8 +144,6 @@ public class EditProfileActivity extends AppCompatActivity {
             Log.e("imageDir", "directory not created");
         }
 
-
-
         return image;
     }
 
@@ -139,4 +152,7 @@ public class EditProfileActivity extends AppCompatActivity {
         return BitmapFactory.decodeFile(imageFile.getAbsolutePath());
     }
 
+    private boolean checkUserData(){
+        return (txtEditUsername.getText().toString()!=null && txtEditState.getText().toString()!=null);
+    }
 }
