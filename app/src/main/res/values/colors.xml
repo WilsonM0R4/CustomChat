@@ -6,4 +6,5 @@
     <color name="colorNoBackground">#FFFFFF</color>
     <color name="colorTitleSelected">#FFFFFF</color>
     <color name="colorTitleNormal">#CCCCCC</color>
+    <color name="colorTranslucent">#FFAAAA</color>
 </resources>

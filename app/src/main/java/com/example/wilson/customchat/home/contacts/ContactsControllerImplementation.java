@@ -27,6 +27,11 @@ public class ContactsControllerImplementation implements ContactsController {
     }
 
     @Override
+    public void searchContacts(String email) {
+
+    }
+
+    @Override
     public void updateContact() {
 
     }

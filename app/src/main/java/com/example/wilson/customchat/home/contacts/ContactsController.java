@@ -9,6 +9,7 @@ public interface ContactsController {
 
     void loadContacts(String user);
     void addContact();
+    void searchContacts(String email);
     void updateContact();
     void deleteContact();
     Map<String,Object> onContactFound(Map<String,Object> contactInfo);

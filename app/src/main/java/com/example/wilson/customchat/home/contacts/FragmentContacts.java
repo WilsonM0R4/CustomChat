@@ -1,6 +1,7 @@
 package com.example.wilson.customchat.home.contacts;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by wmora on 7/15/16.
@@ -28,6 +30,7 @@ public class FragmentContacts extends Fragment{
 
     @Bind(R.id.contactsList) RecyclerView contactsList;
     @Bind(R.id.noContactsText) TextView textNoContacts;
+    @Bind(R.id.fabAddContact) FloatingActionButton fabAddContacts;
     View contactsView;
     HomeActivity activity;
     ContactsController controller;
@@ -53,12 +56,26 @@ public class FragmentContacts extends Fragment{
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        //must call this here
+        //configContactList();
+    }
+
+    @Override
     public void onDestroy(){
         super.onDestroy();
         if(controller!=null){
             controller.onDestroy();
         }
 
+    }
+
+    @OnClick(R.id.fabAddContact)
+    public void searchContacts(){
+        SearchContactDialog dialog = new SearchContactDialog();
+        dialog.newInstance(controller);
+        dialog.show(getFragmentManager(),"tagSearchUser");
     }
 
     private void configContactList(){

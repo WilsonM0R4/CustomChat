@@ -73,10 +73,9 @@ public class ContactsRepository {
         databaseReference.child(FirebaseHelper.USERS_PATH).child(searchedUser).addValueEventListener(listener);
     }
 
-    void getContactData(String user){
+    /*void getContactData(String user){
         databaseReference.child(User.EXTRA_DATA_KEY).child(searchedUser).addValueEventListener(contactListener());
-
-    }
+    }*/
 
     private ValueEventListener valueEventListener(){
         return new ValueEventListener() {
@@ -85,11 +84,12 @@ public class ContactsRepository {
 
                 if(dataSnapshot!=null){
                     snapshot = dataSnapshot;
-                    if(dataSnapshot.toString()==User.USER_NO_CONTACTS){
+                    if(dataSnapshot.toString().equals(User.USER_NO_CONTACTS)){
                         controller.onContactNotFound("el contacto que buscas no está registrado en CustomChat");
                         Log.e("ContactsRepository","01:el contacto que buscas no está registrado en CustomChat");
                     }else{
-                        getContactData(searchedUser);
+                        //getContactData(searchedUser);
+                        Log.e("ContactsRepository","tienes contactos");
                     }
                     Log.e("ContactsRepository","data is "+dataSnapshot.toString());
                 }
@@ -118,7 +118,7 @@ public class ContactsRepository {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.e("ContactsRepository","load canceled: "+databaseError.getMessage());
             }
         };
     }
