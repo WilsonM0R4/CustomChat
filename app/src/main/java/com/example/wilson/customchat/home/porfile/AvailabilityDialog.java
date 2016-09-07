@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.home.HomeActivity;
@@ -45,10 +45,16 @@ public class AvailabilityDialog extends DialogFragment implements AdapterView.On
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-        dialogView = LayoutInflater.from(activity).inflate(activity.getResources().getLayout(R.layout.availability_dialog),null);
-        ButterKnife.bind(this,dialogView);
-        populateSpinner();
-        setTitle();
+        if(activity!=null){
+            dialogView = LayoutInflater.from(activity).inflate(activity.getResources().getLayout(R.layout.availability_dialog),null);
+            ButterKnife.bind(this,dialogView);
+            populateSpinner();
+            setTitle();
+        }else{
+            Toast.makeText(getActivity().getBaseContext(),"No podemos cargar la vista, por favor ingresa de nuevo a la aplicación",Toast.LENGTH_SHORT).show();
+        }
+
+
         return new AlertDialog.Builder(activity).setView(dialogView).create();
     }
 
@@ -56,7 +62,7 @@ public class AvailabilityDialog extends DialogFragment implements AdapterView.On
         ArrayAdapter adapter = ArrayAdapter.createFromResource(activity.getBaseContext(),R.array.availability_array,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availabilitySpiner.setAdapter(adapter);
-        selectedItem = availabilitySpiner.getSelectedItem().toString();
+        availabilitySpiner.setOnItemSelectedListener(this);
     }
 
     private void setTitle(){
@@ -70,10 +76,10 @@ public class AvailabilityDialog extends DialogFragment implements AdapterView.On
 
     @OnClick(R.id.buttonAccept)
     public void onAcceptPressed(){
-        if(!selectedItem.isEmpty()){
+        if(selectedItem!=null){
             fragment.onAvailabilityDialogFinished(selectedItem);
             this.dismiss();
-            Log.e("availabilityDialog","accept pressed");
+            Log.e("availabilityDialog","accept pressed, new value is "+selectedItem);
         }
 
     }
@@ -86,10 +92,12 @@ public class AvailabilityDialog extends DialogFragment implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         selectedItem = parent.getItemAtPosition(position).toString();
+        Log.e("availabilityDialog","selected item is "+selectedItem);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        selectedItem = availabilitySpiner.getSelectedItem().toString();
+        Log.e("availabilityDialog","selected item is "+selectedItem);
     }
 }

@@ -39,6 +39,11 @@ public class ProfileInteractorImplement implements ProfileInteractor {
     }
 
     @Override
+    public void changeAvailability(String availability) {
+        repository.changeAvailability(availability);
+    }
+
+    @Override
     public String getActualStatus() {
         return repository.getActualStatus();
     }

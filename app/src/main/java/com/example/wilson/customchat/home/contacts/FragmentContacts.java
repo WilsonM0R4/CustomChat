@@ -30,6 +30,7 @@ public class FragmentContacts extends Fragment{
     @Bind(R.id.noContactsText) TextView textNoContacts;
     View contactsView;
     HomeActivity activity;
+    ContactsController controller;
     RecyclerViewAdapter adapter;
 
     public FragmentContacts newInstance(HomeActivity activity){
@@ -42,14 +43,22 @@ public class FragmentContacts extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         contactsView = inflater.inflate(R.layout.fragment_contacts,container,false);
+        controller = new ContactsControllerImplementation();
 
         ButterKnife.bind(this,contactsView);
 
-        configContactList();
-
-
+        //configContactList();
 
         return contactsView;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if(controller!=null){
+            controller.onDestroy();
+        }
+
     }
 
     private void configContactList(){

@@ -83,9 +83,14 @@ public class ProfileRepositoryImplement implements ProfileRepository {
     @Override
     public void changeUsername(String newUsername) {
         if(newUsername != null && !newUsername.isEmpty()){
-            databaseReference.child(User.EXTRA_DATA_KEY).child(User.USERNAME).setValue(newUsername);
+            databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(currentUser.getEmail())).setValue(newUsername);
         }
 
+    }
+
+    @Override
+    public void changeAvailability(String availability) {
+        helper.changeUserAvailability(availability);
     }
 
     @Override

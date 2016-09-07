@@ -2,11 +2,15 @@ package com.example.wilson.customchat.domain;
 
 import android.util.Log;
 
+import com.example.wilson.customchat.User;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by gparrrado on 7/13/16.
@@ -20,10 +24,11 @@ public class FirebaseHelper {
     private DatabaseReference databaseReference;
     private static final String FIREBASE_URL = "https://customchat-a7c4f.firebaseio.com/";
     private static final String USER_EXTRA_INFO = "user_extra_data";
-    private static final String USERS_PATH = "users";
+    public static final String USERS_PATH = "registered_users";
     private static final String CHATS_PATH = "chats";
     private static final String CONTACTS_PATH = "contacts";
     private static final String SEPARATOR = "__";
+
 
     private static class SingletonHolder{
         private static final FirebaseHelper INSTANCE = new FirebaseHelper();
@@ -36,7 +41,7 @@ public class FirebaseHelper {
     public FirebaseHelper (){
         this.dataReference = new Firebase(FIREBASE_URL);
         firebaseAuth = FirebaseAuth.getInstance();
-
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     public String getBaseUrl(){
@@ -52,7 +57,7 @@ public class FirebaseHelper {
     }
 
     public DatabaseReference getDatabaseReference(){
-        return FirebaseDatabase.getInstance().getReference();
+        return databaseReference;
     }
 
     public Firebase getUserExtraData(){
@@ -67,6 +72,17 @@ public class FirebaseHelper {
         firebaseUser = firebaseAuth.getCurrentUser();
         return firebaseUser;
     }
+
+    public void changeUserAvailability(String availability){
+        if(databaseReference!=null){
+            databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(firebaseUser.getEmail())).child(User.USER_AVALIABILITY).setValue(availability);
+        }
+    }
+
+    public void getRegisteredUsers(){
+
+    }
+
 
     public void signOff(){
         if(firebaseUser!=null){

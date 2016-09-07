@@ -7,10 +7,6 @@ import java.util.Map;
  */
 public interface LoginView {
 
-    void showProgresDialog();
-    void hideProgresDialog();
-    void enableInputs();
-    void disableInputs();
     void handleSignIn();
     void onSignUpPressed();
     void navigateToHomeScreen();

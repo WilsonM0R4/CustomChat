@@ -12,6 +12,7 @@ public interface ProfileRepository {
     void editProfile();
     void changeState(String state);
     void changeUsername(String newUsername);
+    void changeAvailability(String availability);
     String getActualStatus();
     void signOff();
 

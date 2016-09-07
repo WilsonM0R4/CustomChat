@@ -9,6 +9,7 @@ public interface ProfileInteractor {
     void signOff();
     void changeState(String state);
     void changeUsername(String newUsername);
+    void changeAvailability(String availability);
     String getActualStatus();
 
 }

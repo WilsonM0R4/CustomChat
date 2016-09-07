@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.home.HomeActivity;
 
 import butterknife.Bind;
@@ -21,7 +22,7 @@ import butterknife.OnClick;
 /**
  * Created by wmora on 7/15/16.
  */
-public class FragmentPorfile extends Fragment implements ProfileView{
+public class FragmentPorfile extends Fragment implements ProfileView,ViewHelper{
 
     @Bind(R.id.textUsername) TextView textUsername;
     @Bind(R.id.email) TextView userEmail;
@@ -79,6 +80,16 @@ public class FragmentPorfile extends Fragment implements ProfileView{
     }
 
     @Override
+    public void enableInputs() {
+        //not used
+    }
+
+    @Override
+    public void disableInputs() {
+        //not used
+    }
+
+    @Override
     public String getActualState() {
        return presenter.getActualState();
     }
@@ -121,7 +132,7 @@ public class FragmentPorfile extends Fragment implements ProfileView{
 
     @Override
     public void onAvailabilityDialogFinished(String availability) {
-        //presente.cha
+        presenter.changeAvailability(availability);
     }
 
 

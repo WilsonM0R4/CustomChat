@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.User;
+import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.home.HomeActivity;
 import com.example.wilson.customchat.register.RegisterActivity;
 
@@ -19,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements LoginView{
+public class LoginActivity extends AppCompatActivity implements LoginView,ViewHelper{
 
     @Bind(R.id.etEmail)
     EditText etEmail;
@@ -41,7 +42,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         progressDialog.setMessage(getString(R.string.loadingMessage));
 
         loginPresenter.onCreate();
-        //loginPresenter.checkForActualSessionState();
+        if(loginPresenter!=null){
+            loginPresenter.checkForActualSessionState();
+        }
+
     }
 
     @Override
@@ -50,14 +54,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         loginPresenter.onDestroy();
     }
 
+
     @Override
-    public void showProgresDialog() {
+    public void showProgressDialog() {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
     }
 
     @Override
-    public void hideProgresDialog() {
+    public void hideProgressDialog() {
         if(progressDialog!=null){
             progressDialog.dismiss();
         }

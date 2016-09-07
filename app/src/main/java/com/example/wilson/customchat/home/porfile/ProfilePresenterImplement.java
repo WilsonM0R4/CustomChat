@@ -84,6 +84,11 @@ public class ProfilePresenterImplement implements ProfilePresenter {
     }
 
     @Override
+    public void changeAvailability(String availability) {
+        interactor.changeAvailability(availability);
+    }
+
+    @Override
     public void onEventMainThread(ProfileEvents event) {
 
         boolean eventType = event.getEventType();

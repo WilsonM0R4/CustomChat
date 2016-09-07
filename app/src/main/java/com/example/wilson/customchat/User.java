@@ -19,6 +19,8 @@ public class User {
     public static final String USER_PROFILE_IMAGE = "profile_image";
     public static final String USER_STATE = "status";
     public static final String USERNAME = "username";
+    public static final String USER_CONTACTS = "contacts";
+    public static final String USER_NO_CONTACTS = "no contacts";
     Map<String,String> userData;
 
     public static class UserSingleton{

@@ -17,6 +17,7 @@ public interface ProfilePresenter {
     String getActualState();
     void setUserStatusToView();
     void updateUsername();
+    void changeAvailability(String availability);
     void onEventMainThread(ProfileEvents event);
     void signOff();
 }

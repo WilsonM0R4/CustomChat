@@ -3,6 +3,7 @@ package com.example.wilson.customchat.login;
 import android.util.Log;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.lib.EventBus;
 import com.example.wilson.customchat.lib.GreenRobotEventBus;
 import com.example.wilson.customchat.login.events.LoginEvent;
@@ -16,15 +17,15 @@ public class LoginPresenterImplement implements LoginPresenter {
 
     LoginInteractor loginInteractor;
     LoginActivity loginView;
-    EventBus eventBus ;
+    EventBus eventBus;
+    ViewHelper viewHelper;
 
     public LoginPresenterImplement(LoginActivity loginView){
         this.loginView = loginView;
+        viewHelper = loginView;
         loginInteractor = new LoginInteractorImplement();
         this.eventBus = GreenRobotEventBus.getInstance();
-
     }
-
 
     @Override
     public void onCreate() {
@@ -64,7 +65,7 @@ public class LoginPresenterImplement implements LoginPresenter {
         }else{
             if(loginView!=null) {
                 loginView.disableInputs();
-                loginView.showProgresDialog();
+                viewHelper.showProgressDialog();
             }
             loginInteractor.signIn(email,password);
             Log.e("presenter login","sign in requested");
@@ -76,7 +77,7 @@ public class LoginPresenterImplement implements LoginPresenter {
     public void onSignInSuccess() {
         if(loginView!=null){
             loginView.enableInputs();
-            loginView.hideProgresDialog();
+            viewHelper.hideProgressDialog();
             loginView.navigateToHomeScreen();
         }
     }
@@ -85,7 +86,7 @@ public class LoginPresenterImplement implements LoginPresenter {
     public void onSignInError() {
         if(loginView!=null){
             loginView.enableInputs();
-            loginView.hideProgresDialog();
+            viewHelper.hideProgressDialog();
             loginView.etPass.setError(loginView.getString(R.string.check_credentials_message));
         }
     }
