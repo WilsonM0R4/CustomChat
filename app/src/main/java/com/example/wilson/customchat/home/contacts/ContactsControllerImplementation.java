@@ -28,7 +28,8 @@ public class ContactsControllerImplementation implements ContactsController {
 
     @Override
     public void searchContacts(String email) {
-
+        repository.searchRegisteredUser(email);
+        Log.e("ContactsController","email for search is "+email);
     }
 
     @Override

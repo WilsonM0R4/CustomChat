@@ -12,10 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +29,7 @@ import butterknife.OnClick;
 public class SearchContactDialog extends DialogFragment {
 
     @Bind(R.id.btnSearchUser) ImageButton btnSearchUser;
+    @Bind(R.id.etSearchUser) EditText etSearchUser;
     private View searchView;
     private View resultsView;
     private Activity activity;
@@ -59,8 +62,11 @@ public class SearchContactDialog extends DialogFragment {
     @OnClick(R.id.btnSearchUser)
     public void onSearchPressed(){
 
+        String email = User.formatEmail(etSearchUser.getText().toString());
+        controller.searchContacts(email);
+
         Log.e("SearchContactDialog","search pressed");
-        Toast.makeText(activity.getBaseContext(),"has presionado la lupita de buscar",Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity.getBaseContext(),"has presionado la lupita de buscar ("+etSearchUser.getText().toString()+")",Toast.LENGTH_SHORT).show();
 
     }
 

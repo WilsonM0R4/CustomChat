@@ -29,25 +29,26 @@ public class ContactsRepository {
     ArrayList<String> contacts;
     Map<String, Object> contactData;
     DatabaseReference contactsPath;
-    ValueEventListener listener;
     DataSnapshot snapshot;
+    ValueEventListener contactValueEventListen;
+    ValueEventListener searchValueEventListener;
     ContactsController controller;
     String searchedUser;
+    ArrayList<String> resultList;
 
     public ContactsRepository(ContactsController controller){
         helper = FirebaseHelper.getInstance();
         databaseReference = helper.getDatabaseReference();
         user = helper.getCurrentUserReference();
-        listener = valueEventListener();
         contactsPath = databaseReference.child(User.USER_CONTACTS).child(User.formatEmail(user.getEmail()));
-        contactsPath.addValueEventListener(listener);
+        contactsPath.addValueEventListener(valueEventListener(User.formatEmail(user.getEmail())));
         contacts = new ArrayList<>();
         this.controller = controller;
     }
 
     protected void onDestroy(){
-        if(contactsPath!=null && listener !=null){
-            contactsPath.removeEventListener(listener);
+        if(contactsPath!=null){
+            contactsPath.removeEventListener(contactValueEventListen);
         }
     }
 
@@ -70,14 +71,15 @@ public class ContactsRepository {
 
     void searchRegisteredUser(String user){
         searchedUser = User.formatEmail(user);
-        databaseReference.child(FirebaseHelper.USERS_PATH).child(searchedUser).addValueEventListener(listener);
+        databaseReference.child(FirebaseHelper.USERS_PATH).addValueEventListener(valueEventListener(searchedUser));
+        Log.e("Repository","received user for search is "+searchedUser);
     }
 
     /*void getContactData(String user){
         databaseReference.child(User.EXTRA_DATA_KEY).child(searchedUser).addValueEventListener(contactListener());
     }*/
 
-    private ValueEventListener valueEventListener(){
+    private ValueEventListener valueEventListener(String user){
         return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,6 +90,13 @@ public class ContactsRepository {
                         controller.onContactNotFound("el contacto que buscas no está registrado en CustomChat");
                         Log.e("ContactsRepository","01:el contacto que buscas no está registrado en CustomChat");
                     }else{
+                        GenericTypeIndicator<ArrayList<String>> indicator = new GenericTypeIndicator<ArrayList<String>>() {};
+                        resultList = dataSnapshot.getValue(indicator);
+                        if(resultList!=null){
+
+                            //for(int i=0;i< resultList.)
+
+                        }
                         //getContactData(searchedUser);
                         Log.e("ContactsRepository","tienes contactos");
                     }

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorNoBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="24dp">
 
         <TextView android:id="@+id/search_description"
             android:layout_height="wrap_content"
@@ -20,8 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:paddingTop="20dp">
 
             <EditText android:id="@+id/etSearchUser"
                 android:layout_width="match_parent"
@@ -42,14 +45,24 @@
             android:layout_height="250dp"
             android:visibility="gone"/>
 
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <Button android:id="@+id/btnGoBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorNoBackground"
             android:textColor="@color/colorAccent"
-            android:layout_gravity="end"
-            android:text="volver"/>
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:stateListAnimator="@null"
+            android:background="@color/colorNoBackground"
+            android:text="@string/goBack"
+            android:elevation="0dp" />
 
-    </LinearLayout>
+        </RelativeLayout>
 
 </LinearLayout>

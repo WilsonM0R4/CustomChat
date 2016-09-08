@@ -36,6 +36,7 @@
     <string name="availability_string">Disponibilidad</string>
     <string name="searh_description">ingresa el email del usuario que deseas buscar</string>
     <string name="results_string">results</string>
+    <string name="goBack">volver</string>
 
     <!--string-array name="availability_array">
         <item>"@string/online"</item>
