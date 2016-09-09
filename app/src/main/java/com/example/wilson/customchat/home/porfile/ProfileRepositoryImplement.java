@@ -51,16 +51,20 @@ public class ProfileRepositoryImplement implements ProfileRepository {
 
     @Override
     public String getUserEmail() {
+        String currentUserEmail = "no email found";
         getUserData();
-        return currentUser.getEmail();
+
+        if(currentUser!=null){
+            currentUserEmail = currentUser.getEmail();
+        }
+
+        return currentUserEmail;
     }
 
     @Override
     public void getUserData() {
         currentUser = helper.getCurrentUserReference();
-        if(currentUser!=null){
 
-        }
     }
 
     @Override
