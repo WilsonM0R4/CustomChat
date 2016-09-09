@@ -3,7 +3,6 @@ package com.example.wilson.customchat.home.contacts;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.google.firebase.auth.FirebaseUser;
