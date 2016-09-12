@@ -28,6 +28,7 @@ public class FirebaseHelper {
     private static final String CHATS_PATH = "chats";
     private static final String CONTACTS_PATH = "contacts";
     private static final String SEPARATOR = "__";
+    public static final String REGISTERED_USER_KEY = "user_key_";
 
 
     private static class SingletonHolder{

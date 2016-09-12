@@ -60,5 +60,11 @@ public class User {
 
     }
 
+    public static String registeredUserKey(String mainKey, String userEmail){
+        userEmail = formatEmail(userEmail);
+
+        return mainKey+userEmail;
+    }
+
 
 }

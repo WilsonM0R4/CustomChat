@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by wmora on 7/14/16.
@@ -26,6 +27,7 @@ public class RegisterRepositoryImplement implements RegisterRepository{
 
     FirebaseAuth firebaseAuth;
     FirebaseHelper helper;
+    DatabaseReference database;
     //RegisterInteractor registerInteractor;
     boolean signUpResult;
     final int[] regResult = new int[]{RegisterEvents.onWaitingForResult};
@@ -33,6 +35,7 @@ public class RegisterRepositoryImplement implements RegisterRepository{
     public RegisterRepositoryImplement(){
         helper = FirebaseHelper.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        database = helper.getDatabaseReference();
     }
 
     @Override
@@ -81,7 +84,34 @@ public class RegisterRepositoryImplement implements RegisterRepository{
         userData.put(User.USER_AVALIABILITY, String.valueOf(User.USER_ONLINE));
         userData.put(User.USER_PROFILE_IMAGE, User.NONE_IMAGE);
 
-        database.child(userExtraDataPathId).updateChildren(userData);
+        final String email = userEmail;
+
+        database.child(userExtraDataPathId).updateChildren(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    registerNewUserIntoList(email);
+                }else{
+                    Log.e("RegisterRepositiry","task couldn't be completed: "+task.getResult());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void registerNewUserIntoList(String registeredUserEmail) {
+        if(database!=null && registeredUserEmail!=null){
+
+            String keyforRegister = User.registeredUserKey(FirebaseHelper.REGISTERED_USER_KEY,registeredUserEmail);
+            Map<String, Object> registeredUser = new HashMap<>();
+            registeredUser.put(keyforRegister,registeredUserEmail);
+            database.child(FirebaseHelper.USERS_PATH).updateChildren(registeredUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Log.e("RegisterRepository","Register task finished");
+                }
+            });
+        }
     }
 
     private void postEvent(int type){

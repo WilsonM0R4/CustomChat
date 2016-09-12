@@ -38,7 +38,9 @@ public class ContactsRepository {
     public ContactsRepository(ContactsController controller){
         helper = FirebaseHelper.getInstance();
         databaseReference = helper.getDatabaseReference();
+        Log.e("ContactsRepository","databaseReference is :"+databaseReference);
         user = helper.getCurrentUserReference();
+        Log.e("ContactsRepository","user is:"+user);
         contactsPath = databaseReference.child(User.USER_CONTACTS).child(User.formatEmail(user.getEmail()));
         contactsPath.addValueEventListener(valueEventListener(User.formatEmail(user.getEmail())));
         contacts = new ArrayList<>();
@@ -89,13 +91,13 @@ public class ContactsRepository {
                         controller.onContactNotFound("el contacto que buscas no está registrado en CustomChat");
                         Log.e("ContactsRepository","01:el contacto que buscas no está registrado en CustomChat");
                     }else{
-                        GenericTypeIndicator<ArrayList<String>> indicator = new GenericTypeIndicator<ArrayList<String>>() {};
+                        /*GenericTypeIndicator<ArrayList<String>> indicator = new GenericTypeIndicator<ArrayList<String>>() {};
                         resultList = dataSnapshot.getValue(indicator);
                         if(resultList!=null){
 
                             //for(int i=0;i< resultList.)
 
-                        }
+                        }*/
                         //getContactData(searchedUser);
                         Log.e("ContactsRepository","tienes contactos");
                     }

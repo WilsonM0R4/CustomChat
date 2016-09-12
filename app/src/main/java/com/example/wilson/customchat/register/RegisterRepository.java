@@ -7,4 +7,5 @@ public interface RegisterRepository {
     void signUp(String username,String email, String password);
     boolean getSignUpResult();
     void createUserExtraDataPath(String useEmail, String username);
+    void registerNewUserIntoList(String registeredUserEmail);
 }
