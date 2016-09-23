@@ -1,6 +1,5 @@
 package com.example.wilson.customchat.home.contacts;
 
-import android.app.Application;
 import android.util.Log;
 
 import com.example.wilson.customchat.User;
@@ -14,7 +13,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by wmora on 9/6/16.
@@ -33,7 +31,7 @@ public class ContactsRepository {
     ValueEventListener searchValueEventListener;
     ContactsController controller;
     String searchedUser;
-    ArrayList<String> resultList;
+    Map<String, String> resultList;
 
     public ContactsRepository(ContactsController controller){
         helper = FirebaseHelper.getInstance();
@@ -41,15 +39,21 @@ public class ContactsRepository {
         Log.e("ContactsRepository","databaseReference is :"+databaseReference);
         user = helper.getCurrentUserReference();
         Log.e("ContactsRepository","user is:"+user);
-        contactsPath = databaseReference.child(User.USER_CONTACTS).child(User.formatEmail(user.getEmail()));
-        contactsPath.addValueEventListener(valueEventListener(User.formatEmail(user.getEmail())));
+
+        if(user!=null){
+            contactsPath = databaseReference.child(User.USER_CONTACTS).child(User.formatEmail(user.getEmail()));
+            contactsPath.addValueEventListener(valueEventListener(User.formatEmail(user.getEmail())));
+        }
+
         contacts = new ArrayList<>();
         this.controller = controller;
     }
 
     protected void onDestroy(){
-        if(contactsPath!=null){
+        if(contactsPath!=null && contactValueEventListen!=null){
             contactsPath.removeEventListener(contactValueEventListen);
+        }else{
+            Log.d("ContactsController","skipping destruction");
         }
     }
 
@@ -59,7 +63,7 @@ public class ContactsRepository {
 
     protected void addContact(Map<String, Object> contact){
                                                                                                                                                                                                    //contactsPath.
-     }
+    }
 
     //not used for now
     protected void updateContact(){
@@ -91,13 +95,13 @@ public class ContactsRepository {
                         controller.onContactNotFound("el contacto que buscas no está registrado en CustomChat");
                         Log.e("ContactsRepository","01:el contacto que buscas no está registrado en CustomChat");
                     }else{
-                        /*GenericTypeIndicator<ArrayList<String>> indicator = new GenericTypeIndicator<ArrayList<String>>() {};
+                        GenericTypeIndicator<Map<String, String>> indicator = new GenericTypeIndicator<Map<String, String>>() {};
                         resultList = dataSnapshot.getValue(indicator);
                         if(resultList!=null){
 
-                            //for(int i=0;i< resultList.)
+                            Log.d("ContactsRepository","values are: "+resultList.values());
 
-                        }*/
+                        }
                         //getContactData(searchedUser);
                         Log.e("ContactsRepository","tienes contactos");
                     }
@@ -131,5 +135,9 @@ public class ContactsRepository {
                 Log.e("ContactsRepository","load canceled: "+databaseError.getMessage());
             }
         };
+    }
+
+    private String searchContact(ArrayList<String> usersArray, String userToSearch){
+        return userToSearch;
     }
 }

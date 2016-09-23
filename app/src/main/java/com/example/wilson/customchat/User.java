@@ -21,6 +21,7 @@ public class User {
     public static final String USERNAME = "username";
     public static final String USER_CONTACTS = "contacts";
     public static final String USER_NO_CONTACTS = "no contacts";
+    public static final String CONTACT_KEY = "contact_key_";
     Map<String,String> userData;
 
     public static class UserSingleton{
@@ -62,9 +63,12 @@ public class User {
 
     public static String registeredUserKey(String mainKey, String userEmail){
         userEmail = formatEmail(userEmail);
-
         return mainKey+userEmail;
     }
 
+    public static String createContactKey(String contactName){
+        String formatedContact = formatEmail(contactName);
+        return CONTACT_KEY+formatedContact;
+    }
 
 }

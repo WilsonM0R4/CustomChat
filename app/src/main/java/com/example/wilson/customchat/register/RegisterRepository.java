@@ -8,4 +8,5 @@ public interface RegisterRepository {
     boolean getSignUpResult();
     void createUserExtraDataPath(String useEmail, String username);
     void registerNewUserIntoList(String registeredUserEmail);
+    void setContactDefault(String userEmail);
 }

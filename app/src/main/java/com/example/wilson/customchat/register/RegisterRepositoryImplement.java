@@ -25,12 +25,16 @@ import java.util.Objects;
  */
 public class RegisterRepositoryImplement implements RegisterRepository{
 
-    FirebaseAuth firebaseAuth;
-    FirebaseHelper helper;
-    DatabaseReference database;
+    private static final String KEY_NO_CONTACT = "contact_default";
+    private static final String VALUE_NO_CONTACT = "no contacts";
+    private static final String CUSTOMCHAT_CONTACT = "custom_chat";
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseHelper helper;
+    private DatabaseReference database;
     //RegisterInteractor registerInteractor;
-    boolean signUpResult;
-    final int[] regResult = new int[]{RegisterEvents.onWaitingForResult};
+    private boolean signUpResult;
+    private final int[] regResult = new int[]{RegisterEvents.onWaitingForResult};
 
     public RegisterRepositoryImplement(){
         helper = FirebaseHelper.getInstance();
@@ -54,9 +58,10 @@ public class RegisterRepositoryImplement implements RegisterRepository{
 
                     FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                    if(user!=null)
-                        createUserExtraDataPath(email,username);
-
+                    if(user!=null) {
+                        createUserExtraDataPath(email, username);
+                        setContactDefault(email);
+                    }
                     signUpResult = true;
                 }else{
                     Log.e("Register repo","task failure"+task.getResult());
@@ -102,15 +107,30 @@ public class RegisterRepositoryImplement implements RegisterRepository{
     public void registerNewUserIntoList(String registeredUserEmail) {
         if(database!=null && registeredUserEmail!=null){
 
-            String keyforRegister = User.registeredUserKey(FirebaseHelper.REGISTERED_USER_KEY,registeredUserEmail);
+            String keyForRegister = User.registeredUserKey(FirebaseHelper.REGISTERED_USER_KEY,registeredUserEmail);
             Map<String, Object> registeredUser = new HashMap<>();
-            registeredUser.put(keyforRegister,registeredUserEmail);
+            registeredUser.put(keyForRegister,registeredUserEmail);
             database.child(FirebaseHelper.USERS_PATH).updateChildren(registeredUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     Log.e("RegisterRepository","Register task finished");
                 }
             });
+        }
+    }
+
+    /**
+     * sends a default contact for each user created
+     */
+
+    @Override
+    public void setContactDefault(String userEmail) {
+        if(database!=null){
+            Map<String, Object> initialData = new HashMap<>();
+            initialData.put(User.createContactKey(CUSTOMCHAT_CONTACT),CUSTOMCHAT_CONTACT);
+            database.child(FirebaseHelper.CONTACTS_PATH).child(User.formatEmail(userEmail)).updateChildren(initialData);
+        }else{
+            Log.e("ContactsController","cannot access to database");
         }
     }
 
