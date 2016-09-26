@@ -34,9 +34,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         View content = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_list_item,parent,false);
         ButterKnife.bind(this,content);
-        ViewHolder holder = new ViewHolder(content);
 
-        return holder;
+        return new ViewHolder(content);
     }
 
     @Override

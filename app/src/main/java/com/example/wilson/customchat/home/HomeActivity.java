@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     User user;
     //Button btnSignOff;
     FragmentPorfile profile;
+    FragmentContacts contacts;
     Map<String,String> userData;
     //@Bind(R.id.btnSignOff) Button btnSignOff;
 
@@ -45,6 +46,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         profile = new FragmentPorfile();
         profile.newInstance(this);
+
+        contacts = new FragmentContacts();
+        contacts.newInstance(this);
         //btnSignOff = (Button)findViewById(R.id.btnSignOff);
         setupAdapter();
     }
@@ -56,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         String[] titles = new String[]{getString(R.string.title_chat_page),
                 getString(R.string.title_contacts_page),
                 getString(R.string.title_profile_page)};
-        Fragment[] fragments = new Fragment[]{new FragmentChats(), new FragmentContacts(),profile };
+        Fragment[] fragments = new Fragment[]{new FragmentChats(), contacts, profile };
         HomeFragmentPagerAdapter pageAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(),titles,fragments);
         homeViewPager.setAdapter(pageAdapter);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
