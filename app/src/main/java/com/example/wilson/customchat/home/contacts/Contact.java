@@ -13,6 +13,7 @@ public class Contact {
     public static final String CONTACT_KEY_AVAILABILITY = User.USER_AVALIABILITY;
     public static final String CONTACT_KEY_STATE = User.USER_STATE;
     public static final String CONTACT_KEY_EMAIL = User.EMAIL_KEY;
+    public static final String CONTACT_KEY_PROFILE_IMAGE = User.USER_PROFILE_IMAGE;
 
 
     //properties
@@ -20,6 +21,7 @@ public class Contact {
     private String contactAvailability;
     private String contactState;
     private String contactEmail;
+    private String contactProfileImagePath;
 
     public Contact(){
         //empty constructor
@@ -56,5 +58,13 @@ public class Contact {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public String getContactProfileImagePath() {
+        return contactProfileImagePath;
+    }
+
+    public void setContactProfileImagePath(String contactProfileImagePath) {
+        this.contactProfileImagePath = contactProfileImagePath;
     }
 }

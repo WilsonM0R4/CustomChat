@@ -1,6 +1,9 @@
 package com.example.wilson.customchat.home.contacts;
 
+import android.app.Activity;
 import android.util.Log;
+
+import com.example.wilson.customchat.User;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -10,12 +13,16 @@ import java.util.Map;
  */
 public class ContactsControllerImplementation implements ContactsController {
 
+    private static final String TAG = "ContactsController";
+
     private ContactsRepository repository;
     private ContactsView view;
+    private Activity activity;
 
     public ContactsControllerImplementation(){
         repository = new ContactsRepository(this);
-        Log.e("ContactsController","path is "+repository.contactsPath);
+
+        Log.e(TAG,"path is "+repository.contactsPath);
     }
 
     @Override
@@ -24,19 +31,29 @@ public class ContactsControllerImplementation implements ContactsController {
     }
 
     @Override
+    public void setViewActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    @Override
     public void loadContacts(ArrayList<Contact> userContacts) {
         if(view!=null){
-            Log.d("contactsController","received contacts is: "+userContacts.get(0).getContactUsername());
-            view.setContacts(userContacts);
+            Log.d(TAG,"i have the view");
+            view.showContacts(userContacts);
         }else{
-            Log.e("ContactsController","cannot load contacts");
+            Log.e(TAG,"Cannot show received data");
         }
     }
 
 
     @Override
-    public void loadValueEventListener() {
-        repository.launchContactReading();
+    public void loadListeners() {
+        if(repository!=null){
+            repository.launchListeners();
+        }else{
+            Log.e(TAG,"cannot launch listeners");
+        }
+
     }
 
     @Override
@@ -48,8 +65,7 @@ public class ContactsControllerImplementation implements ContactsController {
     public void searchContacts(String email) {
         //loadContacts();
         //repository.getContacts();
-        repository.searchRegisteredUser(email);
-        Log.e("ContactsController","email for search is "+email);
+
     }
 
     @Override
@@ -63,13 +79,12 @@ public class ContactsControllerImplementation implements ContactsController {
     }
 
     @Override
-    public Map<String, String> onContactFound(Map<String, String> contactInfo) {
-        if(contactInfo!=null){
-            Log.d("ContactsController","se ha obtenido la informacion");
+    public void onContactFound(ArrayList<Contact> contactList) {
+        if(contactList!=null){
+            Log.d("ContactsController","se ha obtenido la informacion: "+contactList.get(0).getContactUsername());
         }else{
             Log.e("ContactsContoller","no se ha obtenido informacion");
         }
-        return contactInfo;
     }
 
     @Override
@@ -82,5 +97,9 @@ public class ContactsControllerImplementation implements ContactsController {
         if(repository!=null){
             repository.onDestroy();
         }
+    }
+
+    private ContactsRepository instantiateRepository(){
+        return new ContactsRepository(this);
     }
 }

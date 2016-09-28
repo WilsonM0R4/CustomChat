@@ -1,6 +1,7 @@
 package com.example.wilson.customchat.commons;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.home.contacts.Contact;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,15 +20,16 @@ import butterknife.ButterKnife;
 /**
  * Created by wilson on 17/07/2016.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class ContactRecViewAdapter extends RecyclerView.Adapter<ContactRecViewAdapter.ViewHolder> {
 
+    private static final String TAG = "RecyclerView";
 
-    ArrayList<HashMap<String, String>> dataMap;
-    ArrayList<String> keys;
+    private ArrayList<Contact> dataMap;
 
-    public RecyclerViewAdapter(ArrayList<HashMap<String, String>> dataMap,ArrayList<String> keys){
+    public ContactRecViewAdapter(ArrayList<Contact> dataMap){
         this.dataMap = dataMap;
-        this.keys = keys;
+        Log.d(TAG,"Rec created");
+        Log.d(TAG,"dataMap is: "+dataMap);
     }
 
     @Override
@@ -34,17 +37,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         View content = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_list_item,parent,false);
         ButterKnife.bind(this,content);
-
+        Log.d(TAG,"view created");
         return new ViewHolder(content);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String imagePath = dataMap.get(position).get(keys.get(0));
-        String title = dataMap.get(position).get(keys.get(1));
-        String subtitle = dataMap.get(position).get(keys.get(2));
+        String imagePath = dataMap.get(position).getContactProfileImagePath();
+        String title = dataMap.get(position).getContactUsername();
+        String subtitle = dataMap.get(position).getContactState();
+        Log.d(TAG,"received data is: "+imagePath+", "+title+", "+subtitle);
         holder.bind(imagePath,title,subtitle);
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.wilson.customchat.home.contacts;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.wilson.customchat.User;
@@ -21,22 +22,22 @@ import java.util.Map;
 public class ContactsRepository {
 
     private static final int SIGNAL_LIST = 0;
-    private static final int SIGNAL_SEARCH = 1;
-    private static final int SIGNAL_FOUND = 2;
+    private static final int SIGNAL_DATA = 1;
+    private static final int SIGNAL_SEARCH = 2;
+    private static final int SIGNAL_FOUND = 3;
+    private static final String TAG = "ContactsRepository";
 
     private FirebaseHelper helper;
     private DatabaseReference databaseReference;
     private FirebaseUser user;
-    Map<String, Object> contactsMap;
-    ArrayList<String> contacts;
-    Map<String, Object> contactData;
+    private Map<String, String> contactsMap;
+    private ArrayList<Contact> contacts;
+    private ArrayList<String> stringContacts;
+    private ValueEventListener contactValueEventListen;
+    private ContactsController controller;
+    private ArrayList<Contact> foundList;
+
     DatabaseReference contactsPath;
-    DataSnapshot snapshot;
-    ValueEventListener contactValueEventListen;
-    ValueEventListener searchValueEventListener;
-    ContactsController controller;
-    String searchedUser;
-    ArrayList<Contact> foundList;
 
     public ContactsRepository(ContactsController controller) {
         helper = FirebaseHelper.getInstance();
@@ -46,6 +47,7 @@ public class ContactsRepository {
         Log.e("ContactsRepository", "user is:" + user);
         foundList = new ArrayList<>();
         contacts = new ArrayList<>();
+        contactsMap = new HashMap<>();
         this.controller = controller;
     }
 
@@ -57,48 +59,16 @@ public class ContactsRepository {
         }
     }
 
-    protected void launchContactReading(){
-
+    protected void launchListeners() {
         if (user != null) {
-            contactsPath = databaseReference.child(User.USER_CONTACTS).child(User.formatEmail(user.getEmail()));
-            contactsPath.addValueEventListener(valueEventListener(User.formatEmail(user.getEmail()), SIGNAL_LIST));
-        }else{
-            Log.e("ContactsRepository","cannot load data from database");
+            Log.d(TAG, "current user is " + user.getEmail());
+            databaseReference.child(User.USER_CONTACTS).child(User.formatEmail(user.getEmail())).addValueEventListener(listener(SIGNAL_LIST));
+        } else {
+            Log.e(TAG, "Unable to load data from server");
         }
-
     }
 
-    protected ArrayList<String> getContacts() {
-        ArrayList<String> result = new ArrayList<>();
-        if(foundList!=null){
-            //result = foundList;
-            //Log.d("ContactsRepository","Se encontraron contactos, y son: "+result);
-        }else{
-            Log.d("ContactsRepository","No hay lista de contactos");
-        }
-        return result;
-    }
-
-    protected void addContact(Map<String, Object> contact) {
-        //contactsPath.
-    }
-
-    protected void deleteContact(int contactIndex) {
-
-    }
-
-    void searchRegisteredUser(String user) {
-        searchedUser = User.formatEmail(user);
-        databaseReference.child(FirebaseHelper.USERS_PATH).addValueEventListener(valueEventListener(searchedUser, SIGNAL_SEARCH));
-        Log.e("Repository", "received user for search is " + searchedUser);
-    }
-
-    private ValueEventListener valueEventListener(String user, int signalSearch) {
-
-        final String usermail = user;
-        final int signal = signalSearch;
-        Log.d("ContactsRepository","Signal is "+signal);
-
+    private ValueEventListener listener(final int signal) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -106,19 +76,21 @@ public class ContactsRepository {
 
                 switch (signal) {
                     case SIGNAL_LIST:
-                        Log.d("ContactsRepository","Signal is "+SIGNAL_LIST);
-                        controller.loadContacts(listContacts(dataSnapshot));
+                        listContacts(dataSnapshot);
+                        Log.d(TAG,"signal: "+SIGNAL_LIST);
+                        break;
+                    case SIGNAL_DATA:
+                        //getContact(dataSnapshot);
+                        Log.d(TAG,"signal: "+SIGNAL_DATA);
                         break;
                     case SIGNAL_SEARCH:
-                        Log.d("ContactsRepository","Signal is "+SIGNAL_SEARCH);
-                        searchContact(dataSnapshot, usermail);
+                        Log.d(TAG,"signal: "+SIGNAL_SEARCH);
                         break;
                     case SIGNAL_FOUND:
-                        Log.d("ContactsRepository","Signal is "+SIGNAL_FOUND);
-                        getFoundUserData(dataSnapshot);
+                        Log.d(TAG,"signal: "+SIGNAL_FOUND);
                         break;
                     default:
-                        Log.e("ContactsRepository", "La señal recibida no corresponde a ninguna de las esperadas");
+                        Log.e(TAG, "received signals doesn't match with any expected");
                         break;
                 }
 
@@ -126,85 +98,144 @@ public class ContactsRepository {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("ContactsRepository", "load canceled: " + databaseError.getMessage());
+                if (databaseError != null) {
+                    Log.e(TAG, "Process cancelled, reason: " + databaseError.getMessage() + "\ndetails: " + databaseError.getDetails());
+                } else {
+                    Log.e(TAG, "Cannot load the cancel reason");
+                }
             }
         };
     }
 
-    private ArrayList<Contact> listContacts(DataSnapshot dataSnapshot) {
+    /**
+     * Proper methods
+     **/
+    private void listContacts(DataSnapshot dataSnapshot) {
 
-        Map<String, String> resultList;
+        GenericTypeIndicator<Map<String, String>> map = new GenericTypeIndicator<Map<String, String>>() {
+        };
+        contactsMap = dataSnapshot.getValue(map);
 
-        if (dataSnapshot != null) {
-            GenericTypeIndicator<Map<String, String>> indicator = new GenericTypeIndicator<Map<String, String>>() {};
-            resultList = dataSnapshot.getValue(indicator);
+        if (contactsMap != null) {
+            Log.d(TAG, "received data, it is: " + contactsMap);
+            stringContacts = new ArrayList<>();
+            stringContacts.addAll(contactsMap.values());
 
-            if (resultList != null) {
+            new AsyncRepoContact(contactsMap,controller).execute();
+            /*for (int count = 0; count < contactsMap.size(); count++) {
+                databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(stringContacts.get(count))).addValueEventListener(listener(SIGNAL_DATA));
+                Log.d(TAG, "in a loop!");
+            }*/
 
-                for(int index=0;index<resultList.size();index++){
-                    Contact contact = new Contact();
-                    contact.setContactUsername(resultList.get(Contact.CONTACT_KEY_NAME));
-                    contact.setContactAvailability(resultList.get(Contact.CONTACT_KEY_AVAILABILITY));
-                    contact.setContactState(resultList.get(Contact.CONTACT_KEY_STATE));
-                    //contact.setContactEmail();
-                    foundList.add(index,contact);
+            //Log.d(TAG, "sending contacts list: "+contacts);
+            //controller.loadContacts(contacts);
 
-                }
 
-                Log.e("ContactsRepository", "tienes contactos");
-            } else {
-                Log.e("ContactsRepository", "No se han encontrado contactos");
-            }
         } else {
-            Log.e("ContactsRepository", "El usuario No ha sido encontrado");
+            Log.e(TAG, "didn't receive data");
         }
 
-        return foundList;
     }
 
-    private void searchContact(DataSnapshot dataSnapshot, String userToSearch) {
+    /*private void getContact(DataSnapshot dataSnapshot) {
 
-        //Map<String, String> resultList;
+        Contact contact = new Contact();
 
-        if (dataSnapshot != null) {
-            snapshot = dataSnapshot;
-            if (dataSnapshot.toString().equals(User.USER_NO_CONTACTS)) {
+        GenericTypeIndicator<Map<String, String>> typeIndicator = new GenericTypeIndicator<Map<String, String>>() {
+        };
+        Map<String, String> userMap = dataSnapshot.getValue(typeIndicator);
 
-                Log.e("ContactsRepository", "No se ha recibido informacion del servidor");
-            } else {
+        if (userMap != null && !userMap.isEmpty()) {
+            contact.setContactUsername(userMap.get(Contact.CONTACT_KEY_NAME));
+            contact.setContactAvailability(userMap.get(Contact.CONTACT_KEY_AVAILABILITY));
+            contact.setContactState(userMap.get(Contact.CONTACT_KEY_STATE));
+            contact.setContactProfileImagePath(userMap.get(Contact.CONTACT_KEY_PROFILE_IMAGE));
 
-                listContacts(dataSnapshot);
+            contacts.add(contact);
+            Log.d(TAG,"contact "+contact.getContactUsername()+" added");
+        } else {
+            Log.e(TAG, "Cannot load the contact data");
+        }
 
-                if (foundList.contains(userToSearch)) {
-                    databaseReference.child(User.EXTRA_DATA_KEY).child(userToSearch).addValueEventListener(valueEventListener(userToSearch, SIGNAL_FOUND));
+    }*/
 
-                } else {
-                    controller.onContactNotFound("el contacto que buscas no está registrado en CustomChat");
+    private class AsyncRepoContact extends AsyncTask<Void,Void,ArrayList<Contact>>{
+
+        private Map<String, String> contacts;
+        private ContactsController controller;
+        private ValueEventListener listener;
+        private ArrayList<Contact> contactsList;
+
+        public AsyncRepoContact(Map<String, String> contacts, ContactsController controller){
+            this.contacts = contacts;
+            this.controller = controller;
+        }
+
+        @Override
+        public void onPreExecute(){
+            contactsList = new ArrayList<>();
+            listener = listener();
+        }
+
+        @Override
+        protected ArrayList<Contact> doInBackground(Void... params) {
+
+            for (int count = 0; count < contacts.size(); count++) {
+                databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(stringContacts.get(count))).addValueEventListener(listener);
+                Log.d(TAG, "in a loop!");
+            }
+            Log.d("ContactsRepository","populated data is: "+contactsList);
+            return contactsList;
+        }
+
+        private ValueEventListener listener(){
+            return new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    getContact(dataSnapshot);
                 }
-                //
-            }
-            Log.e("ContactsRepository", "data is " + dataSnapshot.toString());
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e("ContactsRepository","have an error during process: "+databaseError.getMessage()+" \ncause: "+databaseError.getDetails());
+                }
+            };
         }
 
-    }
+        private void getContact(DataSnapshot dataSnapshot) {
 
-    private void getFoundUserData(DataSnapshot dataSnapshot) {
+            Contact contact = new Contact();
 
-        Map<String, String> resultList;
+            GenericTypeIndicator<Map<String, String>> typeIndicator = new GenericTypeIndicator<Map<String, String>>() {
+            };
+            Map<String, String> userMap = dataSnapshot.getValue(typeIndicator);
 
-        if (dataSnapshot != null) {
+            if (userMap != null && !userMap.isEmpty()) {
+                contact.setContactUsername(userMap.get(Contact.CONTACT_KEY_NAME));
+                contact.setContactAvailability(userMap.get(Contact.CONTACT_KEY_AVAILABILITY));
+                contact.setContactState(userMap.get(Contact.CONTACT_KEY_STATE));
+                contact.setContactProfileImagePath(userMap.get(Contact.CONTACT_KEY_PROFILE_IMAGE));
 
-            GenericTypeIndicator<Map<String, String>> userData = new GenericTypeIndicator<Map<String, String>>() {};
-            resultList = dataSnapshot.getValue(userData);
-
-            if (resultList != null) {
-                Log.d("ContactsRepository","contactData is: "+resultList);
-                controller.onContactFound(resultList);
+                contactsList.add(contact);
+                Log.d(TAG,"contact "+contact.getContactUsername()+" added");
             } else {
-                controller.onContactNotFound("la información del usuario que buscas no se ha encontrado");
+                Log.e(TAG, "Cannot load the contact data");
             }
 
         }
+        @Override
+        public void onPostExecute(ArrayList<Contact> contactList){
+            if(contactList!=null && !contactList.isEmpty()){
+                controller.loadContacts(contactList);
+                Log.e(TAG,"process ended");
+            }else{
+                Log.e(TAG,"have some trouble with server data");
+            }
+        }
+
+
+
+
 
     }
 

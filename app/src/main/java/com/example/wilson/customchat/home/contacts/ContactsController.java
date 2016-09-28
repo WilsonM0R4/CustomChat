@@ -1,5 +1,9 @@
 package com.example.wilson.customchat.home.contacts;
 
+import android.app.Activity;
+
+import com.example.wilson.customchat.User;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -9,13 +13,14 @@ import java.util.Map;
 public interface ContactsController {
 
     void setView(ContactsView view);
+    void setViewActivity(Activity activity);
     void loadContacts(ArrayList<Contact> userContacts); //ArrayList<String> userContacts
-    void loadValueEventListener();
+    void loadListeners();
     void addContact();
     void searchContacts(String email);
     void updateContact();
     void deleteContact();
-    Map<String,String> onContactFound(Map<String,String> contactInfo);
+    void onContactFound(ArrayList<Contact> contactList );
     String onContactNotFound(String message);
     void onDestroy();
 }

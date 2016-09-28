@@ -8,5 +8,5 @@ import java.util.ArrayList;
 public interface ContactsView {
 
     void getContacts(ArrayList<String> receivedContacts);
-    void setContacts(ArrayList<Contact> userContacts);
+    void showContacts(ArrayList<Contact> userContacts);
 }

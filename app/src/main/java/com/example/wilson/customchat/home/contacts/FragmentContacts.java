@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.User;
-import com.example.wilson.customchat.commons.RecyclerViewAdapter;
+import com.example.wilson.customchat.commons.ContactRecViewAdapter;
 import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.home.HomeActivity;
 
@@ -33,10 +33,13 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
     @Bind(R.id.contactsList) RecyclerView contactsList;
     @Bind(R.id.noContactsText) TextView textNoContacts;
     @Bind(R.id.fabAddContact) FloatingActionButton fabAddContacts;
+
+    private static final String TAG = "ContactsView";
+
     View contactsView;
     HomeActivity activity;
     ContactsController controller;
-    RecyclerViewAdapter adapter;
+    ContactRecViewAdapter adapter;
     RecyclerView.LayoutManager manager;
 
     ProgressDialog dialog;
@@ -50,27 +53,22 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         contactsView = inflater.inflate(R.layout.fragment_contacts,container,false);
-        controller = new ContactsControllerImplementation();
         ButterKnife.bind(this,contactsView);
-        //configContactList();
+        controller = new ContactsControllerImplementation();
         controller.setView(this);
-        controller.loadValueEventListener();
+        controller.setViewActivity(activity);
+        controller.loadListeners();
         return contactsView;
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        //must call this here
-        //configContactList();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if(controller!=null){
-            controller.onDestroy();
-        }
 
     }
 
@@ -85,54 +83,28 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
 
     @Override
     public void getContacts(ArrayList<String> receivedContacts) {
-        Log.e("ContactsView","received data is: "+receivedContacts);
+
     }
 
     @Override
-    public void setContacts(ArrayList<Contact> userContacts) {
+    public void showContacts(ArrayList<Contact> userContacts) {
 
+        Log.d(TAG,"me has llamado!");
         manager = new LinearLayoutManager(activity);
-        ArrayList<HashMap<String,String>> items = new ArrayList<>();
+        //ArrayList<HashMap<String,String>> items = new ArrayList<>();
 
-        for(Contact contact: userContacts){
-
-            /** get each user data here **/
-            //items.add();
+        if(userContacts!=null && !userContacts.isEmpty()){
+            adapter = new ContactRecViewAdapter(userContacts);
+            contactsList.setLayoutManager(manager);
+            contactsList.setAdapter(adapter);
+            contactsList.setVisibility(View.VISIBLE);
+            textNoContacts.setVisibility(View.GONE);
+            Log.d(TAG,"data sent to Rec");
+        }else{
+            Log.e(TAG,"didn't receive data, for that we cannot display the list");
         }
 
-
-
-        /*manager = new LinearLayoutManager(activity);
-        ArrayList<HashMap<String,String>> items = new ArrayList<>();
-        HashMap<String,String> item1 = new HashMap<>();
-        item1.put(User.USER_PROFILE_IMAGE,"pacho");
-        item1.put(User.EMAIL_KEY,"pacho");
-        item1.put(User.USER_STATE,"state of pacho");
-        HashMap<String,String> item2 = new HashMap<>();
-        item2.put(User.USER_PROFILE_IMAGE,"pacho");
-        item2.put(User.EMAIL_KEY,"pepe");
-        item2.put(User.USER_STATE,"state of pepe");
-        HashMap<String,String> item3 = new HashMap<>();
-        item3.put(User.USER_PROFILE_IMAGE,"pacho");
-        item3.put(User.EMAIL_KEY,"pablo");
-        item3.put(User.USER_STATE,"state of pablo");
-        items.add(0,item1);
-        items.add(1,item2);
-        items.add(2,item3);
-
-        ArrayList<String> keys = new ArrayList<>();
-        keys.add(0,User.USER_PROFILE_IMAGE);
-        keys.add(1,User.EMAIL_KEY);
-        keys.add(2,User.USER_STATE);
-
-        adapter = new RecyclerViewAdapter(items,keys);
-
-        contactsList.setLayoutManager(manager);
-        contactsList.setAdapter(adapter);
-        contactsList.setVisibility(View.VISIBLE);
-        textNoContacts.setVisibility(View.GONE);*/
     }
-
 
     @Override
     public void showProgressDialog() {
@@ -174,7 +146,7 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
 
 
     private void configContactList(){
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(activity);
+        /*RecyclerView.LayoutManager manager = new LinearLayoutManager(activity);
         ArrayList<HashMap<String,String>> items = new ArrayList<>();
         HashMap<String,String> item1 = new HashMap<>();
         item1.put(User.USER_PROFILE_IMAGE,"pacho");
@@ -197,12 +169,12 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
         keys.add(1,User.EMAIL_KEY);
         keys.add(2,User.USER_STATE);
 
-        adapter = new RecyclerViewAdapter(items,keys);
+        adapter = new ContactRecViewAdapter(items);
 
         contactsList.setLayoutManager(manager);
         contactsList.setAdapter(adapter);
         contactsList.setVisibility(View.VISIBLE);
-        textNoContacts.setVisibility(View.GONE);
+        textNoContacts.setVisibility(View.GONE);*/
 
     }
 
