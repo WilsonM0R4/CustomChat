@@ -39,6 +39,8 @@
     <string name="goBack">volver</string>
     <string name="loading_string">Cargando</string>
     <string name="loading_contacts_message">cargando tus contactos</string>
+    <string name="default_username_text">Username</string>
+    <string name="add_to_contacts_text">add to contacts</string>
 
     <!--string-array name="availability_array">
         <item>"@string/online"</item>

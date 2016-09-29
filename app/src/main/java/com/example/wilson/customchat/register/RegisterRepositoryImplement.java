@@ -25,9 +25,8 @@ import java.util.Objects;
  */
 public class RegisterRepositoryImplement implements RegisterRepository{
 
-    private static final String KEY_NO_CONTACT = "contact_default";
+    private static final String KEY_NO_CONTACT = "contact_key_no_contacts";
     private static final String VALUE_NO_CONTACT = "no contacts";
-    private static final String CUSTOMCHAT_CONTACT = "custom_chat";
 
     private FirebaseAuth firebaseAuth;
     private FirebaseHelper helper;
@@ -127,7 +126,7 @@ public class RegisterRepositoryImplement implements RegisterRepository{
     public void setContactDefault(String userEmail) {
         if(database!=null){
             Map<String, Object> initialData = new HashMap<>();
-            initialData.put(User.createContactKey(CUSTOMCHAT_CONTACT),CUSTOMCHAT_CONTACT);
+            initialData.put(KEY_NO_CONTACT,VALUE_NO_CONTACT);
             database.child(FirebaseHelper.CONTACTS_PATH).child(User.formatEmail(userEmail)).updateChildren(initialData);
         }else{
             Log.e("ContactsController","cannot access to database");

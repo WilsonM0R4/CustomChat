@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +37,7 @@ public class ContactsRepository {
     private ValueEventListener contactValueEventListen;
     private ContactsController controller;
     private ArrayList<Contact> foundList;
+    private String searchKey;
 
     DatabaseReference contactsPath;
 
@@ -121,15 +123,19 @@ public class ContactsRepository {
             stringContacts = new ArrayList<>();
             stringContacts.addAll(contactsMap.values());
 
-            new AsyncRepoContact(contactsMap,controller).execute();
-            /*for (int count = 0; count < contactsMap.size(); count++) {
-                databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(stringContacts.get(count))).addValueEventListener(listener(SIGNAL_DATA));
-                Log.d(TAG, "in a loop!");
-            }*/
 
-            //Log.d(TAG, "sending contacts list: "+contacts);
-            //controller.loadContacts(contacts);
+            databaseReference.child(User.EXTRA_DATA_KEY).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(TAG,"have received data");
+                    controller.loadContacts(getContacts(dataSnapshot,stringContacts));
+                }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
         } else {
             Log.e(TAG, "didn't receive data");
@@ -137,106 +143,88 @@ public class ContactsRepository {
 
     }
 
-    /*private void getContact(DataSnapshot dataSnapshot) {
+    private ArrayList<Contact> getContacts(DataSnapshot dataSnapshot, ArrayList<String> contactsList){
+        Map<String,Map<String,String>> data;
+        ArrayList<Contact> dataToSet = new ArrayList<>();
+        GenericTypeIndicator<Map<String,Map<String,String>>> contactsData = new GenericTypeIndicator<Map<String,Map<String,String>>>() {};
 
-        Contact contact = new Contact();
+        data = dataSnapshot.getValue(contactsData);
 
-        GenericTypeIndicator<Map<String, String>> typeIndicator = new GenericTypeIndicator<Map<String, String>>() {
-        };
-        Map<String, String> userMap = dataSnapshot.getValue(typeIndicator);
+        if(data!=null && !data.isEmpty()){
+            Log.d(TAG,"data is "+data);
+            Log.d(TAG,"contacts are "+contactsList);
+            Log.d(TAG,"index for data is "+data.size());
+            Map<String,String> temp;
 
-        if (userMap != null && !userMap.isEmpty()) {
-            contact.setContactUsername(userMap.get(Contact.CONTACT_KEY_NAME));
-            contact.setContactAvailability(userMap.get(Contact.CONTACT_KEY_AVAILABILITY));
-            contact.setContactState(userMap.get(Contact.CONTACT_KEY_STATE));
-            contact.setContactProfileImagePath(userMap.get(Contact.CONTACT_KEY_PROFILE_IMAGE));
+            for(int c=0;c<contactsList.size(); c++){
+                Contact contact = new Contact();
 
-            contacts.add(contact);
-            Log.d(TAG,"contact "+contact.getContactUsername()+" added");
-        } else {
-            Log.e(TAG, "Cannot load the contact data");
-        }
+                Log.d(TAG,"index is "+c);
+                temp = data.get(contactsList.get(c));
 
-    }*/
+                if(temp!=null){
+                    Log.d(TAG,"index for temp is "+temp.size());
+                    contact.setContactEmail(contactsList.get(c));
+                    contact.setContactUsername(temp.get(Contact.CONTACT_KEY_NAME));
+                    contact.setContactState(temp.get(Contact.CONTACT_KEY_STATE));
+                    contact.setContactAvailability(temp.get(Contact.CONTACT_KEY_AVAILABILITY));
+                    contact.setContactProfileImagePath(temp.get(Contact.CONTACT_KEY_PROFILE_IMAGE));
 
-    private class AsyncRepoContact extends AsyncTask<Void,Void,ArrayList<Contact>>{
-
-        private Map<String, String> contacts;
-        private ContactsController controller;
-        private ValueEventListener listener;
-        private ArrayList<Contact> contactsList;
-
-        public AsyncRepoContact(Map<String, String> contacts, ContactsController controller){
-            this.contacts = contacts;
-            this.controller = controller;
-        }
-
-        @Override
-        public void onPreExecute(){
-            contactsList = new ArrayList<>();
-            listener = listener();
-        }
-
-        @Override
-        protected ArrayList<Contact> doInBackground(Void... params) {
-
-            for (int count = 0; count < contacts.size(); count++) {
-                databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(stringContacts.get(count))).addValueEventListener(listener);
-                Log.d(TAG, "in a loop!");
-            }
-            Log.d("ContactsRepository","populated data is: "+contactsList);
-            return contactsList;
-        }
-
-        private ValueEventListener listener(){
-            return new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    getContact(dataSnapshot);
+                    Log.d(TAG,"received contact is "+contact.getContactUsername());
+                    dataToSet.add(contact);
+                }else{
+                    Log.e(TAG,"cannot set the data");
                 }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.e("ContactsRepository","have an error during process: "+databaseError.getMessage()+" \ncause: "+databaseError.getDetails());
-                }
-            };
-        }
-
-        private void getContact(DataSnapshot dataSnapshot) {
-
-            Contact contact = new Contact();
-
-            GenericTypeIndicator<Map<String, String>> typeIndicator = new GenericTypeIndicator<Map<String, String>>() {
-            };
-            Map<String, String> userMap = dataSnapshot.getValue(typeIndicator);
-
-            if (userMap != null && !userMap.isEmpty()) {
-                contact.setContactUsername(userMap.get(Contact.CONTACT_KEY_NAME));
-                contact.setContactAvailability(userMap.get(Contact.CONTACT_KEY_AVAILABILITY));
-                contact.setContactState(userMap.get(Contact.CONTACT_KEY_STATE));
-                contact.setContactProfileImagePath(userMap.get(Contact.CONTACT_KEY_PROFILE_IMAGE));
-
-                contactsList.add(contact);
-                Log.d(TAG,"contact "+contact.getContactUsername()+" added");
-            } else {
-                Log.e(TAG, "Cannot load the contact data");
             }
 
+        }else{
+            Log.e(TAG,"received data is null or empty");
         }
-        @Override
-        public void onPostExecute(ArrayList<Contact> contactList){
-            if(contactList!=null && !contactList.isEmpty()){
-                controller.loadContacts(contactList);
-                Log.e(TAG,"process ended");
-            }else{
-                Log.e(TAG,"have some trouble with server data");
+        return dataToSet;
+    }
+
+    protected void searchContact(String contact) {
+        Log.d(TAG,"received search is "+contact);
+        this.searchKey = contact;
+        databaseReference.child(User.EXTRA_DATA_KEY).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG,"datasnapshot for search is "+dataSnapshot);
+                onReceivedSearchResults(dataSnapshot);
             }
-        }
 
-
-
-
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG,"process cancelled, reason:"+databaseError.getMessage()+"\n"+databaseError.getDetails());
+            }
+        });
 
     }
 
+    private void onReceivedSearchResults(DataSnapshot dataSnapshot){
+        Map<String,Map<String,String>> receivedData;
+        GenericTypeIndicator<Map<String,Map<String,String>>> indicator = new GenericTypeIndicator<Map<String, Map<String, String>>>() {};
+
+        receivedData = dataSnapshot.getValue(indicator);
+
+        if(receivedData!=null && !receivedData.isEmpty() && searchKey!=null){
+            Log.d(TAG,"found data is "+receivedData.get(searchKey));
+
+            Map<String,String> data = receivedData.get(searchKey);
+
+            Contact contact = new Contact();
+            contact.setContactEmail(searchKey);
+            contact.setContactUsername(data.get(Contact.CONTACT_KEY_NAME));
+            contact.setContactState(data.get(Contact.CONTACT_KEY_STATE));
+            contact.setContactProfileImagePath(Contact.CONTACT_KEY_PROFILE_IMAGE);
+            contact.setContactAvailability(Contact.CONTACT_KEY_AVAILABILITY);
+
+            ArrayList<Contact> foundContact = new ArrayList<>();
+            foundContact.add(contact);
+            controller.onContactFound(foundContact);
+        }else{
+            Log.e(TAG,"couldn't load the data");
+        }
+    }
 }

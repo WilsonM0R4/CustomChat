@@ -39,6 +39,7 @@ public class ContactsControllerImplementation implements ContactsController {
     public void loadContacts(ArrayList<Contact> userContacts) {
         if(view!=null){
             Log.d(TAG,"i have the view");
+
             view.showContacts(userContacts);
         }else{
             Log.e(TAG,"Cannot show received data");
@@ -63,8 +64,8 @@ public class ContactsControllerImplementation implements ContactsController {
 
     @Override
     public void searchContacts(String email) {
-        //loadContacts();
-        //repository.getContacts();
+
+        repository.searchContact(email);
 
     }
 
@@ -80,8 +81,10 @@ public class ContactsControllerImplementation implements ContactsController {
 
     @Override
     public void onContactFound(ArrayList<Contact> contactList) {
+        Log.d(TAG,"you've called me!");
         if(contactList!=null){
             Log.d("ContactsController","se ha obtenido la informacion: "+contactList.get(0).getContactUsername());
+
         }else{
             Log.e("ContactsContoller","no se ha obtenido informacion");
         }

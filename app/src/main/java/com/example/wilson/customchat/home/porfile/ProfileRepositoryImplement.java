@@ -122,7 +122,7 @@ public class ProfileRepositoryImplement implements ProfileRepository {
                     userDataMap = dataSnapshot.getValue(genericMapType);
                 }
 
-                if(!userDataMap.isEmpty()){
+                if(userDataMap!= null && !userDataMap.isEmpty()){
                     actualStatus = userDataMap.get(User.USER_STATE);
                     username = userDataMap.get(User.USERNAME);
                 }
