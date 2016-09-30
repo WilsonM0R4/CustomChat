@@ -62,8 +62,8 @@ public class SearchContactDialog extends DialogFragment {
         String email = User.formatEmail(etSearchUser.getText().toString());
         controller.searchContacts(email);
 
-        Log.e("SearchContactDialog","search pressed");
-        Toast.makeText(activity.getBaseContext(),"has presionado la lupita de buscar ("+etSearchUser.getText().toString()+")",Toast.LENGTH_SHORT).show();
+        //Log.e("SearchContactDialog","search pressed");
+        //Toast.makeText(activity.getBaseContext(),"has presionado la lupita de buscar ("+etSearchUser.getText().toString()+")",Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btnGoBack)

@@ -57,6 +57,7 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
         controller = new ContactsControllerImplementation();
         controller.setView(this);
         controller.setViewActivity(activity);
+        controller.setFragment(this);
         controller.loadListeners();
         return contactsView;
     }
@@ -74,8 +75,8 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
 
     @OnClick(R.id.fabAddContact)
     public void searchContacts(){
-        //SearchContactDialog dialog = new SearchContactDialog();
-        ContactDialog dialog = new ContactDialog();
+        SearchContactDialog dialog = new SearchContactDialog();
+        //ContactDialog dialog = new ContactDialog();
         dialog.newInstance(controller);
         dialog.show(getFragmentManager(),"tagSearchUser");
     }

@@ -40,7 +40,8 @@
     <string name="loading_string">Cargando</string>
     <string name="loading_contacts_message">cargando tus contactos</string>
     <string name="default_username_text">Username</string>
-    <string name="add_to_contacts_text">add to contacts</string>
+    <string name="add_to_contacts_text">añadir a contactos</string>
+    <string name="contact_not_found_message">el contacto que buscas no está registrado</string>
 
     <!--string-array name="availability_array">
         <item>"@string/online"</item>

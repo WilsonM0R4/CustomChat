@@ -14,13 +14,14 @@ public interface ContactsController {
 
     void setView(ContactsView view);
     void setViewActivity(Activity activity);
+    void setFragment(FragmentContacts fragment);
     void loadContacts(ArrayList<Contact> userContacts); //ArrayList<String> userContacts
     void loadListeners();
-    void addContact();
+    void addContact(String email);
     void searchContacts(String email);
     void updateContact();
     void deleteContact();
     void onContactFound(ArrayList<Contact> contactList );
-    String onContactNotFound(String message);
+    String onContactNotFound();
     void onDestroy();
 }

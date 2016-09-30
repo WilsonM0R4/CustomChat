@@ -1,12 +1,13 @@
 package com.example.wilson.customchat.home.contacts;
 
-import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.domain.FirebaseHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -213,18 +214,48 @@ public class ContactsRepository {
 
             Map<String,String> data = receivedData.get(searchKey);
 
-            Contact contact = new Contact();
-            contact.setContactEmail(searchKey);
-            contact.setContactUsername(data.get(Contact.CONTACT_KEY_NAME));
-            contact.setContactState(data.get(Contact.CONTACT_KEY_STATE));
-            contact.setContactProfileImagePath(Contact.CONTACT_KEY_PROFILE_IMAGE);
-            contact.setContactAvailability(Contact.CONTACT_KEY_AVAILABILITY);
+            if(data!= null && !data.isEmpty()){
+                Contact contact = new Contact();
+                contact.setContactEmail(searchKey);
+                contact.setContactUsername(data.get(Contact.CONTACT_KEY_NAME));
+                contact.setContactState(data.get(Contact.CONTACT_KEY_STATE));
+                contact.setContactProfileImagePath(Contact.CONTACT_KEY_PROFILE_IMAGE);
+                contact.setContactAvailability(Contact.CONTACT_KEY_AVAILABILITY);
 
-            ArrayList<Contact> foundContact = new ArrayList<>();
-            foundContact.add(contact);
-            controller.onContactFound(foundContact);
+                ArrayList<Contact> foundContact = new ArrayList<>();
+                foundContact.add(contact);
+                controller.onContactFound(foundContact);
+            }else{
+                Log.e(TAG,"data is corrupted, or is null");
+                controller.onContactNotFound();
+            }
+
         }else{
             Log.e(TAG,"couldn't load the data");
         }
+    }
+
+    protected void addContact(String email){
+
+        Map<String,Object> contactData = new HashMap<>();
+
+        contactData.put(User.createContactKey(email),email);
+
+        databaseReference.child(FirebaseHelper.CONTACTS_PATH)
+                .child(User.formatEmail(user.getEmail()))
+                .updateChildren(contactData).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isComplete()){
+                    if(task.isSuccessful()){
+                        Log.d(TAG,"task completed successfully");
+                    }else{
+                        Log.e(TAG,"task isn't successful, reason: "+task.getResult());
+                    }
+                }else{
+                    Log.e(TAG,"task is uncompleted, reason unknown");
+                }
+            }
+        });
     }
 }
