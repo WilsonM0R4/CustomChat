@@ -238,7 +238,6 @@ public class ContactsRepository {
     protected void addContact(String email){
 
         Map<String,Object> contactData = new HashMap<>();
-
         contactData.put(User.createContactKey(email),email);
 
         databaseReference.child(FirebaseHelper.CONTACTS_PATH)
@@ -249,6 +248,7 @@ public class ContactsRepository {
                 if(task.isComplete()){
                     if(task.isSuccessful()){
                         Log.d(TAG,"task completed successfully");
+                        controller.onContactAdded();
                     }else{
                         Log.e(TAG,"task isn't successful, reason: "+task.getResult());
                     }

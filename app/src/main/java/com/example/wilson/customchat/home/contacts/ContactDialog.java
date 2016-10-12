@@ -87,6 +87,7 @@ public class ContactDialog extends DialogFragment {
     public void onAddPressed(){
         Log.d(TAG,"add pressed");
         if(contact!=null && controller!=null){
+            dismissDialog();
             controller.addContact(contact.getContactEmail());
         }else{
             Log.e(TAG,"cannot load the data");
@@ -101,6 +102,10 @@ public class ContactDialog extends DialogFragment {
 
     @OnClick(R.id.button_back)
     public void onBackPressed(){
+        this.dismiss();
+    }
+
+    private void dismissDialog(){
         this.dismiss();
     }
 

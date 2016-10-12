@@ -15,7 +15,6 @@ public class Contact {
     public static final String CONTACT_KEY_EMAIL = User.EMAIL_KEY;
     public static final String CONTACT_KEY_PROFILE_IMAGE = User.USER_PROFILE_IMAGE;
 
-
     //properties
     private String contactUsername;
     private String contactAvailability;
@@ -26,7 +25,6 @@ public class Contact {
     public Contact(){
         //empty constructor
     }
-
 
     public String getContactState() {
         return contactState;

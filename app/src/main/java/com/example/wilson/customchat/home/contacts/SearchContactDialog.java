@@ -28,6 +28,9 @@ public class SearchContactDialog extends DialogFragment {
 
     @Bind(R.id.btnSearchUser) ImageButton btnSearchUser;
     @Bind(R.id.etSearchUser) EditText etSearchUser;
+
+    public static final String DIALOG_TAG = "tagSearchUser";
+
     private View searchView;
     private View resultsView;
     private Activity activity;
@@ -58,12 +61,9 @@ public class SearchContactDialog extends DialogFragment {
 
     @OnClick(R.id.btnSearchUser)
     public void onSearchPressed(){
-
         String email = User.formatEmail(etSearchUser.getText().toString());
         controller.searchContacts(email);
-
-        //Log.e("SearchContactDialog","search pressed");
-        //Toast.makeText(activity.getBaseContext(),"has presionado la lupita de buscar ("+etSearchUser.getText().toString()+")",Toast.LENGTH_SHORT).show();
+        this.dismiss();
     }
 
     @OnClick(R.id.btnGoBack)

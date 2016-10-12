@@ -45,7 +45,7 @@ public class ContactRecViewAdapter extends RecyclerView.Adapter<ContactRecViewAd
         ButterKnife.bind(this,content);
         Log.d(TAG,"view created");
         content.setOnClickListener(this);
-        content.setOnLongClickListener(this);
+        //content.setOnLongClickListener(this);
         return new ViewHolder(content);
     }
 
@@ -87,9 +87,9 @@ public class ContactRecViewAdapter extends RecyclerView.Adapter<ContactRecViewAd
         return true;
     }
 
-    public void setOnLongClickListener(View.OnLongClickListener onLongClickListener){
+   /* public void setOnLongClickListener(View.OnLongClickListener onLongClickListener){
         this.onLongClickListener = onLongClickListener;
-    }
+    }*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

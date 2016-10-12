@@ -2,7 +2,10 @@ package com.example.wilson.customchat.home.contacts;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.wilson.customchat.R;
@@ -25,6 +28,7 @@ public class ContactsControllerImplementation implements ContactsController {
     private FragmentContacts fragment;
     private Activity activity;
     private ViewHelper viewHelper;
+    private View coordinatiorView;
 
     public ContactsControllerImplementation(){
         repository = new ContactsRepository(this);
@@ -97,7 +101,6 @@ public class ContactsControllerImplementation implements ContactsController {
     public void onContactFound(ArrayList<Contact> contactList) {
         Log.d(TAG,"you've called me!");
         if(contactList!=null){
-
             Log.d("ContactsController","se ha obtenido la informacion: "+contactList.get(0).getContactUsername());
             ContactDialog dialog = new ContactDialog();
             dialog.newInstance(this, contactList.get(0),ContactDialog.TYPE_FOUND);
@@ -120,6 +123,11 @@ public class ContactsControllerImplementation implements ContactsController {
     }
 
     @Override
+    public void onContactAdded() {
+        Snackbar.make(this.coordinatiorView,"el contacto se ha añadido satisfactioriamente",Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onContactDeleted() {
         viewHelper.hideProgressDialog();
         Toast.makeText(fragment.getContext(), "el contacto se eliminó correctamente", Toast.LENGTH_SHORT).show();
@@ -135,6 +143,10 @@ public class ContactsControllerImplementation implements ContactsController {
         if(repository!=null){
             repository.onDestroy();
         }
+    }
+    @Override
+    public void setCoordinatorView(View coordinatiorView){
+        this.coordinatiorView = coordinatiorView;
     }
 
     private ContactsRepository instantiateRepository(){

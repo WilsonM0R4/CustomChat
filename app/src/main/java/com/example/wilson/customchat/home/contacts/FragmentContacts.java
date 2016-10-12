@@ -35,6 +35,7 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
     @Bind(R.id.contactsList) RecyclerView contactsList;
     @Bind(R.id.noContactsText) TextView textNoContacts;
     @Bind(R.id.fabAddContact) FloatingActionButton fabAddContacts;
+    @Bind(R.id.coordinator_container) View coordinatorContainer;
 
     private static final String TAG = "ContactsView";
 
@@ -63,7 +64,7 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
         controller.setViewActivity(activity);
         controller.setFragment(this);
         controller.loadListeners();
-
+        controller.setCoordinatorView(coordinatorContainer);
         registerForContextMenu(contactsList);
 
         return contactsView;
@@ -135,7 +136,7 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
     public void searchContacts(){
         SearchContactDialog dialog = new SearchContactDialog();
         dialog.newInstance(controller);
-        dialog.show(getFragmentManager(),"tagSearchUser");
+        dialog.show(getFragmentManager(),SearchContactDialog.DIALOG_TAG);
     }
 
     @Override
@@ -222,6 +223,7 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
     public void disableInputs() {
         //not used for now
     }
+
 
 
 }

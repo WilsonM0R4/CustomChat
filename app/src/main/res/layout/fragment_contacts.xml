@@ -3,26 +3,39 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:id="@+id/noContactsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no_contacts_message"
-        android:layout_centerInParent="true"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddContact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_person_add_white_24dp"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/contactsList"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"/>
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView android:id="@+id/noContactsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_contacts_message"
+                android:layout_centerInParent="true"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabAddContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="30dp"
+                android:src="@drawable/ic_person_add_white_24dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/contactsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </RelativeLayout>
