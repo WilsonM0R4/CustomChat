@@ -20,8 +20,10 @@ public interface ContactsController {
     void addContact(String email);
     void searchContacts(String email);
     void updateContact();
-    void deleteContact();
+    void deleteContact(String contactEmail);
     void onContactFound(ArrayList<Contact> contactList );
     String onContactNotFound();
+    void onContactDeleted();
+    void processFailure(String errorMessage);
     void onDestroy();
 }

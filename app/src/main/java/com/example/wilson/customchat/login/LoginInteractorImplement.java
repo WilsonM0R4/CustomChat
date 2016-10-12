@@ -52,7 +52,6 @@ public class LoginInteractorImplement implements LoginInteractor{
             Log.e("credentials","user or password null");
         }
 
-
         Log.e("interactor login","sign in requested");
     }
 

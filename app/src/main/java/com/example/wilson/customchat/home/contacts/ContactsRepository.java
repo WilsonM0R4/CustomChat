@@ -110,6 +110,7 @@ public class ContactsRepository {
         };
     }
 
+
     /**
      * Proper methods
      **/
@@ -123,7 +124,6 @@ public class ContactsRepository {
             Log.d(TAG, "received data, it is: " + contactsMap);
             stringContacts = new ArrayList<>();
             stringContacts.addAll(contactsMap.values());
-
 
             databaseReference.child(User.EXTRA_DATA_KEY).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -258,4 +258,18 @@ public class ContactsRepository {
             }
         });
     }
+
+    protected void deleteContact(String contactEmail){
+        databaseReference.child(User.USER_CONTACTS).child(User.formatEmail(user.getEmail())).child(User.CONTACT_KEY+contactEmail).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    controller.onContactDeleted();
+                } else {
+                    controller.processFailure("cannot complete the task, unknown reason");
+                }
+            }
+        });
+    }
+
 }

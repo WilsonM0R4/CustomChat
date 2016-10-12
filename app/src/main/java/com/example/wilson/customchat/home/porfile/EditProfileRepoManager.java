@@ -1,9 +1,7 @@
 package com.example.wilson.customchat.home.porfile;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,8 +33,22 @@ public class EditProfileRepoManager {
 
     public void updateUserData(Map<String,Object> userInfo){
 
-
         if(!userInfo.isEmpty()){
+
+            if(userInfo.containsKey(User.PASSWORD_KEY)){
+                String pass = userInfo.get(User.PASSWORD_KEY).toString();
+                userInfo.remove(User.PASSWORD_KEY);
+
+                user.updatePassword(pass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.e("ProfileRepository","updated!");
+                        }
+                    }
+                });
+            }
+
             databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(user.getEmail())).updateChildren(userInfo).addOnCompleteListener(onComplete());
         }else{
             Log.e("Repository","no user data received");

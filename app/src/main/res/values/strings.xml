@@ -42,6 +42,13 @@
     <string name="default_username_text">Username</string>
     <string name="add_to_contacts_text">añadir a contactos</string>
     <string name="contact_not_found_message">el contacto que buscas no está registrado</string>
+    <string name="change_password_text">cambiar contraseña</string>
+    <string name="single_email_text">email</string>
+    <string name="view_item">ver</string>
+    <string name="new_message_item">mensaje nuevo</string>
+    <string name="delete_item">eliminar</string>
+    <string name="delete_title">¿eliminar?</string>
+    <string name="delete_message">Se borrarán tambien tus conversaciones con este contacto, esto no se puede deshacer</string>
 
     <!--string-array name="availability_array">
         <item>"@string/online"</item>

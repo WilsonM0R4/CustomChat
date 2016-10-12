@@ -43,6 +43,8 @@ public class ProfilePresenterImplement implements ProfilePresenter {
         profile.textUsername.setText(getUsername());
         profile.userEmail.setText(getUserEmail());
         profile.userState.setText(profile.activity.getResources().getString(R.string.state_text)+getActualState());
+        profile.username = getUsername();
+        profile.state = getActualState();
     }
 
     @Override

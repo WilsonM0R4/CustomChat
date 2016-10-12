@@ -7,19 +7,21 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
-import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.commons.ContactRecViewAdapter;
+import com.example.wilson.customchat.commons.MessageDialog;
 import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.home.HomeActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,12 +38,14 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
 
     private static final String TAG = "ContactsView";
 
+    private ArrayList<Contact> userList;
+    private View itemView;
+
     View contactsView;
     HomeActivity activity;
     ContactsController controller;
     ContactRecViewAdapter adapter;
     RecyclerView.LayoutManager manager;
-
     ProgressDialog dialog;
 
     public FragmentContacts newInstance(HomeActivity activity){
@@ -59,7 +63,61 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
         controller.setViewActivity(activity);
         controller.setFragment(this);
         controller.loadListeners();
+
+        registerForContextMenu(contactsList);
+
         return contactsView;
+    }
+
+    /*** Context menu methods ***/
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo info){
+        super.onCreateContextMenu(menu, view, info);
+
+        MenuInflater menuInflater = activity.getMenuInflater();
+        menuInflater.inflate(R.menu.context_menu_contact, menu);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item){
+
+            switch(item.getItemId()){
+                case R.id.item_view:
+
+                    ContactDialog dialog = new ContactDialog();
+                    dialog.newInstance(controller,userList.get(contactsList.getChildAdapterPosition(itemView)),ContactDialog.TYPE_SHOW);
+                    dialog.show(getFragmentManager(),"TagShowContact");
+
+                    break;
+                case R.id.item_new_message:
+
+
+                    break;
+                case R.id.item_delete:
+                    final MessageDialog messageDialog = new MessageDialog();
+                    messageDialog.newInstance(getActivity(),getString(R.string.delete_title),getString(R.string.delete_message));
+                    messageDialog.setOnAcceptClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(TAG,"accept pressed");
+                            controller.deleteContact(userList.get(contactsList.getChildAdapterPosition(itemView)).getContactEmail());
+                            messageDialog.dismiss();
+                        }
+                    });
+
+                    messageDialog.setOnCancelClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(TAG,"cancel pressed");
+                            messageDialog.dismiss();
+                        }
+                    });
+                    messageDialog.show(getFragmentManager(),"messageTag");
+                    break;
+            }
+
+        return  true;
     }
 
     @Override
@@ -76,27 +134,48 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
     @OnClick(R.id.fabAddContact)
     public void searchContacts(){
         SearchContactDialog dialog = new SearchContactDialog();
-        //ContactDialog dialog = new ContactDialog();
         dialog.newInstance(controller);
         dialog.show(getFragmentManager(),"tagSearchUser");
     }
 
-
-
     @Override
     public void getContacts(ArrayList<String> receivedContacts) {
-
+        //unused method
     }
 
     @Override
-    public void showContacts(ArrayList<Contact> userContacts) {
+    public void showContacts(final ArrayList<Contact> userContacts) {
 
         Log.d(TAG,"me has llamado!");
         manager = new LinearLayoutManager(activity);
-        //ArrayList<HashMap<String,String>> items = new ArrayList<>();
 
         if(userContacts!=null && !userContacts.isEmpty()){
             adapter = new ContactRecViewAdapter(userContacts);
+            userList = userContacts;
+
+            /*** onClickListener for each item ***/
+            adapter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e(TAG,"View have been clicked");
+
+                    itemView = v;
+                    getActivity().openContextMenu(v);
+                    /*ContactDialog dialog = new ContactDialog();
+                    dialog.newInstance(controller,userContacts.get(contactsList.getChildAdapterPosition(v)),ContactDialog.TYPE_SHOW);
+                    dialog.show(getFragmentManager(),"TagShowContact");*/
+                }
+            });
+
+            /*** onLongClickListener for each item ***/
+            /*adapter.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //itemView = v;
+                    //getActivity().openContextMenu(v);
+                    return true;
+                }
+            });*/
             contactsList.setLayoutManager(manager);
             contactsList.setAdapter(adapter);
             contactsList.setVisibility(View.VISIBLE);
@@ -144,40 +223,5 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
         //not used for now
     }
 
-
-
-
-    private void configContactList(){
-        /*RecyclerView.LayoutManager manager = new LinearLayoutManager(activity);
-        ArrayList<HashMap<String,String>> items = new ArrayList<>();
-        HashMap<String,String> item1 = new HashMap<>();
-        item1.put(User.USER_PROFILE_IMAGE,"pacho");
-        item1.put(User.EMAIL_KEY,"pacho");
-        item1.put(User.USER_STATE,"state of pacho");
-        HashMap<String,String> item2 = new HashMap<>();
-        item2.put(User.USER_PROFILE_IMAGE,"pacho");
-        item2.put(User.EMAIL_KEY,"pepe");
-        item2.put(User.USER_STATE,"state of pepe");
-        HashMap<String,String> item3 = new HashMap<>();
-        item3.put(User.USER_PROFILE_IMAGE,"pacho");
-        item3.put(User.EMAIL_KEY,"pablo");
-        item3.put(User.USER_STATE,"state of pablo");
-        items.add(0,item1);
-        items.add(1,item2);
-        items.add(2,item3);
-
-        ArrayList<String> keys = new ArrayList<>();
-        keys.add(0,User.USER_PROFILE_IMAGE);
-        keys.add(1,User.EMAIL_KEY);
-        keys.add(2,User.USER_STATE);
-
-        adapter = new ContactRecViewAdapter(items);
-
-        contactsList.setLayoutManager(manager);
-        contactsList.setAdapter(adapter);
-        contactsList.setVisibility(View.VISIBLE);
-        textNoContacts.setVisibility(View.GONE);*/
-
-    }
 
 }

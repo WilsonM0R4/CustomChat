@@ -22,6 +22,7 @@ public class User {
     public static final String USER_CONTACTS = "contacts";
     public static final String USER_NO_CONTACTS = "no contacts";
     public static final String CONTACT_KEY = "contact_key_";
+    public static final String PASSWORD_KEY = "password";
     Map<String,String> userData;
 
     public static class UserSingleton{

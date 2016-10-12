@@ -28,8 +28,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView,ViewHe
     @Bind(R.id.btnSignUp)
     Button btnSignUp;
     @Bind(R.id.btnSignIn) Button btnSignIn;
-    LoginPresenter loginPresenter;
-    ProgressDialog progressDialog;
+    private LoginPresenter loginPresenter;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView,ViewHe
         loginPresenter.onCreate();
         if(loginPresenter!=null){
             loginPresenter.checkForActualSessionState();
+        }else{
+            Log.e("LoginView","Cannot validate actual session status");
         }
 
     }
@@ -107,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView,ViewHe
     public void navigateToHomeScreen() {
         Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
         startActivity(intent);
+        finish();
     }
 
 }

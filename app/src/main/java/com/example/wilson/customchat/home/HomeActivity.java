@@ -80,4 +80,5 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     public void destroy() {
         this.finish();
     }
+
 }

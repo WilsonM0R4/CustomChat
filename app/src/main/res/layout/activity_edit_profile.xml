@@ -89,60 +89,80 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="6dp">
+                    android:padding="16dp"
+                    android:orientation="vertical">
 
-                    <android.support.design.widget.TextInputLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <EditText android:id="@+id/editPassword"
-                            android:layout_width="match_parent"
+                        <TextView android:id="@+id/text_enable_pass"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:hint="@string/placeholder_password"/>
+                            android:textColor="@color/colorAccent"
+                            android:textSize="18sp"
+                            android:text="Cambiar contraseña"/>
 
-                    </android.support.design.widget.TextInputLayout>
+                        <Switch android:id="@+id/switch_enable_pass_fields"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"/>
 
-                    <android.support.design.widget.TextInputLayout
+                    </RelativeLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_margin="6dp">
 
-                        <EditText android:id="@+id/editPassConfirm"
+                        <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:hint="@string/register_confirm_pass"/>
+                            android:paddingBottom="20dp">
 
-                    </android.support.design.widget.TextInputLayout>
+                            <EditText android:id="@+id/editPassword"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                android:enabled="false"
+                                android:hint="@string/placeholder_password"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText android:id="@+id/editPassConfirm"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                android:hint="@string/register_confirm_pass"
+                                android:enabled="false"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <!--Button android:id="@+id/btn_enable_password_fields"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/colorNoBackground"
+                        android:text="@string/change_password_text"
+                        /-->
 
                 </LinearLayout>
 
+
             </android.support.v7.widget.CardView>
 
-            <!--LinearLayout android:id="@+id/buttonsContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/container_round_background">
-
-                <ImageButton android:id="@+id/editCancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
-                    android:src="@drawable/ic_clear_white_36dp"
-                    android:layout_margin="6dp" />
-
-                <ImageButton android:id="@+id/editSave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
-                    android:src="@drawable/ic_done_white_36dp"
-                    android:layout_margin="6dp"/>
-
-            </LinearLayout-->
 
         </RelativeLayout>
 

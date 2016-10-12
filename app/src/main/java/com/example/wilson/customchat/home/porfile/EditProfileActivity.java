@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.wilson.customchat.R;
@@ -33,14 +34,24 @@ import butterknife.OnClick;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolAppbar) Toolbar appBar;
-    @Bind(R.id.editCancel) ImageButton cancelButton;
-    @Bind(R.id.editSave) ImageButton saveButton;
-    @Bind(R.id.editProfileImage) ImageView editProfileImage;
-    @Bind(R.id.editUsername) EditText txtEditUsername;
-    @Bind(R.id.editState) EditText txtEditState;
-    @Bind(R.id.editPassword) EditText txtEditPassword;
-    @Bind(R.id.editPassConfirm) EditText txtEditConfPass;
+    @Bind(R.id.toolAppbar)
+    Toolbar appBar;
+    @Bind(R.id.editCancel)
+    ImageButton cancelButton;
+    @Bind(R.id.editSave)
+    ImageButton saveButton;
+    @Bind(R.id.editProfileImage)
+    ImageView editProfileImage;
+    @Bind(R.id.editUsername)
+    EditText txtEditUsername;
+    @Bind(R.id.editState)
+    EditText txtEditState;
+    @Bind(R.id.editPassword)
+    EditText txtEditPassword;
+    @Bind(R.id.editPassConfirm)
+    EditText txtEditConfPass;
+    @Bind(R.id.switch_enable_pass_fields)
+    Switch switchEnablePass;
 
     private static final int REQUEST_CAPTURE = 0;
     private String newProfileImagePath;
@@ -57,6 +68,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        txtEditUsername.setText(getIntent().getStringExtra(User.USERNAME));
+        txtEditState.setText(getIntent().getStringExtra(User.USER_STATE));
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -64,10 +78,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
         Bitmap imageBitmap;
 
-        if ((requestCode == REQUEST_CAPTURE) && (resultCode == Activity.RESULT_OK) && (profileImageFile!=null)) {
+        if ((requestCode == REQUEST_CAPTURE) && (resultCode == Activity.RESULT_OK) && (profileImageFile != null)) {
 
             newProfileImagePath = profileImageFile.getAbsolutePath();
-            Log.e("activity result","newProfileImagePath is "+newProfileImagePath);
+            Log.e("activity result", "newProfileImagePath is " + newProfileImagePath);
 
             Intent intent = new Intent(EditProfileActivity.this, ImageCropperActivity.class);
             intent.putExtra(ImageCropperActivity.IMAGE_FILE_KEY, newProfileImagePath);
@@ -80,13 +94,20 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void sendUserDataToCloud() {
         //Toast.makeText(this, "run to the hiiiiiiiils!!!", Toast.LENGTH_SHORT).show();
 
-        Map<String,Object> userInfo = new HashMap<>();
+        Map<String, Object> userInfo = new HashMap<>();
 
-        if(checkUserData()){
-            userInfo.put(User.USER_AVALIABILITY,String.valueOf(User.USER_ONLINE));
-            userInfo.put(User.USER_PROFILE_IMAGE,User.NONE_IMAGE);
-            userInfo.put(User.USER_STATE,txtEditState.getText().toString());
-            userInfo.put(User.USERNAME,txtEditUsername.getText().toString());
+        if (checkUserData()) {
+            userInfo.put(User.USER_AVALIABILITY, String.valueOf(User.USER_ONLINE));
+            userInfo.put(User.USER_PROFILE_IMAGE, User.NONE_IMAGE);
+            userInfo.put(User.USER_STATE, txtEditState.getText().toString());
+            userInfo.put(User.USERNAME, txtEditUsername.getText().toString());
+
+            if(switchEnablePass.isChecked()){
+                if(!txtEditPassword.getText().toString().isEmpty()){
+                    userInfo.put(User.PASSWORD_KEY,txtEditPassword.getText().toString());
+                }
+            }
+
         }
 
         EditProfileRepoManager repository = new EditProfileRepoManager(this);
@@ -134,11 +155,11 @@ public class EditProfileActivity extends AppCompatActivity {
         if (isCreated && directory.isDirectory()) {
             Boolean imageCreated = image.createNewFile();
 
-            if(imageCreated){
+            if (imageCreated) {
                 newProfileImagePath = image.getAbsolutePath();
-                Log.e("imageFile","image created successfully");
-            }else{
-                Log.e("imageFile","image not created");
+                Log.e("imageFile", "image created successfully");
+            } else {
+                Log.e("imageFile", "image not created");
             }
         } else {
             Log.e("imageDir", "directory not created");
@@ -152,7 +173,17 @@ public class EditProfileActivity extends AppCompatActivity {
         return BitmapFactory.decodeFile(imageFile.getAbsolutePath());
     }
 
-    private boolean checkUserData(){
-        return (txtEditUsername.getText().toString()!=null && txtEditState.getText().toString()!=null);
+    private boolean checkUserData() {
+        String newUsername = txtEditUsername.getText().toString();
+        String newState = txtEditState.getText().toString();
+        return ((newUsername != null && !newUsername.isEmpty()) && (newState != null && !newState.isEmpty()));
+    }
+
+    @OnClick(R.id.switch_enable_pass_fields)
+    public void enablePasswordFields() {
+
+        txtEditPassword.setEnabled(switchEnablePass.isChecked());
+        txtEditConfPass.setEnabled(switchEnablePass.isChecked());
+
     }
 }

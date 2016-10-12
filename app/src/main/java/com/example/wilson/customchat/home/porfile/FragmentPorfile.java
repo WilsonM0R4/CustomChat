@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.home.HomeActivity;
+import com.example.wilson.customchat.login.LoginActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +35,8 @@ public class FragmentPorfile extends Fragment implements ProfileView,ViewHelper{
     EditDialog dialog;
     AvailabilityDialog availabilityDialog;
     ProgressDialog progressDialog;
+
+    protected String username, state;
 
     public FragmentPorfile newInstance(HomeActivity activity){
         this.activity = activity;
@@ -97,12 +101,18 @@ public class FragmentPorfile extends Fragment implements ProfileView,ViewHelper{
     @OnClick(R.id.lblEditProfile)
     @Override
     public void editProfile() {
-        startActivity(new Intent(getContext(),EditProfileActivity.class));
+        Intent intent = new Intent(getContext(),EditProfileActivity.class);
+        intent.putExtra(User.USERNAME,username);
+        intent.putExtra(User.USER_STATE, state);
+        startActivity(intent);
     }
 
     @Override
     public void updateStateInView(String state) {
-        userState.setText(state);
+        if(userState!=null){
+            userState.setText(state);
+        }
+
     }
 
     @OnClick(R.id.lblState)
@@ -139,7 +149,9 @@ public class FragmentPorfile extends Fragment implements ProfileView,ViewHelper{
     @OnClick(R.id.btnSignOff)
     @Override
     public void signOff(){
+
         presenter.signOff();
+        activity.startActivity(new Intent(activity.getBaseContext(), LoginActivity.class));
         activity.destroy();
 
     }

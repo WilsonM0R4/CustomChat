@@ -32,7 +32,7 @@ public class LoginPresenterImplement implements LoginPresenter {
         eventBus.register(this);
         instantiateAuthStateListener();
         loginInteractor.startAuthStateListener();
-        checkForActualSessionState();
+        //checkForActualSessionState();
     }
 
     @Override
@@ -46,6 +46,8 @@ public class LoginPresenterImplement implements LoginPresenter {
         boolean session = loginInteractor.checkForActualSessionStatus();
         if(session){
             loginView.navigateToHomeScreen();
+        }else{
+            Log.d("LoginPresenter","no user is signed in");
         }
 
     }

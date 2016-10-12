@@ -3,10 +3,12 @@ package com.example.wilson.customchat.home.contacts;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.commons.MessageDialog;
+import com.example.wilson.customchat.commons.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class ContactsControllerImplementation implements ContactsController {
     private ContactsView view;
     private FragmentContacts fragment;
     private Activity activity;
+    private ViewHelper viewHelper;
 
     public ContactsControllerImplementation(){
         repository = new ContactsRepository(this);
@@ -42,13 +45,14 @@ public class ContactsControllerImplementation implements ContactsController {
     @Override
     public void setFragment(FragmentContacts fragment) {
         this.fragment = fragment;
+        this.viewHelper = fragment;
     }
 
     @Override
     public void loadContacts(ArrayList<Contact> userContacts) {
         if(view!=null){
             Log.d(TAG,"i have the view");
-
+            viewHelper.hideProgressDialog();
             view.showContacts(userContacts);
         }else{
             Log.e(TAG,"Cannot show received data");
@@ -59,6 +63,7 @@ public class ContactsControllerImplementation implements ContactsController {
     @Override
     public void loadListeners() {
         if(repository!=null){
+            viewHelper.showProgressDialog();
             repository.launchListeners();
         }else{
             Log.e(TAG,"cannot launch listeners");
@@ -75,9 +80,7 @@ public class ContactsControllerImplementation implements ContactsController {
 
     @Override
     public void searchContacts(String email) {
-
         repository.searchContact(email);
-
     }
 
     @Override
@@ -86,8 +89,8 @@ public class ContactsControllerImplementation implements ContactsController {
     }
 
     @Override
-    public void deleteContact() {
-
+    public void deleteContact(String contactEmail) {
+        repository.deleteContact(contactEmail);
     }
 
     @Override
@@ -97,7 +100,7 @@ public class ContactsControllerImplementation implements ContactsController {
 
             Log.d("ContactsController","se ha obtenido la informacion: "+contactList.get(0).getContactUsername());
             ContactDialog dialog = new ContactDialog();
-            dialog.newInstance(this, contactList.get(0));
+            dialog.newInstance(this, contactList.get(0),ContactDialog.TYPE_FOUND);
             dialog.show(fragment.getFragmentManager(),"TagContactDialog");
         }else{
             Log.e("ContactsContoller","no se ha obtenido informacion");
@@ -110,10 +113,21 @@ public class ContactsControllerImplementation implements ContactsController {
         if(activity!=null){
             MessageDialog dialog = new MessageDialog();
             dialog.newInstance(activity,"Ups!",activity.getString(R.string.contact_not_found_message));
-            dialog.show(activity.getFragmentManager(),"TagMessageDialog");
+            dialog.show(fragment.getFragmentManager(),"TagMessageDialog");
         }
 
         return null;
+    }
+
+    @Override
+    public void onContactDeleted() {
+        viewHelper.hideProgressDialog();
+        Toast.makeText(fragment.getContext(), "el contacto se eliminó correctamente", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void processFailure(String errorMessage) {
+        Toast.makeText(fragment.getContext(),errorMessage,Toast.LENGTH_LONG).show();
     }
 
     @Override
