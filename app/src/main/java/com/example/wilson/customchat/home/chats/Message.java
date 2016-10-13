@@ -38,7 +38,7 @@ public class Message {
         this.users = users;
     }
 
-    /*public String getDeliver(){
+    /***public String getDeliver(){
 
     }*/
 }
