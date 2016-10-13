@@ -8,12 +8,18 @@ import java.util.ArrayList;
 
 public class Message {
 
+    /**
+     * Properties for a message
+     * **/
     private String date;
     private  String hour;
     private  ArrayList<String> users;
     private  String deliver;
     private  String content;
 
+    /**
+     * Getters and setters for a message
+     * **/
     public String getDate(){
         return date;
     }
@@ -38,7 +44,20 @@ public class Message {
         this.users = users;
     }
 
-    /***public String getDeliver(){
+    public String getDeliver(){
+        return deliver;
+    }
 
-    }*/
+    public void setDeliver(String deliver){
+        this.deliver = deliver;
+    }
+
+    public String getContent(){
+        return content;
+    }
+
+    public void setContent(String content){
+        this.content = content;
+    }
 }
+

@@ -25,7 +25,7 @@ public class FirebaseHelper {
     private static final String FIREBASE_URL = "https://customchat-a7c4f.firebaseio.com/";
     private static final String USER_EXTRA_INFO = "user_extra_data";
     public static final String USERS_PATH = "registered_users";
-    private static final String CHATS_PATH = "chats";
+    public static final String CHATS_PATH = "chats";
     public static final String CONTACTS_PATH = "contacts";
     private static final String SEPARATOR = "__";
     public static final String REGISTERED_USER_KEY = "user_key_";
