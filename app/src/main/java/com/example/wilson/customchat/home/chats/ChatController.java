@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public interface ChatController {
 
+    void onCreate();
     void newMessage();
     void deleteMessage();
     ArrayList<Chat> getChats();

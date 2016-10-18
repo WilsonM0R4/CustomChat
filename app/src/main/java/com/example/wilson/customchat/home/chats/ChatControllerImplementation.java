@@ -7,6 +7,15 @@ import java.util.ArrayList;
  */
 
 public class ChatControllerImplementation implements ChatController {
+
+    protected ChatRepository repository;
+
+    @Override
+    public void onCreate() {
+        repository = new ChatRepository(this);
+        repository.initListeners();
+    }
+
     @Override
     public void newMessage() {
 

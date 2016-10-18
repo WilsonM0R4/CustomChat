@@ -7,4 +7,5 @@
     <color name="colorTitleSelected">#FFFFFF</color>
     <color name="colorTitleNormal">#CCCCCC</color>
     <color name="colorTranslucent">#FFAAAA</color>
+    <color name="blackColor">#000000</color>
 </resources>

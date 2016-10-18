@@ -24,6 +24,9 @@ public class FragmentChats extends Fragment implements ChatView{
             ButterKnife.bind(this,homeRootView);
         }
 
+        ChatController controller = new ChatControllerImplementation();
+        controller.onCreate();
+
         return homeRootView;
     }
 

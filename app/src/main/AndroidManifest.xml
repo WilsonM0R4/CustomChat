@@ -17,11 +17,6 @@
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".home.HomeActivity"
@@ -38,7 +33,14 @@
         <activity
             android:name=".commons.CropImageActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".home.chats.ChatActivity"></activity>
+        <activity android:name=".home.chats.ChatActivity" />
+        <activity android:name=".SplashActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
