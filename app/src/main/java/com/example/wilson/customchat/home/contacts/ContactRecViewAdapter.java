@@ -1,4 +1,4 @@
-package com.example.wilson.customchat.commons;
+package com.example.wilson.customchat.home.contacts;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,12 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
-import com.example.wilson.customchat.home.contacts.Contact;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**

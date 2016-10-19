@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
-import com.example.wilson.customchat.commons.ContactRecViewAdapter;
 import com.example.wilson.customchat.commons.MessageDialog;
 import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.home.HomeActivity;
