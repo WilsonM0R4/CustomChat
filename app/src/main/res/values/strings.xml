@@ -49,6 +49,9 @@
     <string name="delete_item">eliminar</string>
     <string name="delete_title">¿eliminar?</string>
     <string name="delete_message">Se borrarán tambien tus conversaciones con este contacto, esto no se puede deshacer</string>
+    <string name="message_hour">hh:mm</string>
+    <string name="message_content">contenido del mensaje</string>
+    <string name="chat_contact_name">Contacto</string>
 
     <!--string-array name="availability_array">
         <item>"@string/online"</item>

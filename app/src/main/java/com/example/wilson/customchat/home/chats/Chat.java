@@ -1,5 +1,7 @@
 package com.example.wilson.customchat.home.chats;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +14,8 @@ public class Chat {
     public static final String HOUR_PATH = "hour";
     public static final String SENDER_PATH = "sender";
     public static final String CONTENT_PATH = "content";
-    public static final String USERS_path = "users";
+    public static final int COLOR_SENDER = Color.argb(1,48,63,159); //ColorPrimaryDark
+    public static final int COLOR_RECEIVER = Color.argb(1,0,153,153); //ColorAccent
 
     private ArrayList<Message> messages;
 
