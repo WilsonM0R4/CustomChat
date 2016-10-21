@@ -10,6 +10,6 @@ public interface ChatView {
 
     void newMessage();
     void deleteMessage();
-    void showContacts(ArrayList<Chat> chats);
+    void showChats(ArrayList<Chat> chats);
 
 }

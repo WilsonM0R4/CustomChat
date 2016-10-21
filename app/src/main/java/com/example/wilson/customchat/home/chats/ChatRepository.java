@@ -50,7 +50,7 @@ public class ChatRepository {
                         getChats(dataSnapshot);
                         break;
                     case TYPE_SPECIAL_DATA:
-                        getMessageData(dataSnapshot);
+                        //getMessageData(dataSnapshot);
                         break;
                 }
 
@@ -63,41 +63,68 @@ public class ChatRepository {
         };
     }
 
-    private void getChats(DataSnapshot dataSnapshot){
-        GenericTypeIndicator<Map<String,Object>> indicator = new GenericTypeIndicator<Map<String, Object>>() {};
-        Map<String, Object> data = dataSnapshot.getValue(indicator);
+    private ArrayList<Chat> getChats(DataSnapshot dataSnapshot){
+
+        /*GenericTypeIndicator<Map<String,Map<String,String>>> indicator = new GenericTypeIndicator<Map<String, Map<String, String>>>() {};
+        Map<String,Map<String,String>> chatsData = dataSnapshot.getValue(indicator);*/
+
+
+
+        GenericTypeIndicator <Map<String,Map<String,Object>>> indicator = new GenericTypeIndicator<Map<String,Map<String,Object>>>() {};
+        Map <String,Map<String,Object>> data = dataSnapshot.getValue(indicator);
         chats = new ArrayList<>();
         ArrayList<String> temp = new ArrayList<>();
+        ArrayList<Chat> chats = new ArrayList<>();
 
         if(data!=null){
             temp.addAll(data.keySet());
             Log.d(TAG,"response here is "+data);
             for(int c =0;c<temp.size();c++){
 
+                Chat chat = new Chat();
+
                 if(User.formatEmail(temp.get(c)).contains(formattedUserEmail)){
                     Log.d(TAG,"contains the value, it is "+formattedUserEmail);
+                    String key = User.formatEmail(temp.get(c));
+                    ArrayList<String> tempArray = new ArrayList<>();
+                    tempArray.addAll(data.get(key).keySet());
 
+                    ArrayList<Message> messages = new ArrayList<>();
 
-                    /***
-                     * FIX THIS!!
-                     * * **/
+                    int index = tempArray.size();
+
+                    for(int count=0; count<index; count++){
+                        Log.d(TAG,"key is "+key);
+                        chat.setLastMessageHour(data.get(key).get(Chat.CONTENT_PATH).toString());
+                        Message message = new Message();
+                        message.setContent(data.get(key).get(Chat.CONTENT_PATH).toString());
+                        message.setHour(data.get(key).get(Chat.HOUR_PATH).toString());
+                        message.setDeliver(data.get(key).get(Chat.SENDER_PATH).toString());
+                        message.setDate(data.get(key).get(Chat.DATE_PATH).toString());
+
+                        messages.add(message);
+                        Log.d(TAG,"content here is "+message.getContent());
+                    }
+
+                    chat.setMessages(messages);
                     Log.d(TAG,"temp value is "+temp.get(c));
-
-                    helper.getDatabaseReference()
-                            .child(FirebaseHelper.CHATS_PATH)
-                            .child(temp.get(c))
-                            .addValueEventListener(chatListener(TYPE_SPECIAL_DATA));
-
                 }else{
                     Log.d(TAG,"don't contains the value");
                 }
+
+                chats.add(chat);
             }
+
         }
+
+        return chats;
     }
 
     private void getMessageData(DataSnapshot dataSnapshot) {
         GenericTypeIndicator<Map<String, Map<String, String>>> response = new GenericTypeIndicator<Map<String, Map<String, String>>>() {};
         Map<String, Map<String, String>> data; //= new HashMap<>();
+        ArrayList<String> keys = new ArrayList<>();
+        ArrayList<Message> messages = new ArrayList<>();
         Chat chat = new Chat();
         Message message = new Message();
 
@@ -114,17 +141,28 @@ public class ChatRepository {
             data.put(Chat.SENDER_PATH, (responseValue.get(Chat.SENDER_PATH).toString()));*/
 
             Log.d(TAG,"data here is "+data);
-            Log.d(TAG,"value is "+data.get(formattedUserEmail).get(Chat.CONTENT_PATH));
+            keys.addAll(data.keySet());
 
-            message.setContent(data.get(formattedUserEmail).get(Chat.CONTENT_PATH));
-            /*message.setDeliver(responseValue.get(Chat.SENDER_PATH).toString());
-            message.setHour(responseValue.get(Chat.HOUR_PATH).toString());
-            message.setDate(responseValue.get(Chat.DATE_PATH).toString());*/
+            for(int c=0; c<keys.size();c++){
+                Log.d(TAG,"value is "+data.get(keys.get(c)).get(Chat.CONTENT_PATH));
+                message.setContent(data.get(keys.get(c)).get(Chat.CONTENT_PATH));
+                message.setDate(data.get(keys.get(c)).get(Chat.DATE_PATH));
+                message.setDeliver(data.get(keys.get(c)).get(Chat.SENDER_PATH));
+                message.setHour(data.get(keys.get(c)).get(Chat.HOUR_PATH));
+
+                messages.add(message);
+            }
+
+            chat.setMessages(messages);
+            chat.setLastMessageContent(messages.get(0).getContent());
+            chat.setLastMessageDate(messages.get(0).getDate());
+            chat.setLastMessageHour(messages.get(0).getHour());
 
 
-
+        }else{
+            Log.e(TAG,"received data is null");
         }
-        //Log.d(TAG, "response is " + responseValue);
+
     }
 
 }

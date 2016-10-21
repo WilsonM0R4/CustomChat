@@ -2,10 +2,13 @@ package com.example.wilson.customchat.home.chats;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
 
@@ -20,7 +23,9 @@ import butterknife.ButterKnife;
 public class FragmentChats extends Fragment implements ChatView{
 
     @Bind(R.id.chats_recycler) RecyclerView chatsRecycler;
+    @Bind(R.id.noChatsText) TextView noChatsText;
 
+    private static final String TAG = "ChatView";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -48,9 +53,17 @@ public class FragmentChats extends Fragment implements ChatView{
     }
 
     @Override
-    public void showContacts(ArrayList<Chat> chats) {
+    public void showChats(ArrayList<Chat> chats) {
+        Log.d(TAG,"chats are "+chats);
 
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
+        ChatAdapter adapter = new ChatAdapter(chats);
 
+        chatsRecycler.setLayoutManager(manager);
+        chatsRecycler.setAdapter(adapter);
+        chatsRecycler.setVisibility(View.VISIBLE);
+        noChatsText.setVisibility(View.GONE);
 
     }
+
 }

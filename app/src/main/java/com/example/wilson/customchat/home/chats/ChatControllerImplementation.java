@@ -9,11 +9,17 @@ import java.util.ArrayList;
 public class ChatControllerImplementation implements ChatController {
 
     protected ChatRepository repository;
+    private ChatView view;
 
     @Override
     public void onCreate() {
         repository = new ChatRepository(this);
         repository.initListeners();
+    }
+
+    @Override
+    public void setView(ChatView view) {
+        this.view = view;
     }
 
     @Override
@@ -28,6 +34,16 @@ public class ChatControllerImplementation implements ChatController {
 
     @Override
     public ArrayList<Chat> getChats() {
+        return null;
+    }
+
+    @Override
+    public void listChats(ArrayList<Chat> chats) {
+        view.showChats(chats);
+    }
+
+    @Override
+    public Chat getMessages() {
         return null;
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.wilson.customchat.R;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -16,9 +17,9 @@ import java.util.Map;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private View view;
-    private Map<String,Object> dataSource;
+    private ArrayList<Chat> dataSource;
 
-    public ChatAdapter(Map<String,Object> dataSource){
+    public ChatAdapter(ArrayList<Chat> dataSource){
         this.dataSource = dataSource;
     }
 

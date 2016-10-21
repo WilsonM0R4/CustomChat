@@ -18,11 +18,38 @@ public class Chat {
     public static final int COLOR_RECEIVER = Color.argb(1,0,153,153); //ColorAccent
 
     private ArrayList<Message> messages;
+    private String lastMessageContent;
+    private String lastMessageHour;
+    private String lastMessageDate;
 
     public ArrayList<Message> getMessages() {
         return messages;
     }
     public void setMessages(ArrayList<Message> messages) {
         this.messages = messages;
+    }
+
+    public String getLastMessageContent() {
+        return lastMessageContent;
+    }
+
+    public void setLastMessageContent(String lastMessage) {
+        this.lastMessageContent = lastMessage;
+    }
+
+    public String getLastMessageHour() {
+        return lastMessageHour;
+    }
+
+    public void setLastMessageHour(String lastMessageHour) {
+        this.lastMessageHour = lastMessageHour;
+    }
+
+    public String getLastMessageDate() {
+        return lastMessageDate;
+    }
+
+    public void setLastMessageDate(String lastMessageDate) {
+        this.lastMessageDate = lastMessageDate;
     }
 }
