@@ -47,7 +47,7 @@ public class ChatRepository {
 
                 switch(type){
                     case TYPE_MAIN_DATA:
-                        getChats(dataSnapshot);
+                        controller.listChats(getChats(dataSnapshot));
                         break;
                     case TYPE_SPECIAL_DATA:
                         //getMessageData(dataSnapshot);
@@ -70,8 +70,8 @@ public class ChatRepository {
 
 
 
-        GenericTypeIndicator <Map<String,Map<String,Object>>> indicator = new GenericTypeIndicator<Map<String,Map<String,Object>>>() {};
-        Map <String,Map<String,Object>> data = dataSnapshot.getValue(indicator);
+        GenericTypeIndicator <Map<String,Map<String,Map<String,String>>>> indicator = new GenericTypeIndicator<Map<String,Map<String,Map<String,String>>>>() {};
+        Map <String,Map<String,Map<String,String>>> data = dataSnapshot.getValue(indicator);
         chats = new ArrayList<>();
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<Chat> chats = new ArrayList<>();
@@ -95,18 +95,35 @@ public class ChatRepository {
 
                     for(int count=0; count<index; count++){
                         Log.d(TAG,"key is "+key);
-                        chat.setLastMessageHour(data.get(key).get(Chat.CONTENT_PATH).toString());
-                        Message message = new Message();
-                        message.setContent(data.get(key).get(Chat.CONTENT_PATH).toString());
-                        message.setHour(data.get(key).get(Chat.HOUR_PATH).toString());
-                        message.setDeliver(data.get(key).get(Chat.SENDER_PATH).toString());
-                        message.setDate(data.get(key).get(Chat.DATE_PATH).toString());
+                        Map<String, Map<String,String>> messageMap = data.get(key);
+                        Log.d(TAG,"data here in messageMap is "+messageMap);
+                        ArrayList<String> messageKey = new ArrayList<>();
+                        messageKey.addAll(messageMap.keySet());
 
-                        messages.add(message);
-                        Log.d(TAG,"content here is "+message.getContent());
+                        for(int l=0;l<messageKey.size();l++){
+                            //chat.setLastMessageHour(messageKey.get(l));
+
+                            String messagehour = messageMap.get(messageKey.get(l)).get(Chat.HOUR_PATH);
+                            Log.d(TAG,"message hour is "+ messagehour);
+
+
+                            Message message = new Message();
+                            message.setContent(messageMap.get(messageKey.get(l)).get(Chat.CONTENT_PATH));
+                            message.setHour(messagehour);
+                            message.setDeliver(messageMap.get(messageKey.get(l)).get(Chat.SENDER_PATH));
+                            message.setDate(messageMap.get(messageKey.get(l)).get(Chat.DATE_PATH));
+
+                            messages.add(message);
+                            Log.d(TAG,"content here is "+message.getContent());
+                        }
+
                     }
 
                     chat.setMessages(messages);
+                    chat.setLastMessageHour(messages.get(messages.size()-1).getDate());
+                    chat.setLastMessageContent(messages.get(messages.size()-1).getContent());
+                    chat.setLastMessageSender(messages.get(messages.size()-1).getContent());
+
                     Log.d(TAG,"temp value is "+temp.get(c));
                 }else{
                     Log.d(TAG,"don't contains the value");
@@ -120,49 +137,15 @@ public class ChatRepository {
         return chats;
     }
 
-    private void getMessageData(DataSnapshot dataSnapshot) {
-        GenericTypeIndicator<Map<String, Map<String, String>>> response = new GenericTypeIndicator<Map<String, Map<String, String>>>() {};
-        Map<String, Map<String, String>> data; //= new HashMap<>();
-        ArrayList<String> keys = new ArrayList<>();
-        ArrayList<Message> messages = new ArrayList<>();
-        Chat chat = new Chat();
-        Message message = new Message();
+    protected void sendMessage(Message message, String chatPath, String messageKey){
+        Map<String,String> messageData = new HashMap<>();
 
-        data = dataSnapshot.getValue(response);
-        if (data != null) {
+        messageData.put(Chat.CONTENT_PATH,message.getContent());
+        messageData.put(Chat.DATE_PATH,message.getDate());
+        messageData.put(Chat.HOUR_PATH,message.getHour());
+        messageData.put(Chat.SENDER_PATH,message.getDeliver());
 
-            /**
-             response
-             * Chat information
-             * **/
-            /*data.put(Chat.CONTENT_PATH, (responseValue.get(Chat.CONTENT_PATH)).toString());
-            data.put(Chat.DATE_PATH, (responseValue.get(Chat.DATE_PATH)).toString());
-            data.put(Chat.HOUR_PATH, (responseValue.get(Chat.HOUR_PATH)).toString());
-            data.put(Chat.SENDER_PATH, (responseValue.get(Chat.SENDER_PATH).toString()));*/
-
-            Log.d(TAG,"data here is "+data);
-            keys.addAll(data.keySet());
-
-            for(int c=0; c<keys.size();c++){
-                Log.d(TAG,"value is "+data.get(keys.get(c)).get(Chat.CONTENT_PATH));
-                message.setContent(data.get(keys.get(c)).get(Chat.CONTENT_PATH));
-                message.setDate(data.get(keys.get(c)).get(Chat.DATE_PATH));
-                message.setDeliver(data.get(keys.get(c)).get(Chat.SENDER_PATH));
-                message.setHour(data.get(keys.get(c)).get(Chat.HOUR_PATH));
-
-                messages.add(message);
-            }
-
-            chat.setMessages(messages);
-            chat.setLastMessageContent(messages.get(0).getContent());
-            chat.setLastMessageDate(messages.get(0).getDate());
-            chat.setLastMessageHour(messages.get(0).getHour());
-
-
-        }else{
-            Log.e(TAG,"received data is null");
-        }
-
+        helper.getDatabaseReference().child(FirebaseHelper.CHATS_PATH).child(chatPath).child(messageKey).setValue(messageData);
     }
 
 }

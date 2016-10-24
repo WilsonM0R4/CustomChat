@@ -1,5 +1,6 @@
 package com.example.wilson.customchat.home.chats;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
+import com.example.wilson.customchat.commons.ShareDataHelper;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,7 @@ public class FragmentChats extends Fragment implements ChatView{
         }
 
         ChatController controller = new ChatControllerImplementation();
+        controller.setView(this);
         controller.onCreate();
 
         return homeRootView;
@@ -53,11 +56,23 @@ public class FragmentChats extends Fragment implements ChatView{
     }
 
     @Override
-    public void showChats(ArrayList<Chat> chats) {
+    public void showChats(final ArrayList<Chat> chats) {
         Log.d(TAG,"chats are "+chats);
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
         ChatAdapter adapter = new ChatAdapter(chats);
+        adapter.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = chatsRecycler.getChildAdapterPosition(v);
+
+                ShareDataHelper.getInstance().setChat(chats.get(pos));
+
+                Intent intent = new Intent(getActivity().getBaseContext(),ChatActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         chatsRecycler.setLayoutManager(manager);
         chatsRecycler.setAdapter(adapter);

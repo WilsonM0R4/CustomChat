@@ -1,5 +1,7 @@
 package com.example.wilson.customchat.home.chats;
 
+import com.example.wilson.customchat.commons.ShareDataHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,7 @@ public class ChatControllerImplementation implements ChatController {
     public void onCreate() {
         repository = new ChatRepository(this);
         repository.initListeners();
+        ShareDataHelper.getInstance().setController(this);
     }
 
     @Override
@@ -45,5 +48,10 @@ public class ChatControllerImplementation implements ChatController {
     @Override
     public Chat getMessages() {
         return null;
+    }
+
+    @Override
+    public void sendMessage(Message message, String chatPath, String messageKey) {
+        repository.sendMessage(message,chatPath,messageKey);
     }
 }

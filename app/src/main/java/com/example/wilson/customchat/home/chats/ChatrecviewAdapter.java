@@ -6,13 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.domain.FirebaseHelper;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * Created by wmora on 10/19/16.
@@ -22,13 +23,13 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
 
     private View item;
-    private Map<String,Object> dataSource;
+    private ArrayList<Message> dataSource;
 
     /***
      *  Constructor
      * **/
 
-    public ChatRecViewAdapter(Map<String,Object> dataSource){
+    public ChatRecViewAdapter(ArrayList<Message> dataSource){
         this.dataSource = dataSource;
     }
 
@@ -43,17 +44,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Message message = new Message();
-        boolean sender;
-        String currentUser = User.formatEmail(FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
-        String deliver = User.formatEmail(dataSource.get(Chat.SENDER_PATH).toString());
-
-        message.setContent(dataSource.get(Chat.CONTENT_PATH).toString());
-        message.setDate(dataSource.get(Chat.DATE_PATH).toString());
-        message.setHour(dataSource.get(Chat.HOUR_PATH).toString());
-        message.setDeliver(deliver);
-
-        sender = currentUser.equals(deliver);
+        Message message = dataSource.get(position);
+        boolean sender = message.getDeliver().equals(User.formatEmail(FirebaseHelper.getInstance().getCurrentUserReference().getEmail()));
 
         holder.bindView(sender,message);
     }
@@ -66,14 +58,22 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private View view ;
-        private TextView txtContent, txtHour;
+        private TextView txtContent, txtHour,txtContentSender,txtHourSender;
+        private LinearLayout layoutSender,layoutReceiver;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.view = itemView;
-            txtContent = (TextView)view.findViewById(R.id.chat_message);
-            txtHour = (TextView)view.findViewById(R.id.chat_hour);
+
+            layoutReceiver = (LinearLayout) view.findViewById(R.id.receiver_bubble);
+            layoutSender = (LinearLayout) view.findViewById(R.id.sender_bubble);
+
+            txtContent = (TextView)view.findViewById(R.id.chat_message_receiver);
+            txtHour = (TextView)view.findViewById(R.id.chat_hour_receiver);
+
+            txtContentSender = (TextView)view.findViewById(R.id.chat_message_sender);
+            txtHourSender = (TextView)view.findViewById(R.id.chat_hour_sender);
         }
 
         @TargetApi(Build.VERSION_CODES.M)
@@ -81,16 +81,21 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
             //appearance for item
             if(sender){
-                view.setForegroundGravity(View.TEXT_ALIGNMENT_VIEW_END);
-                view.setBackgroundColor(Chat.COLOR_SENDER);
+                layoutSender.setVisibility(View.VISIBLE);
+                layoutReceiver.setVisibility(View.GONE);
+
+                txtContentSender.setText(message.getContent());
+                txtHourSender.setText(message.getHour());
             }else{
-                view.setForegroundGravity(View.TEXT_ALIGNMENT_VIEW_START);
-                view.setBackgroundColor(Chat.COLOR_RECEIVER);
+                layoutSender.setVisibility(View.GONE);
+                layoutReceiver.setVisibility(View.VISIBLE);
+
+                txtContent.setText(message.getContent());
+                txtHour.setText(message.getHour());
             }
 
             //data for item
-            txtContent.setText(message.getContent());
-            txtHour.setText(message.getHour());
+
 
         }
 

@@ -15,5 +15,6 @@ public interface ChatController {
     ArrayList<Chat> getChats();
     void listChats(ArrayList<Chat> chats);
     Chat getMessages();
+    void sendMessage(Message message, String chatPath, String messageKey);
 
 }

@@ -14,13 +14,14 @@ public class Chat {
     public static final String HOUR_PATH = "hour";
     public static final String SENDER_PATH = "sender";
     public static final String CONTENT_PATH = "content";
-    public static final int COLOR_SENDER = Color.argb(1,48,63,159); //ColorPrimaryDark
+    public static final int COLOR_SENDER = Color.argb(1,255,255,255); //ColorNoBackground
     public static final int COLOR_RECEIVER = Color.argb(1,0,153,153); //ColorAccent
 
     private ArrayList<Message> messages;
     private String lastMessageContent;
     private String lastMessageHour;
     private String lastMessageDate;
+    private String lastMessageSender;
 
     public ArrayList<Message> getMessages() {
         return messages;
@@ -51,5 +52,13 @@ public class Chat {
 
     public void setLastMessageDate(String lastMessageDate) {
         this.lastMessageDate = lastMessageDate;
+    }
+
+    public String getLastMessageSender() {
+        return lastMessageSender;
+    }
+
+    public void setLastMessageSender(String lastMessageSender) {
+        this.lastMessageSender = lastMessageSender;
     }
 }

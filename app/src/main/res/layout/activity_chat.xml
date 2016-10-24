@@ -4,12 +4,58 @@
     android:id="@+id/activity_chat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.wilson.customchat.home.chats.ChatActivity">
 
-    <include android:id="@+id/included_navbar"
+
+    <RelativeLayout android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/appbar_toolbar"/>
+        android:layout_below="@+id/toolbar">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chat_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <LinearLayout android:id="@+id/type_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <EditText android:id="@+id/etTypeMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="80"
+            android:textColor="@color/colorNoBackground"
+            android:textColorHint="@color/colorNoBackground"
+            android:hint="@string/type_placeholder"/>
+
+        <ImageButton android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="20"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_send_white_24dp"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:titleTextColor="@color/colorNoBackground"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
