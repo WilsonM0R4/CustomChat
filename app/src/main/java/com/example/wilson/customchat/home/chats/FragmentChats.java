@@ -81,4 +81,10 @@ public class FragmentChats extends Fragment implements ChatView{
 
     }
 
+    public void showChat(ArrayList<Message> messages) {
+        /**
+         * Not used here
+         * */
+    }
+
 }

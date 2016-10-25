@@ -11,5 +11,6 @@ public interface ChatView {
     void newMessage();
     void deleteMessage();
     void showChats(ArrayList<Chat> chats);
+    //void showChat(ArrayList<Message> messages);
 
 }

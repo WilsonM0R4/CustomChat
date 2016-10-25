@@ -2,6 +2,8 @@ package com.example.wilson.customchat.home.chats;
 
 import android.graphics.Color;
 
+import com.example.wilson.customchat.User;
+
 import java.util.ArrayList;
 
 /**
@@ -22,6 +24,7 @@ public class Chat {
     private String lastMessageHour;
     private String lastMessageDate;
     private String lastMessageSender;
+    private String chatPath;
 
     public ArrayList<Message> getMessages() {
         return messages;
@@ -60,5 +63,17 @@ public class Chat {
 
     public void setLastMessageSender(String lastMessageSender) {
         this.lastMessageSender = lastMessageSender;
+    }
+
+    public static String createChatPath(String usermail, String contactmail){
+        return User.formatEmail(usermail)+User.formatEmail(contactmail);
+    }
+
+    public String getChatPath() {
+        return chatPath;
+    }
+
+    public void setChatPath(String chatPath) {
+        this.chatPath = chatPath;
     }
 }

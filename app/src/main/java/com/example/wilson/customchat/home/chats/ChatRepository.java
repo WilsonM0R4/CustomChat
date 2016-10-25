@@ -45,7 +45,7 @@ public class ChatRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                switch(type){
+                switch (type) {
                     case TYPE_MAIN_DATA:
                         controller.listChats(getChats(dataSnapshot));
                         break;
@@ -58,54 +58,52 @@ public class ChatRepository {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e(TAG,"database error: "+databaseError.getMessage());
+                Log.e(TAG, "database error: " + databaseError.getMessage());
             }
         };
     }
 
-    private ArrayList<Chat> getChats(DataSnapshot dataSnapshot){
+    private ArrayList<Chat> getChats(DataSnapshot dataSnapshot) {
 
-        /*GenericTypeIndicator<Map<String,Map<String,String>>> indicator = new GenericTypeIndicator<Map<String, Map<String, String>>>() {};
-        Map<String,Map<String,String>> chatsData = dataSnapshot.getValue(indicator);*/
-
-
-
-        GenericTypeIndicator <Map<String,Map<String,Map<String,String>>>> indicator = new GenericTypeIndicator<Map<String,Map<String,Map<String,String>>>>() {};
-        Map <String,Map<String,Map<String,String>>> data = dataSnapshot.getValue(indicator);
+        GenericTypeIndicator<Map<String, Map<String, Map<String, String>>>> indicator = new GenericTypeIndicator<Map<String, Map<String, Map<String, String>>>>() {
+        };
+        Map<String, Map<String, Map<String, String>>> data = dataSnapshot.getValue(indicator);
         chats = new ArrayList<>();
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<Chat> chats = new ArrayList<>();
 
-        if(data!=null){
+        if (data != null) {
             temp.addAll(data.keySet());
-            Log.d(TAG,"response here is "+data);
-            for(int c =0;c<temp.size();c++){
+            Log.d(TAG, "response here is " + data);
+            for (int c = 0; c < temp.size(); c++) {
 
                 Chat chat = new Chat();
 
-                if(User.formatEmail(temp.get(c)).contains(formattedUserEmail)){
-                    Log.d(TAG,"contains the value, it is "+formattedUserEmail);
+                if (User.formatEmail(temp.get(c)).contains(formattedUserEmail)) {
+                    Log.d(TAG, "contains the value, it is " + formattedUserEmail);
                     String key = User.formatEmail(temp.get(c));
                     ArrayList<String> tempArray = new ArrayList<>();
                     tempArray.addAll(data.get(key).keySet());
 
                     ArrayList<Message> messages = new ArrayList<>();
 
+                    /** save the chat path **/
+                    chat.setChatPath(key);
+
                     int index = tempArray.size();
 
-                    for(int count=0; count<index; count++){
-                        Log.d(TAG,"key is "+key);
-                        Map<String, Map<String,String>> messageMap = data.get(key);
-                        Log.d(TAG,"data here in messageMap is "+messageMap);
+                    for (int count = 0; count < index; count++) {
+                        Log.d(TAG, "key is " + key);
+                        Map<String, Map<String, String>> messageMap = data.get(key);
+                        Log.d(TAG, "data here in messageMap is " + messageMap);
                         ArrayList<String> messageKey = new ArrayList<>();
                         messageKey.addAll(messageMap.keySet());
 
-                        for(int l=0;l<messageKey.size();l++){
+                        for (int l = 0; l < messageKey.size(); l++) {
                             //chat.setLastMessageHour(messageKey.get(l));
 
                             String messagehour = messageMap.get(messageKey.get(l)).get(Chat.HOUR_PATH);
-                            Log.d(TAG,"message hour is "+ messagehour);
-
+                            Log.d(TAG, "message hour is " + messagehour);
 
                             Message message = new Message();
                             message.setContent(messageMap.get(messageKey.get(l)).get(Chat.CONTENT_PATH));
@@ -114,19 +112,19 @@ public class ChatRepository {
                             message.setDate(messageMap.get(messageKey.get(l)).get(Chat.DATE_PATH));
 
                             messages.add(message);
-                            Log.d(TAG,"content here is "+message.getContent());
+                            Log.d(TAG, "content here is " + message.getContent());
                         }
 
                     }
 
                     chat.setMessages(messages);
-                    chat.setLastMessageHour(messages.get(messages.size()-1).getDate());
-                    chat.setLastMessageContent(messages.get(messages.size()-1).getContent());
-                    chat.setLastMessageSender(messages.get(messages.size()-1).getContent());
+                    chat.setLastMessageHour(messages.get(0).getDate());
+                    chat.setLastMessageContent(messages.get(0).getContent());
+                    chat.setLastMessageSender(messages.get(0).getDeliver());
 
-                    Log.d(TAG,"temp value is "+temp.get(c));
-                }else{
-                    Log.d(TAG,"don't contains the value");
+                    Log.d(TAG, "temp value is " + temp.get(c));
+                } else {
+                    Log.d(TAG, "don't contains the value");
                 }
 
                 chats.add(chat);
@@ -137,15 +135,68 @@ public class ChatRepository {
         return chats;
     }
 
-    protected void sendMessage(Message message, String chatPath, String messageKey){
-        Map<String,String> messageData = new HashMap<>();
+    protected void sendMessage(Message message, String chatPath, String messageKey) {
+        Map<String, String> messageData = new HashMap<>();
 
-        messageData.put(Chat.CONTENT_PATH,message.getContent());
-        messageData.put(Chat.DATE_PATH,message.getDate());
-        messageData.put(Chat.HOUR_PATH,message.getHour());
-        messageData.put(Chat.SENDER_PATH,message.getDeliver());
+        messageData.put(Chat.CONTENT_PATH, message.getContent());
+        messageData.put(Chat.DATE_PATH, message.getDate());
+        messageData.put(Chat.HOUR_PATH, message.getHour());
+        messageData.put(Chat.SENDER_PATH, message.getDeliver());
 
         helper.getDatabaseReference().child(FirebaseHelper.CHATS_PATH).child(chatPath).child(messageKey).setValue(messageData);
+    }
+
+    protected void getMessages(String chatPath) {
+
+        helper.getDatabaseReference().child(FirebaseHelper.CHATS_PATH).child(chatPath).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<Message> messages = new ArrayList<>();
+
+                GenericTypeIndicator<Map<String, Map<String, String>>> indicator = new GenericTypeIndicator<Map<String, Map<String, String>>>() {
+                };
+
+                Map<String, Map<String, String>> messageMap = dataSnapshot.getValue(indicator);
+
+                if (messageMap != null) {
+
+                    ArrayList<String> messageKeys = new ArrayList<>();
+                    messageKeys.addAll(messageMap.keySet());
+
+                    Log.d(TAG, "message data is " + messageMap);
+                    Log.d(TAG, "message keys are " + messageKeys);
+
+                    for (int count = 0; count < messageMap.size(); count++) {
+                        Map<String, String> stringMap = messageMap.get(messageKeys.get(count));
+                        Log.d(TAG, "string map is " + stringMap);
+
+                        Message message = new Message();
+
+                        message.setContent(stringMap.get(Chat.CONTENT_PATH));
+                        message.setDate(stringMap.get(Chat.DATE_PATH));
+                        message.setDeliver(stringMap.get(Chat.SENDER_PATH));
+                        message.setHour(stringMap.get(Chat.HOUR_PATH));
+
+                        messages.add(message);
+                        Log.d(TAG, "message is " + message.getContent());
+
+
+                    }
+                    Log.d(TAG, "messages are " + messages);
+                    controller.showChat(messages);
+                } else {
+                    Log.e(TAG, "cannot load the messages");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 }

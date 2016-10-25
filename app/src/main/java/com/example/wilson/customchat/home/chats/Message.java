@@ -1,5 +1,8 @@
 package com.example.wilson.customchat.home.chats;
 
+import com.example.wilson.customchat.User;
+import com.example.wilson.customchat.commons.DateHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -59,5 +62,14 @@ public class Message {
     public void setContent(String content){
         this.content = content;
     }
+
+    /**
+     * Class methods
+     * */
+
+    public static String createChatKey(String username){
+        return User.formatEmail(username)+ DateHelper.getExactCurrentDate();
+    }
 }
+
 

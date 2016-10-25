@@ -11,12 +11,17 @@ import java.util.Calendar;
 public class DateHelper {
 
     public static String getCurrentDate(){
-        DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat format = new SimpleDateFormat("yy/MM/dd");
         return format.format(Calendar.getInstance().getTime());
     }
 
     public static String getCurrentHour(){
         DateFormat format = new SimpleDateFormat("h:mm a");
+        return format.format(Calendar.getInstance().getTime());
+    }
+
+    public static String getExactCurrentDate(){
+        DateFormat format = new SimpleDateFormat("MMddyy_hh_mm_ss_mmss");
         return format.format(Calendar.getInstance().getTime());
     }
 

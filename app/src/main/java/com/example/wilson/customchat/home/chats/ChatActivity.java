@@ -22,7 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements ChatView{
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.chat_list) RecyclerView chatList;
@@ -59,11 +59,37 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        showChat(chat.getMessages());
+        //showChat(chat.getMessages());
+        Log.d(TAG,"path is "+chat.getChatPath());
 
+        controller.setChatActivity(this);
+        controller.getMessages(chat.getChatPath());
+    }
+
+    @Override
+    public void newMessage() {
+        /**
+         * not used here
+         * */
+    }
+
+    @Override
+    public void deleteMessage() {
+        /**
+         * not used here
+         * */
+    }
+
+    @Override
+    public void showChats(ArrayList<Chat> chats) {
+        /**
+         * not used here
+         * */
     }
 
     public void showChat(ArrayList<Message> messages){
+
+        Log.d(TAG,"i'm here!!");
 
         ChatRecViewAdapter adapter = new ChatRecViewAdapter(messages);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
@@ -73,7 +99,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.btnSend)
+    @OnClick(R.id.button_send)
     public void sendMessage(){
         Message message = new Message();
 
@@ -83,7 +109,12 @@ public class ChatActivity extends AppCompatActivity {
         message.setDeliver(User.formatEmail(FirebaseHelper.getInstance().getCurrentUserReference().getEmail()));
 
         /// REVIEW THIS !!!
-        controller.sendMessage(message);
+        String chatPath = chat.getChatPath();
+
+        String messageKey = Message.createChatKey(FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
+
+        controller.sendMessage(message,chatPath,messageKey);
+
     }
 
     private void dismissView(){
