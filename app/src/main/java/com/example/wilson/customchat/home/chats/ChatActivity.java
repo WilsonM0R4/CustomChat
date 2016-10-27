@@ -27,6 +27,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.chat_list) RecyclerView chatList;
     @Bind(R.id.etTypeMessage) EditText etTypeMessage;
+    @Bind(R.id.type_area) View typeArea;
 
     private Chat chat;
     private static final String TAG = "ChatActivity";
@@ -41,6 +42,9 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
 
         chat = ShareDataHelper.getInstance().getChat();
         controller = ShareDataHelper.getInstance().getController();
+
+
+        typeArea.bringToFront();
         /**
          * including the custom navbar
          * */
@@ -111,7 +115,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
         /// REVIEW THIS !!!
         String chatPath = chat.getChatPath();
 
-        String messageKey = Message.createChatKey(FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
+        String messageKey = DateHelper.getExactCurrentDate(); //Message.createChatKey(FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
 
         controller.sendMessage(message,chatPath,messageKey);
 

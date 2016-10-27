@@ -27,6 +27,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
 
     public ChatAdapter(ArrayList<Chat> dataSource){
         this.dataSource = dataSource;
+        messages = new ArrayList<>();
+        Log.d("Adapter","dataSource is "+dataSource);
     }
 
     @Override
@@ -38,9 +40,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        messages = new ArrayList<>();
-        messages.addAll(dataSource.get(position).getMessages());
-        holder.bindView(messages.get(messages.size()-1));
+
+        Log.d("Adapter","messages are "+messages);
+        Log.d("Adapter","messages from dataSource are "+dataSource.get(position).getChatPath() /*.getMessages()*/);
+
+        if(!(dataSource.get(position).getChatPath() == null)){
+            messages.addAll(dataSource.get(position).getMessages());
+            holder.bindView(messages.get(messages.size()-1));
+        }
+
     }
 
     @Override
@@ -90,9 +98,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
                 txtDateHour.setText(date);
             }
 
-
         }
-
 
     }
 }

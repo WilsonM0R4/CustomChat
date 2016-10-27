@@ -74,7 +74,7 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo info){
         super.onCreateContextMenu(menu, view, info);
 
-        MenuInflater menuInflater = activity.getMenuInflater();
+        MenuInflater menuInflater = getActivity().getMenuInflater(); //activity.getMenuInflater();
         menuInflater.inflate(R.menu.context_menu_contact, menu);
 
     }

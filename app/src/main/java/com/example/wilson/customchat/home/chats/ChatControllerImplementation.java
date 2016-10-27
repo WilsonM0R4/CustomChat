@@ -50,7 +50,9 @@ public class ChatControllerImplementation implements ChatController {
 
     @Override
     public void listChats(ArrayList<Chat> chats) {
-        view.showChats(chats);
+        if(chats!=null && !chats.isEmpty()){
+            view.showChats(chats);
+        }
     }
 
     @Override
