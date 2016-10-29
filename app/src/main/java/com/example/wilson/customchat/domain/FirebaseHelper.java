@@ -27,7 +27,7 @@ public class FirebaseHelper {
     public static final String USERS_PATH = "registered_users";
     public static final String CHATS_PATH = "chats";
     public static final String CONTACTS_PATH = "contacts";
-    private static final String SEPARATOR = "__";
+    public static final String SEPARATOR = "&";
     public static final String REGISTERED_USER_KEY = "user_key_";
 
 

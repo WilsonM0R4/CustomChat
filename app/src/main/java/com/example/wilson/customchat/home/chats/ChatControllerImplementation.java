@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.wilson.customchat.commons.ShareDataHelper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by wmora on 10/13/16.
@@ -56,7 +57,7 @@ public class ChatControllerImplementation implements ChatController {
     }
 
     @Override
-    public void showChat(ArrayList<Message> messages) {
+    public void showChat(Map<String, Map<String, String>> messages) {
         Log.d("View","showing message "+messages);
         activity.showChat(messages);
     }

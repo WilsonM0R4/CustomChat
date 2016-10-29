@@ -1,6 +1,7 @@
 package com.example.wilson.customchat.home.chats;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by wmora on 10/13/16.
@@ -15,7 +16,7 @@ public interface ChatController {
     void deleteMessage();
     ArrayList<Chat> getChats();
     void listChats(ArrayList<Chat> chats);
-    void showChat(ArrayList<Message> messages);
+    void showChat(Map<String, Map<String, String>> messages);
     void getMessages(String chatPath);
     void sendMessage(Message message, String chatPath, String messageKey);
 

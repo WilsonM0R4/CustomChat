@@ -46,7 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
 
         if(!(dataSource.get(position).getChatPath() == null)){
             messages.addAll(dataSource.get(position).getMessages());
-            holder.bindView(messages.get(messages.size()-1));
+            holder.bindView(messages.get(messages.size()-1), dataSource.get(position).getChatTitle());
         }
 
     }
@@ -81,7 +81,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
             txtDateHour = (TextView)itemView.findViewById(R.id.chat_message_date);
         }
 
-        public void bindView(Message message){
+        public void bindView(Message message,String chatTitle){
 
             String hour = message.getHour();
             String date = message.getDate();
@@ -89,7 +89,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
             Log.d("bind","hour is "+hour);
             Log.d("bind","date is "+date);
 
-            txtContact.setText(message.getDeliver());
+            txtContact.setText(chatTitle);
             txtContent.setText(message.getContent());
 
             if(date.equals(DateHelper.getCurrentDate())){

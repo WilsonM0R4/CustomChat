@@ -3,6 +3,7 @@ package com.example.wilson.customchat.home.chats;
 import android.util.Log;
 
 import com.example.wilson.customchat.User;
+import com.example.wilson.customchat.commons.ArrayManager;
 import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.google.firebase.auth.api.model.StringList;
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Created by wmora on 10/13/16.
@@ -89,7 +91,7 @@ public class ChatRepository {
 
                     /** save the chat path **/
                     chat = new Chat();
-                    chat.setChatPath(key);
+                    chat.setChatPath(key,FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
 
                     int index = tempArray.size();
 
@@ -98,6 +100,7 @@ public class ChatRepository {
                         Map<String, Map<String, String>> messageMap = data.get(key);
                         Log.d(TAG, "data here in messageMap is " + messageMap);
                         ArrayList<String> messageKey = new ArrayList<>();
+                        ArrayList<String> members = new ArrayList<>();
                         messageKey.addAll(messageMap.keySet());
 
                         for (int l = 0; l < messageKey.size(); l++) {
@@ -114,6 +117,8 @@ public class ChatRepository {
 
                             messages.add(message);
                             Log.d(TAG, "content here is " + message.getContent());
+
+                            members.add(message.getDeliver());
                         }
 
                     }
@@ -122,7 +127,7 @@ public class ChatRepository {
                     chat.setLastMessageHour(messages.get(0).getDate());
                     chat.setLastMessageContent(messages.get(0).getContent());
                     chat.setLastMessageSender(messages.get(0).getDeliver());
-                    chat.setChatPath(key);
+                    chat.setChatPath(key,FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
 
                     Log.d(TAG, "temp value is " + temp.get(c));
                 } else {
@@ -159,22 +164,24 @@ public class ChatRepository {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    ArrayList<Message> messages = new ArrayList<>();
+                    //ArrayList<Message> messages = new ArrayList<>();
 
                     GenericTypeIndicator<Map<String, Map<String, String>>> indicator = new GenericTypeIndicator<Map<String, Map<String, String>>>() {
                     };
 
-                    Map<String, Map<String, String>> messageMap = dataSnapshot.getValue(indicator);
+                    Map<String, Map<String, String>> messageMap = new TreeMap<>();
+                            messageMap.putAll(dataSnapshot.getValue(indicator));
 
-                    if (messageMap != null) {
+                    if (!messageMap.isEmpty()) {
 
-                        ArrayList<String> messageKeys = new ArrayList<>();
-                        messageKeys.addAll(messageMap.keySet());
+                        //ArrayList<String> messageKeys = new ArrayList<>();
+                        //messageKeys.addAll(messageMap.keySet());
 
-                        Log.d(TAG, "message data is " + messageMap);
-                        Log.d(TAG, "message keys are " + messageKeys);
+                        //Log.d(TAG,"message here is "+messageMap.get(messageKeys.get));
+                        //Log.d(TAG, "message data is " + messageMap);
+                        //Log.d(TAG, "message keys are " + messageKeys);
 
-                        for (int count = 0; count < messageMap.size(); count++) {
+                        /*for (int count = 0; count < messageMap.size(); count++) {
                             Map<String, String> stringMap = messageMap.get(messageKeys.get(count));
                             Log.d(TAG, "string map is " + stringMap);
 
@@ -185,13 +192,13 @@ public class ChatRepository {
                             message.setDeliver(stringMap.get(Chat.SENDER_PATH));
                             message.setHour(stringMap.get(Chat.HOUR_PATH));
 
-                            messages.add(message);
+                            messages.add(count,message);
                             Log.d(TAG, "message is " + message.getContent());
 
+                            Log.d(TAG,"message here is "+messageMap.get(messageKeys.get(count)));
 
-                        }
-                        Log.d(TAG, "messages are " + messages);
-                        controller.showChat(messages);
+                        }*/
+                        controller.showChat(messageMap);
                     } else {
                         Log.e(TAG, "cannot load the messages");
                     }

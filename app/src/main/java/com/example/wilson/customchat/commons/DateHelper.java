@@ -25,4 +25,11 @@ public class DateHelper {
         return format.format(Calendar.getInstance().getTime());
     }
 
+    public static String replaceCharactersInDate(String date, String character){
+        if(date.contains(character)){
+            date = date.replace(character,"");
+        }
+        return date;
+    }
+
 }

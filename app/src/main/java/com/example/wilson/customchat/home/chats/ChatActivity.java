@@ -17,6 +17,7 @@ import com.example.wilson.customchat.domain.FirebaseHelper;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -91,12 +92,14 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
          * */
     }
 
-    public void showChat(ArrayList<Message> messages){
+    public void showChat(Map<String, Map<String, String>> messages){
 
         Log.d(TAG,"i'm here!!");
 
         ChatRecViewAdapter adapter = new ChatRecViewAdapter(messages);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+
+        manager.setStackFromEnd(true);
 
         chatList.setLayoutManager(manager);
         chatList.setAdapter(adapter);
@@ -115,9 +118,10 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
         /// REVIEW THIS !!!
         String chatPath = chat.getChatPath();
 
-        String messageKey = DateHelper.getExactCurrentDate(); //Message.createChatKey(FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
+        String messageKey = DateHelper.replaceCharactersInDate(DateHelper.getExactCurrentDate(),"_"); //Message.createChatKey(FirebaseHelper.getInstance().getCurrentUserReference().getEmail());
 
         controller.sendMessage(message,chatPath,messageKey);
+        etTypeMessage.setText("");
 
     }
 

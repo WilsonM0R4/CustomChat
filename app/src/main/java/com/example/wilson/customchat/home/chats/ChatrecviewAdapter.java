@@ -3,6 +3,7 @@ package com.example.wilson.customchat.home.chats;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.User;
+import com.example.wilson.customchat.commons.DateHelper;
 import com.example.wilson.customchat.domain.FirebaseHelper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by wmora on 10/19/16.
@@ -23,14 +26,16 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
 
     private View item;
-    private ArrayList<Message> dataSource;
+    private Map<String, Map<String, String>> dataSource;
+    private ArrayList<String> keys = new ArrayList<>();
 
     /***
      *  Constructor
      * **/
 
-    public ChatRecViewAdapter(ArrayList<Message> dataSource){
+    public ChatRecViewAdapter(Map<String, Map<String, String>> dataSource){
         this.dataSource = dataSource;
+        this.keys.addAll(dataSource.keySet());
     }
 
     /***
@@ -44,8 +49,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Message message = dataSource.get(position);
-        boolean sender = message.getDeliver().equals(User.formatEmail(FirebaseHelper.getInstance().getCurrentUserReference().getEmail()));
+        Map<String, String> message = dataSource.get(keys.get(position));
+        boolean sender = message.get(Chat.SENDER_PATH).equals(User.formatEmail(FirebaseHelper.getInstance().getCurrentUserReference().getEmail()));
 
         holder.bindView(sender,message);
     }
@@ -77,21 +82,39 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         }
 
         @TargetApi(Build.VERSION_CODES.M)
-        public void bindView(boolean sender, Message message){
+        public void bindView(boolean sender, Map<String,String> message){
 
             //appearance for item
             if(sender){
                 layoutSender.setVisibility(View.VISIBLE);
                 layoutReceiver.setVisibility(View.GONE);
 
-                txtContentSender.setText(message.getContent());
-                txtHourSender.setText(message.getHour());
+                txtContentSender.setText(message.get(Chat.CONTENT_PATH));
+
+                String date = message.get(Chat.DATE_PATH);
+                if(!date.equals(DateHelper.getCurrentDate())){
+                    txtHourSender.setText(date);
+                    Log.d("Adapter","message is not from today, is from "+date);
+                }else{
+                    Log.d("Adapter","message is form today, at "+message.get(Chat.HOUR_PATH));
+                    txtHourSender.setText(message.get(Chat.HOUR_PATH));
+                }
+
             }else{
                 layoutSender.setVisibility(View.GONE);
                 layoutReceiver.setVisibility(View.VISIBLE);
 
-                txtContent.setText(message.getContent());
-                txtHour.setText(message.getHour());
+                txtContent.setText(message.get(Chat.CONTENT_PATH));
+
+                String date = message.get(Chat.DATE_PATH);
+                if(!date.equals(DateHelper.getCurrentDate())){
+                    Log.d("Adapter","message is not from today, is from "+date);
+                    txtHour.setText(date);
+                }else{
+                    Log.d("Adapter","message is form today, at "+message.get(Chat.HOUR_PATH));
+                    txtHour.setText(message.get(Chat.HOUR_PATH));
+                }
+
             }
 
             //data for item

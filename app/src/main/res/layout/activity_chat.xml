@@ -11,7 +11,8 @@
     <RelativeLayout android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/type_area">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/chat_list"
