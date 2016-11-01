@@ -57,11 +57,20 @@ public class ChatControllerImplementation implements ChatController {
         final ArrayList<Contact> contacts = FirebaseHelper.getInstance().getFoundContacts();
 
         for(Contact contact :contacts){
-            Log.d("ChatController","contacts are "+contact.getContactEmail());
+            Log.d("ChatController","contacts here are "+contact.getContactEmail());
         }
 
 
+        View customView = LayoutInflater.from(baseActivity).inflate(R.layout.contacts_view, null);
+        RecyclerView recView = (RecyclerView) customView.findViewById(R.id.contacts_rec_view);
+
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(baseActivity);
+        ContactRecViewAdapter adapter = new ContactRecViewAdapter(contacts);
+        recView.setAdapter(adapter);
+        recView.setLayoutManager(manager);
+
         final MessageDialog dialog = new MessageDialog();
+        dialog.newInstance(baseActivity,baseActivity.getString(R.string.select_contact_title),"");
         dialog.setOnCancelClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,18 +78,14 @@ public class ChatControllerImplementation implements ChatController {
             }
         });
 
-        View customView = LayoutInflater.from(baseActivity).inflate(R.layout.contacts_view, null);
 
-        if(customView==null){
+
+        /*if(customView==null){
             Log.e("ChatController","customView is null");
-        }
+        }*/
 
-        final RecyclerView recView = (RecyclerView) customView.findViewById(R.id.contacts_rec_view);
 
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(activity);
-        ContactRecViewAdapter adapter = new ContactRecViewAdapter(contacts);
-
-        adapter.setOnClickListener(new View.OnClickListener() {
+        /*adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -93,12 +98,11 @@ public class ChatControllerImplementation implements ChatController {
 
                 baseActivity.startActivity(new Intent(baseActivity.getBaseContext(),ChatActivity.class));
             }
-        });
+        });*/
 
-        recView.setAdapter(adapter);
-        recView.setLayoutManager(manager);
+
         dialog.setCustomView(customView);
-        dialog.show(fragment.getFragmentManager(),"dialogContacts");
+        dialog.show(fragment.getFragmentManager(),"dialogSelectContacts");
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
@@ -28,14 +29,12 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
     /**
      * @ButterKnife bind views
      **/
-    @Bind(R.id.dialog_title)
-    TextView dialogTitle;
-    @Bind(R.id.dialog_message)
-    TextView dialogMessage;
-    @Bind(R.id.button_cancel)
-    Button buttonCancel;
-    @Bind(R.id.btn_accept)
-    Button buttonAccept;
+    @Bind(R.id.dialog_title) TextView dialogTitle;
+    @Bind(R.id.dialog_message) TextView dialogMessage;
+    @Bind(R.id.button_cancel) Button buttonCancel;
+    @Bind(R.id.btn_accept) Button buttonAccept;
+    @Bind(R.id.actions_container) RelativeLayout actionsContainer;
+    @Bind(R.id.custom_view_container) LinearLayout layout;
 
     /**
      * private variables
@@ -47,7 +46,7 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
     private boolean haveCancel = false;
     private View.OnClickListener acceptListener;
     private View.OnClickListener cancelListener;
-    private LinearLayout layout;
+    //private LinearLayout layout;
 
     /**
      * returns a new instance for this class
@@ -70,8 +69,6 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
         super.onCreateDialog(savedInstanceState);
 
         view = LayoutInflater.from(getActivity()).inflate(R.layout.message_dialog, null);
-        layout = (LinearLayout) view.findViewById(R.id.custom_view_container);
-
 
         if (view != null) {
             ButterKnife.bind(this, view);
@@ -94,6 +91,14 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
         //if(dialogTitle!=null && dialogMessage!=null){
         dialogTitle.setText(title);
         dialogMessage.setText(message);
+
+        if(customView!=null){
+            layout.addView(customView);
+        }else{
+            Log.d("dialog","none custom view found");
+        }
+
+        Log.d("dialog","layout is "+layout);
 
         if(acceptListener!=null){
             buttonAccept.setOnClickListener(acceptListener);
@@ -152,13 +157,6 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
 
     public void setCustomView(View customView) {
         this.customView = customView;
-
-        if(layout!=null){
-            layout.addView(customView);
-        }else{
-            Log.e("Dialog","this f*cking view is null");
-        }
-
     }
 
 
