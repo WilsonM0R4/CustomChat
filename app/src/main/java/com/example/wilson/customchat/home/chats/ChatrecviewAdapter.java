@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
@@ -65,11 +66,14 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
         private View view ;
         private TextView txtContent, txtHour,txtContentSender,txtHourSender;
         private LinearLayout layoutSender,layoutReceiver;
+        private RelativeLayout container;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.view = itemView;
+
+            container = (RelativeLayout)view.findViewById(R.id.messages_container);
 
             layoutReceiver = (LinearLayout) view.findViewById(R.id.receiver_bubble);
             layoutSender = (LinearLayout) view.findViewById(R.id.sender_bubble);

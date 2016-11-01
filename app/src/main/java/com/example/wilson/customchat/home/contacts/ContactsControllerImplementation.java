@@ -12,6 +12,7 @@ import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.commons.MessageDialog;
 import com.example.wilson.customchat.commons.ViewHelper;
+import com.example.wilson.customchat.domain.FirebaseHelper;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -58,6 +59,7 @@ public class ContactsControllerImplementation implements ContactsController {
             Log.d(TAG,"i have the view");
             viewHelper.hideProgressDialog();
             view.showContacts(userContacts);
+            FirebaseHelper.getInstance().setFoundContacts(userContacts);
         }else{
             Log.e(TAG,"Cannot show received data");
         }

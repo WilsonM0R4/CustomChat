@@ -1,5 +1,8 @@
 package com.example.wilson.customchat.home.chats;
 
+import android.app.Activity;
+import android.support.v4.app.Fragment;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -12,6 +15,8 @@ public interface ChatController {
     void onCreate();
     void setView(ChatView view);
     void setChatActivity(ChatActivity activity);
+    void setBaseActivity(Activity activity);
+    void setFragment(Fragment fragment);
     void newMessage();
     void deleteMessage();
     ArrayList<Chat> getChats();

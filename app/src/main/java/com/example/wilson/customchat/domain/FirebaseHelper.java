@@ -3,12 +3,14 @@ package com.example.wilson.customchat.domain;
 import android.util.Log;
 
 import com.example.wilson.customchat.User;
+import com.example.wilson.customchat.home.contacts.Contact;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +31,7 @@ public class FirebaseHelper {
     public static final String CONTACTS_PATH = "contacts";
     public static final String SEPARATOR = "&";
     public static final String REGISTERED_USER_KEY = "user_key_";
-
+    private ArrayList<Contact> foundContacts;
 
     private static class SingletonHolder{
         private static final FirebaseHelper INSTANCE = new FirebaseHelper();
@@ -74,23 +76,45 @@ public class FirebaseHelper {
         return firebaseUser;
     }
 
+    /**
+     * Changes user availability
+     * **/
+
     public void changeUserAvailability(String availability){
         if(databaseReference!=null){
             databaseReference.child(User.EXTRA_DATA_KEY).child(User.formatEmail(firebaseUser.getEmail())).child(User.USER_AVALIABILITY).setValue(availability);
         }
     }
 
-    public void getRegisteredUsers(){
+    public ArrayList<Contact> getUserContacts(){
 
+        databaseReference.child(CONTACTS_PATH).child(User.formatEmail(firebaseUser.getEmail()));
+
+        return null;
     }
 
-
+    /**
+     * calls firebase Sing off
+     * **/
     public void signOff(){
         if(firebaseUser!=null){
             firebaseAuth.signOut();
         }else{
             Log.e("Helper message","user is signed out yet");
         }
+    }
+
+
+    /**
+     * found contacts
+     * **/
+    public ArrayList<Contact> getFoundContacts() {
+        return foundContacts;
+    }
+
+    public void setFoundContacts(ArrayList<Contact> foundContacts) {
+        Log.d("helper","found contacts is "+foundContacts);
+        this.foundContacts = foundContacts;
     }
 
 }

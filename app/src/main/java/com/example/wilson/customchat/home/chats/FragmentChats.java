@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by wmora on 7/15/16.
@@ -28,6 +29,7 @@ public class FragmentChats extends Fragment implements ChatView{
     @Bind(R.id.noChatsText) TextView noChatsText;
 
     private static final String TAG = "ChatView";
+    private ChatController controller;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -38,16 +40,20 @@ public class FragmentChats extends Fragment implements ChatView{
             ButterKnife.bind(this,homeRootView);
         }
 
-        ChatController controller = new ChatControllerImplementation();
+        controller = new ChatControllerImplementation();
         controller.setView(this);
+        controller.setChatActivity(new ChatActivity());
+        controller.setBaseActivity(getActivity());
+        controller.setFragment(this);
         controller.onCreate();
 
         return homeRootView;
     }
 
     @Override
+    @OnClick(R.id.fabNewMessage)
     public void newMessage() {
-
+        controller.newMessage();
     }
 
     @Override

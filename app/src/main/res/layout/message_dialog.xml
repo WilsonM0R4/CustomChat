@@ -17,12 +17,19 @@
             android:textSize="20sp"
             android:text="Title here" />
 
-        <TextView android:id="@+id/dialog_message"
+        <LinearLayout android:id="@+id/custom_view_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp"
             android:layout_below="@+id/dialog_title"
-            android:text="message here"/>
+            android:paddingBottom="24dp">
+
+            <TextView android:id="@+id/dialog_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="message here"/>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

@@ -98,6 +98,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
                 txtDateHour.setText(date);
             }
 
+
         }
 
     }

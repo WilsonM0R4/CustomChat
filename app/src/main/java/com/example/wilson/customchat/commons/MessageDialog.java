@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.wilson.customchat.R;
@@ -40,12 +41,13 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
      * private variables
      **/
 
-    private View view;
+    private View view, customView;
     private Activity activity;
     private String message, title;
     private boolean haveCancel = false;
     private View.OnClickListener acceptListener;
     private View.OnClickListener cancelListener;
+    private LinearLayout layout;
 
     /**
      * returns a new instance for this class
@@ -68,10 +70,14 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
         super.onCreateDialog(savedInstanceState);
 
         view = LayoutInflater.from(getActivity()).inflate(R.layout.message_dialog, null);
+        layout = (LinearLayout) view.findViewById(R.id.custom_view_container);
+
 
         if (view != null) {
             ButterKnife.bind(this, view);
 
+        }else{
+            Log.e("Dialog","null");
         }
 
         return new AlertDialog.Builder(getActivity()).setView(view).create();
@@ -136,4 +142,24 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
             this.onClick(v);
         }
     }
+
+    /**
+     * methods for CustomView
+     * */
+    public View getCustomView() {
+        return customView;
+    }
+
+    public void setCustomView(View customView) {
+        this.customView = customView;
+
+        if(layout!=null){
+            layout.addView(customView);
+        }else{
+            Log.e("Dialog","this f*cking view is null");
+        }
+
+    }
+
+
 }
