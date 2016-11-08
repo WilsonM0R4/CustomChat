@@ -78,8 +78,6 @@ public class ChatControllerImplementation implements ChatController {
             }
         });
 
-
-
         /*if(customView==null){
             Log.e("ChatController","customView is null");
         }*/

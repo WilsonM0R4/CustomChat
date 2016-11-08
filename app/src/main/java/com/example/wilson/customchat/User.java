@@ -15,7 +15,7 @@ public class User {
     public static final boolean USER_LOGED_OUT = false;
     public static final String EMAIL_KEY = "email";
     public static final String EXTRA_DATA_KEY = "user_extra_data";
-    public static final String USER_AVALIABILITY = "availavility";
+    public static final String USER_AVALIABILITY = "availability";
     public static final String USER_PROFILE_IMAGE = "profile_image";
     public static final String USER_STATE = "status";
     public static final String USERNAME = "username";
