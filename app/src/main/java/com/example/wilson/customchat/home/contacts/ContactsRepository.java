@@ -52,6 +52,7 @@ public class ContactsRepository {
         contacts = new ArrayList<>();
         contactsMap = new HashMap<>();
         this.controller = controller;
+
     }
 
     protected void onDestroy() {

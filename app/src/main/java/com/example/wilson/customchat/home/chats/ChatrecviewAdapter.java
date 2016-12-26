@@ -51,7 +51,8 @@ public class ChatRecViewAdapter extends RecyclerView.Adapter<ChatRecViewAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Map<String, String> message = dataSource.get(keys.get(position));
-        boolean sender = message.get(Chat.SENDER_PATH).equals(User.formatEmail(FirebaseHelper.getInstance().getCurrentUserReference().getEmail()));
+        boolean sender = User.formatEmail(message.get(Chat.SENDER_PATH))
+                .equals(User.formatEmail(FirebaseHelper.getInstance().getCurrentUserReference().getEmail()));
 
         holder.bindView(sender,message);
     }

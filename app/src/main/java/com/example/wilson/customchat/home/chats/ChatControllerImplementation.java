@@ -144,4 +144,21 @@ public class ChatControllerImplementation implements ChatController {
     public void setFragment(Fragment fragment) {
         this.fragment = fragment;
     }
+
+    @Override
+    public String getCurrentUser() {
+
+        if(repository==null){
+            repository = new ChatRepository(this);
+            //repository.initListeners();
+        }
+
+        String user = repository.getCurrentUser();
+
+        if(user!=null){
+            return user;
+        }
+
+        return null;
+    }
 }

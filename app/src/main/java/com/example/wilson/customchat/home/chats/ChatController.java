@@ -17,6 +17,7 @@ public interface ChatController {
     void setChatActivity(ChatActivity activity);
     void setBaseActivity(Activity activity);
     void setFragment(Fragment fragment);
+    String getCurrentUser();
     void newMessage();
     void deleteMessage();
     ArrayList<Chat> getChats();

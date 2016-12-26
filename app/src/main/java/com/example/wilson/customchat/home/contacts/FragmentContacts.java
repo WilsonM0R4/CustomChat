@@ -19,6 +19,7 @@ import com.example.wilson.customchat.R;
 import com.example.wilson.customchat.commons.MessageDialog;
 import com.example.wilson.customchat.commons.ViewHelper;
 import com.example.wilson.customchat.home.HomeActivity;
+import com.example.wilson.customchat.home.chats.dialog.ChatDialog;
 
 import java.util.ArrayList;
 
@@ -92,6 +93,9 @@ public class FragmentContacts extends Fragment implements ContactsView, ViewHelp
                     break;
                 case R.id.item_new_message:
 
+                    ChatDialog chatDialog = new ChatDialog();
+                    chatDialog.newInstance(userList.get(contactsList.getChildAdapterPosition(itemView)),null);
+                    chatDialog.show(getFragmentManager(),"TagChatDialog");
 
                     break;
                 case R.id.item_delete:

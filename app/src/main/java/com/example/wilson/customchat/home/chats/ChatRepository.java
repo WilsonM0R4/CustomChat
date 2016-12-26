@@ -217,4 +217,9 @@ public class ChatRepository {
 
     }
 
+
+    protected String getCurrentUser(){
+        return FirebaseHelper.getInstance().getCurrentUserReference().getEmail();
+    }
+
 }

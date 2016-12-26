@@ -54,6 +54,7 @@
     <string name="chat_contact_name">Contacto</string>
     <string name="type_placeholder">escribe un mensaje</string>
     <string name="select_contact_title">Selecciona un contacto</string>
+    <string name="contact_name_default">Contact Name</string>
 
     <!--string-array name="availability_array">
         <item>"@string/online"</item>
