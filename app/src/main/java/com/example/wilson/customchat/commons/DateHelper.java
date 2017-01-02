@@ -21,7 +21,7 @@ public class DateHelper {
     }
 
     public static String getExactCurrentDate(){
-        DateFormat format = new SimpleDateFormat("MMddyy_hh_mm_ss_mmss");
+        DateFormat format = new SimpleDateFormat("yyMMdd_hh_mm_ss_mmss");
         return format.format(Calendar.getInstance().getTime());
     }
 
