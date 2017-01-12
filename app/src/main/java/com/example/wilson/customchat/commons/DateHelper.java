@@ -16,8 +16,12 @@ public class DateHelper {
     }
 
     public static String getCurrentHour(){
-        DateFormat format = new SimpleDateFormat("h:mm a");
-        return format.format(Calendar.getInstance().getTime());
+        DateFormat format = new SimpleDateFormat("hh:mm a");
+
+        String currenthour = format.format(Calendar.getInstance().getTime());
+        currenthour = currenthour.toLowerCase();
+
+        return currenthour;
     }
 
     public static String getExactCurrentDate(){
