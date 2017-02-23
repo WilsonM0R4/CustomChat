@@ -146,14 +146,17 @@ public class ChatRepository {
     }
 
     protected void sendMessage(Message message, String chatPath, String messageKey) {
-        Map<String, String> messageData = new HashMap<>();
+        Map<String, Object> messageData = new HashMap<>();
 
         messageData.put(Chat.CONTENT_PATH, message.getContent());
         messageData.put(Chat.DATE_PATH, message.getDate());
         messageData.put(Chat.HOUR_PATH, message.getHour());
         messageData.put(Chat.SENDER_PATH, message.getDeliver());
 
-        helper.getDatabaseReference().child(FirebaseHelper.CHATS_PATH).child(chatPath).child(messageKey).setValue(messageData);
+        //helper.getDatabaseReference().child(FirebaseHelper.CHATS_PATH).child(chatPath).child(messageKey).setValue(messageData);
+
+        /** a better way to write the data to the server **/
+        helper.getDatabaseReference().child(FirebaseHelper.CHATS_PATH).child(chatPath).child(messageKey).updateChildren(messageData);
     }
 
     protected void getMessages(String chatPath) {
@@ -178,7 +181,7 @@ public class ChatRepository {
                         //messageKeys.addAll(messageMap.keySet());
 
                         //Log.d(TAG,"message here is "+messageMap.get(messageKeys.get));
-                        //Log.d(TAG, "message data is " + messageMap);
+                        //Log.d(TAG, "message    data is " + messageMap);
                         //Log.d(TAG, "message keys are " + messageKeys);
 
                         /*for (int count = 0; count < messageMap.size(); count++) {
