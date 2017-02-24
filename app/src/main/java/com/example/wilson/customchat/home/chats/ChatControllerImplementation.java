@@ -15,6 +15,7 @@ import com.example.wilson.customchat.User;
 import com.example.wilson.customchat.commons.MessageDialog;
 import com.example.wilson.customchat.commons.ShareDataHelper;
 import com.example.wilson.customchat.domain.FirebaseHelper;
+import com.example.wilson.customchat.home.chats.dialog.ChatDialog;
 import com.example.wilson.customchat.home.contacts.Contact;
 import com.example.wilson.customchat.home.contacts.ContactRecViewAdapter;
 import com.example.wilson.customchat.home.contacts.ContactsRepository;
@@ -62,7 +63,7 @@ public class ChatControllerImplementation implements ChatController {
 
 
         View customView = LayoutInflater.from(baseActivity).inflate(R.layout.contacts_view, null);
-        RecyclerView recView = (RecyclerView) customView.findViewById(R.id.contacts_rec_view);
+        final RecyclerView recView = (RecyclerView) customView.findViewById(R.id.contacts_rec_view);
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(baseActivity);
         ContactRecViewAdapter adapter = new ContactRecViewAdapter(contacts);
@@ -70,7 +71,9 @@ public class ChatControllerImplementation implements ChatController {
         recView.setLayoutManager(manager);
 
         final MessageDialog dialog = new MessageDialog();
-        dialog.newInstance(baseActivity,baseActivity.getString(R.string.select_contact_title),"");
+        dialog.newInstance(baseActivity,baseActivity.getString(R.string.select_contact_title), null);
+
+        dialog.setCustomView(customView);
         dialog.setOnCancelClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,23 +86,24 @@ public class ChatControllerImplementation implements ChatController {
         }*/
 
 
-        /*adapter.setOnClickListener(new View.OnClickListener() {
+        adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                repository.getMessages(Chat.createChatPath(
+                /*repository.getMessages(Chat.createChatPath(
                         User.formatEmail(
                                 FirebaseHelper.getInstance().getCurrentUserReference().getEmail()),
                         User.formatEmail(
-                                contacts.get(recView.getChildAdapterPosition(v)).getContactEmail())));
+                                contacts.get(recView.getChildAdapterPosition(v)).getContactEmail())));*/
 
+                ChatDialog chatDialog = new ChatDialog();
+                chatDialog.newInstance(contacts.get(recView.getChildAdapterPosition(v)), null);
+                chatDialog.show(dialog.getFragmentManager(),"TagChatDialog");
 
-                baseActivity.startActivity(new Intent(baseActivity.getBaseContext(),ChatActivity.class));
+                //baseActivity.startActivity(new Intent(baseActivity.getBaseContext(),ChatActivity.class));
             }
-        });*/
+        });
 
-
-        dialog.setCustomView(customView);
         dialog.show(fragment.getFragmentManager(),"dialogSelectContacts");
     }
 

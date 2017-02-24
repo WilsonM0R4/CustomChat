@@ -32,7 +32,11 @@ public class ContactRecViewAdapter extends RecyclerView.Adapter<ContactRecViewAd
     public ContactRecViewAdapter(ArrayList<Contact> dataMap){
         this.dataMap = dataMap;
         Log.d(TAG,"Rec created");
-        Log.d(TAG,"dataMap is: "+dataMap);
+        //Log.d(TAG,"dataMap is: "+dataMap);
+
+        for(Contact contact: dataMap){
+            Log.d(TAG,"dataMap contains "+contact.getContactEmail());
+        }
     }
 
     @Override

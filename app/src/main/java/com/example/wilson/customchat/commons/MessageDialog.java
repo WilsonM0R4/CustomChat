@@ -90,10 +90,22 @@ public class MessageDialog extends DialogFragment implements View.OnClickListene
         super.onStart();
         //if(dialogTitle!=null && dialogMessage!=null){
         dialogTitle.setText(title);
-        dialogMessage.setText(message);
+        actionsContainer.bringToFront();
+
+        if(this.message == null){
+            dialogMessage.setVisibility(View.GONE);
+        }else{
+            dialogMessage.setText(message);
+        }
 
         if(customView!=null){
+            customView.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT));
+
             layout.addView(customView);
+            Log.d("dialog", "custom view has been added");
         }else{
             Log.d("dialog","none custom view found");
         }

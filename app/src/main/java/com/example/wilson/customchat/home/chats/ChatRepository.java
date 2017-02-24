@@ -173,7 +173,7 @@ public class ChatRepository {
                     };
 
                     Map<String, Map<String, String>> messageMap = new TreeMap<>();
-                            messageMap.putAll(dataSnapshot.getValue(indicator));
+                    messageMap.putAll(dataSnapshot.getValue(indicator));
 
                     if (!messageMap.isEmpty()) {
 

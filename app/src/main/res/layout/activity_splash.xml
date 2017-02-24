@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.wilson.customchat.SplashActivity">
 
-    <ImageView
+    <!--ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
         android:src="@drawable/splash"
-        android:background="@color/blackColor"/>
+        android:background="@color/blackColor"/-->
 
 </RelativeLayout>

@@ -34,7 +34,7 @@
             android:name=".commons.CropImageActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".home.chats.ChatActivity" />
-        <activity android:name=".SplashActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <activity android:name=".SplashActivity" android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
