@@ -3,8 +3,8 @@
     <string name="placeholder_email">correo</string>
     <string name="placeholder_password">contraseña</string>
     <string name="sign_up_message">¿no estas registrado?</string>
-    <string name="sign_up">registrate</string>
-    <string name="sign_in">iniciar sesión</string>
+    <string name="sign_up">Regístrate</string>
+    <string name="sign_in">Iniciar sesión</string>
     <string name="loadingMessage">Vericando tus datos</string>
     <string name="loadingTitle">Cargando</string>
     <string name="sign_off">cerrar sesión</string>
@@ -55,6 +55,7 @@
     <string name="type_placeholder">escribe un mensaje</string>
     <string name="select_contact_title">Selecciona un contacto</string>
     <string name="contact_name_default">Contact Name</string>
+    <string name="the_new_user_message">¿eres nuevo por aquí?</string>
 
     <!--string-array name="availability_array">
         <item>"@string/online"</item>
